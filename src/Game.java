@@ -12,7 +12,7 @@ public class Game {
         int enemyAttack = 7;
         double enemyCritChance = 15;
 
-        System.out.println();
+        System.out.println("Coded on PC");
 
         System.out.println("Starting health " + health);
         System.out.println("Enemy Health " + enemyHealth);
