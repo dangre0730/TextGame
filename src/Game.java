@@ -13,13 +13,19 @@ public class Game {
         int classChoice;
         int attackDamage;
         int attackSpeed;
-        int playerHealth;
-        int playerStrength;
-        int playerDexterity;
-        int playerConstitution;
-        int playerIntelligence;
-        int playerWisdom;
-        int playerCharisma;
+        int playerHealth = 0;
+        int playerStrength = 0;
+        int strMod = 0;
+        int playerDexterity = 0;
+        int dexMod = 0;
+        int playerConstitution = 0;
+        int conMod = 0;
+        int playerIntelligence = 0;
+        int intMod = 0;
+        int playerWisdom = 0;
+        int wisMod = 0;
+        int playerCharisma = 0;
+        int chaMod = 0;
 
         double critChance;
 
@@ -93,7 +99,6 @@ public class Game {
         }
         if(classChoice == 1){
             playerClass = "Veteran Soldier";
-            playerHealth = diceRoll(10, 3, 3);
             playerStrength = statDiceRoll(6, 4, 2);
             playerDexterity = statDiceRoll(6, 4, 0);
             playerConstitution = statDiceRoll(6, 4, 2);
@@ -101,7 +106,66 @@ public class Game {
             playerWisdom = statDiceRoll(6, 4, 1);
             playerCharisma = statDiceRoll(6, 4, 0);
         }
-        int health = diceRoll(10, 4, 0);
+        if(classChoice == 2){
+            playerClass = "Forest Ranger";
+            playerStrength = statDiceRoll(6, 4, 0);
+            playerDexterity = statDiceRoll(6, 4, 2);
+            playerConstitution = statDiceRoll(6, 4, 0);
+            playerIntelligence = statDiceRoll(6, 4, 2);
+            playerWisdom = statDiceRoll(6, 4, 1);
+            playerCharisma = statDiceRoll(6, 4, 0);
+        }
+        if(classChoice == 3){
+            playerClass = "Tavern Brawler";
+            playerStrength = statDiceRoll(6, 4, 2);
+            playerDexterity = statDiceRoll(6, 4, 0);
+            playerConstitution = statDiceRoll(6, 4, 1);
+            playerIntelligence = statDiceRoll(6, 4, 0);
+            playerWisdom = statDiceRoll(6, 4, 1);
+            playerCharisma = statDiceRoll(6, 4, 1);
+        }
+        if(classChoice == 4){
+            playerClass = "Old Mage";
+            playerStrength = statDiceRoll(6, 4, 0);
+            playerDexterity = statDiceRoll(6, 4, 1);
+            playerConstitution = statDiceRoll(6, 4, 0);
+            playerIntelligence = statDiceRoll(6, 4, 2);
+            playerWisdom = statDiceRoll(6, 4, 2);
+            playerCharisma = statDiceRoll(6, 4, 0);
+        }
+        if(playerStrength < 8){
+            playerStrength = 8;
+        }
+        strMod = (playerStrength - 10) / 2;
+        if(playerDexterity < 8){
+            playerDexterity = 8;
+        }
+        dexMod = (playerDexterity - 10) / 2;
+        if(playerConstitution < 8){
+            playerConstitution = 8;
+        }
+        conMod = (playerConstitution - 10) / 2;
+        if(playerIntelligence < 8){
+            playerIntelligence = 8;
+        }
+        intMod = (playerIntelligence - 10) / 2;
+        if(playerWisdom < 8){
+            playerWisdom = 8;
+        }
+        wisMod = (playerWisdom - 10) / 2;
+        if(playerCharisma < 8){
+            playerCharisma = 8;
+        }
+        chaMod = (playerCharisma - 10) / 2;
+
+
+        System.out.println("Health: " + playerHealth);
+        System.out.println("Strength: " + playerStrength + "| " + strMod);
+        System.out.println("Dexterity: " + playerDexterity + "| " + dexMod);
+        System.out.println("Constitution: " + playerConstitution + "| " + conMod);
+        System.out.println("Intelligence: " + playerIntelligence + "| " + intMod);
+        System.out.println("Wisdom: " + playerWisdom + "| " + wisMod);
+        System.out.println("Charisma: " + playerCharisma + "| " + chaMod);
         int armor = 12;
 
 
@@ -173,6 +237,18 @@ public class Game {
         }
         diceTotal -= minRoll;
         diceTotal += rollModifier;
+        return diceTotal;
+    }
+
+    public static int healthDiceRoll(int numberOfSides, int numberOfDice, int rollModifier){
+
+        int rollValue;
+        int diceTotal = 0;
+
+        for(int i = 0; i < numberOfDice; i++) {
+            rollValue = (int) (Math.random() * numberOfSides + 1);
+            diceTotal += rollValue + rollModifier;
+         }
         return diceTotal;
     }
     public static int diceRoll(int numberOfSides, int numberOfDice, int rollModifier){
