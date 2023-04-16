@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Game {
@@ -95,11 +93,13 @@ public class Game {
         }
         if(classChoice == 1){
             playerClass = "Veteran Soldier";
-            playerHealth = statDiceRoll(10, 3, 3);
-            playerStrength = diceRoll(6, 4, -4);
-            playerDexterity = diceRoll(6, 4, -6);
-            playerConstitution = diceRoll(6, 4, -4);
-            playerIntelligence = diceRoll(6, 4,
+            playerHealth = diceRoll(10, 3, 3);
+            playerStrength = statDiceRoll(6, 4, 2);
+            playerDexterity = statDiceRoll(6, 4, 0);
+            playerConstitution = statDiceRoll(6, 4, 2);
+            playerIntelligence = statDiceRoll(6, 4, 0);
+            playerWisdom = statDiceRoll(6, 4, 1);
+            playerCharisma = statDiceRoll(6, 4, 0);
         }
         int health = diceRoll(10, 4, 0);
         int armor = 12;
@@ -156,30 +156,35 @@ public class Game {
         }
     }
 
-    public static int diceRoll(int numberOfSides, int numberOfDice, int rollModifier){
+    public static int statDiceRoll(int numberOfSides, int numberOfDice, int rollModifier){
 
-        List diceVals = new ArrayList();
+        int minRoll = 100;
         int rollValue;
         int diceTotal = 0;
 
         for(int i = 0; i < numberOfDice; i++) {
             rollValue = (int) (Math.random() * numberOfSides + 1);
-            diceVals = rollValue;
             diceTotal += rollValue;
+            if(minRoll > rollValue){
+                minRoll = rollValue;
+            }
             System.out.println(rollValue);
+            System.out.println(minRoll);
         }
+        diceTotal -= minRoll;
         diceTotal += rollModifier;
         return diceTotal;
     }
-    public static int statDiceRoll(int numberOfSides, int numberOfDice, int rollModifier){
+    public static int diceRoll(int numberOfSides, int numberOfDice, int rollModifier){
 
         int rollValue;
         int diceTotal = 0;
         for(int i = 1; i <= numberOfDice; i++) {
             rollValue = (int) (Math.random() * numberOfSides + 1);
-            diceTotal += rollValue + rollModifier;
+            diceTotal += rollValue;
             System.out.println(rollValue);
         }
+        diceTotal += rollModifier;
         return diceTotal;
     }
     public static void slowPrint(String output){
