@@ -9,6 +9,7 @@ public class Game {
         String playerWeapon;
         String playerClass;
 
+        int playerExp = 0;
         int weaponChoice;
         int classChoice;
         int attackDamage;
@@ -27,6 +28,10 @@ public class Game {
         int wisMod = 0;
         int playerCharisma = 0;
         int chaMod = 0;
+        int enemyHealth = 0;
+        int enemyDamage = 0;
+        int enemyArmor = 0;
+        double enemyCritChance = 0.0;
 
         double critChance;
 
@@ -185,21 +190,19 @@ public class Game {
         slowPrint("    Charisma: ");
 
         slowPrint("Now that we've covered stats, lets test out your weapon on a training dummy. Don't worry, it usually won't hit back.");
-        slowPrint("What would you like to do?");
-        slowPrint("1. Attack  2. Move");
-        slowPrint("3. Mock    4. Run");
-        int battleOption = getInput.nextInt();
+//        slowPrint("What would you like to do?");
+//        slowPrint("1. Attack  2. Move");
+//        slowPrint("3. Mock    4. Run");
+        enemyHealth = 25;
+        enemyDamage = 0;
+        enemyArmor = 0;
+        enemyCritChance = 0.0;
+        int earnedExp = 0;
 
-        int enemyHealth = diceRoll(6, 4, 0);
-        int enemyArmor = 10;
-
-        if(battleOption == 1){
-            slowPrint("Ok! Here we go!");
-            slowPrint("Enemy starting health is " + enemyHealth);
-            enemyHealth = makeAnAttack(enemyHealth, attackDamage, enemyArmor, critChance);
-            slowPrint("Enemy health after attack is " + enemyHealth);
-        }
-
+        earnedExp = battleFrame(playerHealth, enemyHealth, attackDamage, enemyDamage, armor, enemyArmor, critChance, enemyCritChance);
+        playerExp += earnedExp;
+        slowPrint("You earned " + earnedExp + " experience for a grand total of " + playerExp);
+        slowPrint("Look at that, your Character Experience total went up! When you hit certain milestones of experience, you will level up and earn new class features.");
 //        int enemyHealth = diceRoll(6, 4, 0);
 //        int enemyArmor = 10;
 //        int enemyAttack = 7;
@@ -222,15 +225,54 @@ public class Game {
 
     }
 
-    public static int battleFrame(int playerHealth, int enemyHealth){
-        slowPrint("What would you like to do?");
-        slowPrint("1. Attack  2. Move");
-        slowPrint("3. Mock    4. Run");
-        return 1;
+    public static int battleFrame(int playerHealth, int enemyHealth, int attackDamage, int enemyDamage, int playerArmor, int enemyArmor, double playerCritChance, double enemyCritChance){
+
+        int earnedXP = 0;
+        int damageDealt = 0;
+        Scanner getInput = new Scanner(System.in);
+        while((enemyHealth > 0) && (playerHealth > 0)){
+
+            System.out.println("What would you like to do?");
+            slowPrint("1. Attack  2. Move");
+            slowPrint("3. Mock    4. Run");
+            int frameSelection = getInput.nextInt();
+
+            if((frameSelection == 1) || (frameSelection == 2) || (frameSelection == 3) || (frameSelection == 4)) {
+                if (frameSelection == 1) {
+                    damageDealt = makeAnAttack(attackDamage, enemyArmor, playerCritChance);
+                    if(damageDealt >= 0) {
+                        enemyHealth -= damageDealt;
+                        earnedXP += 3;
+                    } else {
+                        earnedXP += 3;
+                    }
+                    slowPrint("Enemy Health is " + enemyHealth);
+                } else if(frameSelection == 2) {
+                    slowPrint("The Movement Module doesn't exist yet.");
+                } else if(frameSelection == 3){
+                    slowPrint("The Mock Module doesn't exist yet.");
+                } else {
+                    slowPrint("Adventurers don't run from fights.");
+                }
+
+            } else {
+                slowPrint("That's not an option.");
+            }
+            slowPrint("Enemy Turn Begins.");
+            playerHealth -= makeAnAttack(enemyDamage, playerArmor, enemyCritChance);
+            slowPrint("Player health is " + playerHealth);
+        }
+        if(playerHealth == 0){
+            System.out.println("You lost the fight");
+            return earnedXP;
+        } else if(enemyHealth == 0){
+            slowPrint("You won the fight!");
+            return earnedXP;
+        }
        // while(())
+        return 3;
     }
-    public static int makeAnAttack(int targetHealth, int attackerDamage, int targetArmor, double attackerCritChance) {
-        int newHP = targetHealth;
+    public static int makeAnAttack(int attackerDamage, int targetArmor, double attackerCritChance) {
         int finalDamage = attackerDamage;
         int reducedDamage = targetArmor / 10;
         boolean isCrit = false;
@@ -247,15 +289,10 @@ public class Game {
             }
 
             finalDamage = finalDamage - reducedDamage;
-            newHP = newHP - finalDamage;
-            if(newHP < 0){
-                newHP = 0;
-                return newHP;
-            }
-            return newHP;
+            return finalDamage;
         } else {
             System.out.println("Attacked missed!");
-            return newHP;
+            return 0;
         }
     }
 
