@@ -240,10 +240,11 @@ public class Game {
             if((frameSelection == 1) || (frameSelection == 2) || (frameSelection == 3) || (frameSelection == 4)) {
                 if (frameSelection == 1) {
                     damageDealt = makeAnAttack(attackDamage, enemyArmor, playerCritChance);
-                    if(damageDealt >= 0) {
+                    if(damageDealt > 0) {
                         enemyHealth -= damageDealt;
                         earnedXP += 3;
                     } else {
+                        slowPrint("Player failed to deal damage this round");
                         earnedXP += 3;
                     }
                     slowPrint("Enemy Health is " + enemyHealth);
@@ -259,7 +260,12 @@ public class Game {
                 slowPrint("That's not an option.");
             }
             slowPrint("Enemy Turn Begins.");
-            playerHealth -= makeAnAttack(enemyDamage, playerArmor, enemyCritChance);
+            damageDealt = makeAnAttack(enemyDamage, playerArmor, enemyCritChance);
+            if(damageDealt > 0){
+                playerHealth -= damageDealt;
+            } else {
+                slowPrint("Enemy failed to deal damage this round");
+            }
             slowPrint("Player health is " + playerHealth);
         }
         if(playerHealth == 0){
