@@ -13,6 +13,7 @@ public class Game {
         int classChoice;
         int attackDamage;
         int attackSpeed;
+        int hitDie = 0;
         int playerHealth = 0;
         int playerStrength = 0;
         int strMod = 0;
@@ -58,26 +59,26 @@ public class Game {
         if(weaponChoice == 1){
             playerWeapon = "Long Sword";
             attackDamage = 4;
-            attackSpeed = 10;
+            attackSpeed = 12;
             critChance = 10.0;
         } else if(weaponChoice == 2){
             playerWeapon = "Wand";
             attackDamage = 3;
-            attackSpeed = 12;
+            attackSpeed = 14;
             critChance = 9.0;
         } else if(weaponChoice == 3){
             playerWeapon = "Crossbow";
             attackDamage = 5;
-            attackSpeed = 8;
+            attackSpeed = 10;
             critChance = 15.0;
         } else {
             playerWeapon = "Brass Knuckles";
             attackDamage = 2;
-            attackSpeed = 14;
+            attackSpeed = 16;
             critChance = 12.5;
         }
 
-        slowPrint("Ok, so you chose the " + playerWeapon + ". Which deals " + attackDamage + " damage, has an attack speed of " + ((double) (attackSpeed / 10)) + ", and " + critChance + "% critical chance.");
+        slowPrint("Ok, so you chose the " + playerWeapon + ". Which deals " + attackDamage + " damage, has an attack speed of " + ((double) (attackSpeed / 10d)) + ", and " + critChance + "% critical chance.");
         slowPrint("Now, lets go ahead and have you pick a class. Classes determine the likelihood that certain stats will roll better than others, ");
         slowPrint("    though that doesn't mean you can't roll poorly. Your stats are based on die rolls with different modifiers based on your");
         slowPrint("    chosen class. Anyways, go ahead and pick a class so we can proceed to the fun stuff.");
@@ -99,6 +100,7 @@ public class Game {
         }
         if(classChoice == 1){
             playerClass = "Veteran Soldier";
+            hitDie = 12;
             playerStrength = statDiceRoll(6, 4, 2);
             playerDexterity = statDiceRoll(6, 4, 0);
             playerConstitution = statDiceRoll(6, 4, 2);
@@ -108,6 +110,7 @@ public class Game {
         }
         if(classChoice == 2){
             playerClass = "Forest Ranger";
+            hitDie = 8;
             playerStrength = statDiceRoll(6, 4, 0);
             playerDexterity = statDiceRoll(6, 4, 2);
             playerConstitution = statDiceRoll(6, 4, 0);
@@ -117,6 +120,7 @@ public class Game {
         }
         if(classChoice == 3){
             playerClass = "Tavern Brawler";
+            hitDie = 10;
             playerStrength = statDiceRoll(6, 4, 2);
             playerDexterity = statDiceRoll(6, 4, 0);
             playerConstitution = statDiceRoll(6, 4, 1);
@@ -126,6 +130,7 @@ public class Game {
         }
         if(classChoice == 4){
             playerClass = "Old Mage";
+            hitDie = 6;
             playerStrength = statDiceRoll(6, 4, 0);
             playerDexterity = statDiceRoll(6, 4, 1);
             playerConstitution = statDiceRoll(6, 4, 0);
@@ -157,17 +162,43 @@ public class Game {
             playerCharisma = 8;
         }
         chaMod = (playerCharisma - 10) / 2;
+        playerHealth = healthDiceRoll(hitDie, 4, conMod);
 
 
-        System.out.println("Health: " + playerHealth);
-        System.out.println("Strength: " + playerStrength + "| " + strMod);
-        System.out.println("Dexterity: " + playerDexterity + "| " + dexMod);
-        System.out.println("Constitution: " + playerConstitution + "| " + conMod);
-        System.out.println("Intelligence: " + playerIntelligence + "| " + intMod);
-        System.out.println("Wisdom: " + playerWisdom + "| " + wisMod);
-        System.out.println("Charisma: " + playerCharisma + "| " + chaMod);
+        System.out.println("Health: " + playerHealth + "| Hit Die: " + hitDie);
+        System.out.println("Strength: " + playerStrength + "| Str Mod: " + strMod);
+        System.out.println("Dexterity: " + playerDexterity + "| Dex Mod: " + dexMod);
+        System.out.println("Constitution: " + playerConstitution + "| Con Mod: " + conMod);
+        System.out.println("Intelligence: " + playerIntelligence + "| Int Mod: " + intMod);
+        System.out.println("Wisdom: " + playerWisdom + "| Wis Mod: " + wisMod);
+        System.out.println("Charisma: " + playerCharisma + "| Cha Mod: " + chaMod);
         int armor = 12;
 
+        slowPrint("Ok, great! All of those values above are your Character Stats. Those play super important roles in my world and are vital for interacting with my world in a significant way.");
+        slowPrint("Here are some examples to help things make sense:");
+        slowPrint("    Let's say you are trying to climb up a wall using a rope. I will make you roll a strength check, which means a d20 plus your Strength Modifier.");
+        slowPrint("        For you, that would be a modifier of " + strMod + ". And if you were grappled by an enemy you would have to make a strength save, using the same roll method.");
+        slowPrint("    The same goes for Dexterity: Stealing an item - Dexterity Check | Dodging a Fireball - Dexterity Save");
+        slowPrint("    Constitution: Constitution Modifier is added to hit die when getting extra health after a level up");
+        slowPrint("    Intelligence: You are trying to solve a riddle - Intelligence Check | Seeing through an enemy charming you");
+        slowPrint("    Wisdom: ");
+        slowPrint("    Charisma: ");
+
+        slowPrint("Now that we've covered stats, lets test out your weapon on a training dummy. Don't worry, it usually won't hit back.");
+        slowPrint("What would you like to do?");
+        slowPrint("1. Attack  2. Move");
+        slowPrint("3. Mock    4. Run");
+        int battleOption = getInput.nextInt();
+
+        int enemyHealth = diceRoll(6, 4, 0);
+        int enemyArmor = 10;
+
+        if(battleOption == 1){
+            slowPrint("Ok! Here we go!");
+            slowPrint("Enemy starting health is " + enemyHealth);
+            enemyHealth = makeAnAttack(enemyHealth, attackDamage, enemyArmor, critChance);
+            slowPrint("Enemy health after attack is " + enemyHealth);
+        }
 
 //        int enemyHealth = diceRoll(6, 4, 0);
 //        int enemyArmor = 10;
@@ -191,6 +222,13 @@ public class Game {
 
     }
 
+    public static int battleFrame(int playerHealth, int enemyHealth){
+        slowPrint("What would you like to do?");
+        slowPrint("1. Attack  2. Move");
+        slowPrint("3. Mock    4. Run");
+        return 1;
+       // while(())
+    }
     public static int makeAnAttack(int targetHealth, int attackerDamage, int targetArmor, double attackerCritChance) {
         int newHP = targetHealth;
         int finalDamage = attackerDamage;
@@ -216,6 +254,7 @@ public class Game {
             }
             return newHP;
         } else {
+            System.out.println("Attacked missed!");
             return newHP;
         }
     }
@@ -232,10 +271,9 @@ public class Game {
             if(minRoll > rollValue){
                 minRoll = rollValue;
             }
-            System.out.println(rollValue);
-            System.out.println(minRoll);
         }
         diceTotal -= minRoll;
+//        System.out.println("Dropped lowest value: " + minRoll);
         diceTotal += rollModifier;
         return diceTotal;
     }
@@ -248,7 +286,9 @@ public class Game {
         for(int i = 0; i < numberOfDice; i++) {
             rollValue = (int) (Math.random() * numberOfSides + 1);
             diceTotal += rollValue + rollModifier;
+            System.out.print(rollValue);
          }
+        System.out.println();
         return diceTotal;
     }
     public static int diceRoll(int numberOfSides, int numberOfDice, int rollModifier){
@@ -258,7 +298,6 @@ public class Game {
         for(int i = 1; i <= numberOfDice; i++) {
             rollValue = (int) (Math.random() * numberOfSides + 1);
             diceTotal += rollValue;
-            System.out.println(rollValue);
         }
         diceTotal += rollModifier;
         return diceTotal;
@@ -270,7 +309,7 @@ public class Game {
             System.out.print(stringToChar[i]);
             System.out.flush();
             try {
-                Thread.sleep(100);
+                Thread.sleep(70);
             } catch(InterruptedException e) {
 
             }
