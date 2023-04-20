@@ -13,7 +13,6 @@ public class Game {
         int weaponChoice;
         int classChoice;
         int attackDamage;
-        int attackSpeed;
         int hitDie = 0;
         int playerHealth = 0;
         int playerStrength = 0;
@@ -34,6 +33,7 @@ public class Game {
         double enemyCritChance = 0.0;
 
         double critChance;
+        double attackSpeed;
 
         Scanner getInput = new Scanner(System.in);
         System.out.println("Hello, Traveler! I'm Abernathy, what is your name?");
@@ -64,26 +64,26 @@ public class Game {
         if(weaponChoice == 1){
             playerWeapon = "Long Sword";
             attackDamage = 4;
-            attackSpeed = 12;
+            attackSpeed = 1.2;
             critChance = 10.0;
         } else if(weaponChoice == 2){
             playerWeapon = "Wand";
             attackDamage = 3;
-            attackSpeed = 14;
+            attackSpeed = 1.4;
             critChance = 9.0;
         } else if(weaponChoice == 3){
             playerWeapon = "Crossbow";
             attackDamage = 5;
-            attackSpeed = 10;
+            attackSpeed = 1.0;
             critChance = 15.0;
         } else {
             playerWeapon = "Brass Knuckles";
             attackDamage = 2;
-            attackSpeed = 16;
+            attackSpeed = 1.6;
             critChance = 12.5;
         }
 
-        slowPrint("Ok, so you chose the " + playerWeapon + ". Which deals " + attackDamage + " damage, has an attack speed of " + ((double) (attackSpeed / 10d)) + ", and " + critChance + "% critical chance.");
+        slowPrint("Ok, so you chose the " + playerWeapon + ". Which deals " + attackDamage + " damage, has an attack speed of " + attackSpeed + ", and " + critChance + "% critical chance.");
         slowPrint("Now, lets go ahead and have you pick a class. Classes determine the likelihood that certain stats will roll better than others, ");
         slowPrint("    though that doesn't mean you can't roll poorly. Your stats are based on die rolls with different modifiers based on your");
         slowPrint("    chosen class. Anyways, go ahead and pick a class so we can proceed to the fun stuff.");
@@ -199,7 +199,7 @@ public class Game {
         enemyCritChance = 0.0;
         int earnedExp = 0;
 
-        earnedExp = battleFrame(playerHealth, enemyHealth, attackDamage, enemyDamage, armor, enemyArmor, critChance, enemyCritChance);
+        earnedExp = battleFrame(playerHealth, enemyHealth, attackDamage, enemyDamage, attackSpeed, armor, enemyArmor, critChance, enemyCritChance);
         playerExp += earnedExp;
         slowPrint("You earned " + earnedExp + " experience for a grand total of " + playerExp);
         slowPrint("Look at that, your Character Experience total went up! When you hit certain milestones of experience, you will level up and earn new class features.");
@@ -225,10 +225,12 @@ public class Game {
 
     }
 
-    public static int battleFrame(int playerHealth, int enemyHealth, int attackDamage, int enemyDamage, int playerArmor, int enemyArmor, double playerCritChance, double enemyCritChance){
+    public static int battleFrame(int playerHealth, int enemyHealth, int attackDamage, int enemyDamage, double attackSpeed, int playerArmor, int enemyArmor, double playerCritChance, double enemyCritChance){
 
         int earnedXP = 0;
         int damageDealt = 0;
+        double extraAttack = 0.0;
+
         Scanner getInput = new Scanner(System.in);
         while((enemyHealth > 0) && (playerHealth > 0)){
 
@@ -240,6 +242,7 @@ public class Game {
             if((frameSelection == 1) || (frameSelection == 2) || (frameSelection == 3) || (frameSelection == 4)) {
                 if (frameSelection == 1) {
                     damageDealt = makeAnAttack(attackDamage, enemyArmor, playerCritChance);
+                    extraAttack += attackSpeed - 1d;
                     if(damageDealt > 0) {
                         enemyHealth -= damageDealt;
                         earnedXP += 3;
@@ -248,6 +251,19 @@ public class Game {
                         earnedXP += 3;
                     }
                     slowPrint("Enemy Health is " + enemyHealth);
+                    if(extraAttack > 1){
+                        slowPrint("---EXTRA ATTACK---");
+                        damageDealt = makeAnAttack(attackDamage, enemyArmor, playerCritChance);
+                        if(damageDealt > 0) {
+                            enemyHealth -= damageDealt;
+                            earnedXP += 3;
+                        } else {
+                            slowPrint("Player failed to deal damage this round");
+                            earnedXP += 3;
+                        }
+                        slowPrint("Enemy Health is " + enemyHealth);
+                        extraAttack = 0.0;
+                    }
                 } else if(frameSelection == 2) {
                     slowPrint("The Movement Module doesn't exist yet.");
                 } else if(frameSelection == 3){
@@ -259,14 +275,18 @@ public class Game {
             } else {
                 slowPrint("That's not an option.");
             }
-            slowPrint("Enemy Turn Begins.");
-            damageDealt = makeAnAttack(enemyDamage, playerArmor, enemyCritChance);
-            if(damageDealt > 0){
-                playerHealth -= damageDealt;
+            if(enemyHealth > 0) {
+                slowPrint("Enemy Turn Begins.");
+                damageDealt = makeAnAttack(enemyDamage, playerArmor, enemyCritChance);
+                if (damageDealt > 0) {
+                    playerHealth -= damageDealt;
+                } else {
+                    slowPrint("Enemy failed to deal damage this round");
+                }
+                slowPrint("Player health is " + playerHealth);
             } else {
-                slowPrint("Enemy failed to deal damage this round");
+                slowPrint("Enemy health has been reduced to 0.");
             }
-            slowPrint("Player health is " + playerHealth);
         }
         if(playerHealth == 0){
             System.out.println("You lost the fight");
@@ -276,7 +296,11 @@ public class Game {
             return earnedXP;
         }
        // while(())
-        return 3;
+        if(earnedXP < 3){
+            return 3;
+        } else {
+            return earnedXP;
+        }
     }
     public static int makeAnAttack(int attackerDamage, int targetArmor, double attackerCritChance) {
         int finalDamage = attackerDamage;
