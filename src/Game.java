@@ -3,43 +3,44 @@ import java.util.Scanner;
 public class Game {
 
     public static void main(String[] args) {
+        Player player = new Player();
 
 //      Variable definitions
-        String playerName;
+//        String playerName;
         String playerWeapon;
         String playerClass;
 
-        int playerExp = 0;
+        player.playerExp = 0;
         int weaponChoice;
         int classChoice;
         int attackDamage;
         int hitDie = 0;
-        int playerHealth = 0;
+        int playerHealth;
         int playerStrength = 0;
-        int strMod = 0;
+        int strMod;
         int playerDexterity = 0;
-        int dexMod = 0;
+        int dexMod;
         int playerConstitution = 0;
-        int conMod = 0;
+        int conMod;
         int playerIntelligence = 0;
-        int intMod = 0;
+        int intMod;
         int playerWisdom = 0;
-        int wisMod = 0;
+        int wisMod;
         int playerCharisma = 0;
-        int chaMod = 0;
-        int enemyHealth = 0;
-        int enemyDamage = 0;
-        int enemyArmor = 0;
-        double enemyCritChance = 0.0;
+        int chaMod;
+        int enemyHealth;
+        int enemyDamage;
+        int enemyArmor;
+        double enemyCritChance;
 
         double critChance;
         double attackSpeed;
 
         Scanner getInput = new Scanner(System.in);
         System.out.println("Hello, Traveler! I'm Abernathy, what is your name?");
-        playerName = getInput.nextLine();
+        player.playerName = getInput.nextLine();
 
-        slowPrint("Well then, it's nice to meet you, " + playerName + ". This is my world, made with these two hands, and I use it to test out cool new features for my game.");
+        slowPrint("Well then, it's nice to meet you, " + player.playerName + ". This is my world, made with these two hands, and I use it to test out cool new features for my game.");
         slowPrint("Today is 'Character Building Day' and, great news, you are my Test Subject! So lets start with a simple questionnaire.");
         slowPrint("Which would you prefer in a fight? (Enter the corresponding number to the weapon of choice)");
         slowPrint("1. A Sword");
@@ -200,32 +201,15 @@ public class Game {
         int earnedExp = 0;
 
         earnedExp = battleFrame(playerHealth, enemyHealth, attackDamage, enemyDamage, attackSpeed, armor, enemyArmor, critChance, enemyCritChance);
-        playerExp += earnedExp;
-        slowPrint("You earned " + earnedExp + " experience for a grand total of " + playerExp);
+        player.playerExp += earnedExp;
+        slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.playerExp);
         slowPrint("Look at that, your Character Experience total went up! When you hit certain milestones of experience, you will level up and earn new class features.");
-//        int enemyHealth = diceRoll(6, 4, 0);
-//        int enemyArmor = 10;
-//        int enemyAttack = 7;
-//        double enemyCritChance = 15;
-//
-//        System.out.println("Starting health " + health);
-//        System.out.println("Enemy Health " + enemyHealth);
-//
-//        System.out.println("Let's fight an enemy.");
-//        while((health > 0) && (enemyHealth > 0)){
-//            enemyHealth = makeAnAttack(enemyHealth, attackDamage, enemyArmor, critChance);
-//            System.out.println("Enemy health after attack " + enemyHealth);
-//            while((health > 0) && (enemyHealth > 0)) {
-//                health = makeAnAttack(health, enemyAttack, armor, enemyCritChance);
-//                System.out.println("Player health after attack " + health);
-//                break;
-//            }
-//        }
-
 
     }
 
     public static int battleFrame(int playerHealth, int enemyHealth, int attackDamage, int enemyDamage, double attackSpeed, int playerArmor, int enemyArmor, double playerCritChance, double enemyCritChance){
+    //Had idea about storing all player and enemy stats in arrays and trying to pass the entire array to this method for input.
+    //That would make this much cleaner and easier to call in Main method.
 
         int earnedXP = 0;
         int damageDealt = 0;
@@ -250,7 +234,12 @@ public class Game {
                         slowPrint("Player failed to deal damage this round");
                         earnedXP += 3;
                     }
-                    slowPrint("Enemy Health is " + enemyHealth);
+                    if(enemyHealth > 0){
+                        slowPrint("Enemy Health is " + enemyHealth);
+                    } else {
+                        slowPrint("Enemy slain! You survived the battle.");
+                        break;
+                    }
                     if(extraAttack > 1){
                         slowPrint("---EXTRA ATTACK---");
                         damageDealt = makeAnAttack(attackDamage, enemyArmor, playerCritChance);
@@ -261,7 +250,12 @@ public class Game {
                             slowPrint("Player failed to deal damage this round");
                             earnedXP += 3;
                         }
-                        slowPrint("Enemy Health is " + enemyHealth);
+                        if(enemyHealth > 0){
+                            slowPrint("Enemy Health is " + enemyHealth);
+                        } else {
+                            slowPrint("Enemy slain! You survived the battle.");
+                            break;
+                        }
                         extraAttack = 0.0;
                     }
                 } else if(frameSelection == 2) {
@@ -283,7 +277,9 @@ public class Game {
                 } else {
                     slowPrint("Enemy failed to deal damage this round");
                 }
-                slowPrint("Player health is " + playerHealth);
+                if(playerHealth > 0){
+                    slowPrint("Player health is " + playerHealth);
+                }
             } else {
                 slowPrint("Enemy health has been reduced to 0.");
             }
