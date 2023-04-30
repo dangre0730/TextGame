@@ -1,5 +1,4 @@
 import java.util.Scanner;
-
 public class Game {
 
     public static void main(String[] args) {
@@ -8,26 +7,26 @@ public class Game {
 //      Variable definitions
 //        String playerName;
         String playerWeapon;
-        String playerClass;
+//        String playerClass;
 
         player.playerExp = 0;
         int weaponChoice;
-        int classChoice;
+        int classSelection;
         int attackDamage;
-        int hitDie = 0;
-        int playerHealth;
-        int playerStrength = 0;
-        int strMod;
-        int playerDexterity = 0;
-        int dexMod;
-        int playerConstitution = 0;
-        int conMod;
-        int playerIntelligence = 0;
-        int intMod;
-        int playerWisdom = 0;
-        int wisMod;
-        int playerCharisma = 0;
-        int chaMod;
+//        int hitDie = 0;
+//        int playerHealth;
+//        int playerStrength = 0;
+//        int strMod;
+//        int playerDexterity = 0;
+//        int dexMod;
+//        int playerConstitution = 0;
+//        int conMod;
+//        int playerIntelligence = 0;
+//        int intMod;
+//        int playerWisdom = 0;
+//        int wisMod;
+//        int playerCharisma = 0;
+//        int chaMod;
         int enemyHealth;
         int enemyDamage;
         int enemyArmor;
@@ -93,117 +92,127 @@ public class Game {
         slowPrint("3. Brawler");
         slowPrint("4. Mage");
 
-        classChoice = getInput.nextInt();
-        if((classChoice != 1) && (classChoice != 2) && (classChoice != 3 ) && (classChoice != 4)){
-            while((classChoice != 1) && (classChoice != 2) && (classChoice != 3 ) && (classChoice != 4)){
+        classSelection = getInput.nextInt();
+        if((classSelection != 1) && (classSelection != 2) && (classSelection != 3 ) && (classSelection != 4)){
+            while((classSelection != 1) && (classSelection != 2) && (classSelection != 3 ) && (classSelection != 4)){
                 slowPrint("That's not one of the options. Try picking something that I have available.");
                 slowPrint("1. Soldier");
                 slowPrint("2. Ranger");
                 slowPrint("3. Brawler");
                 slowPrint("4. Mage");
-                classChoice = getInput.nextInt();
+                classSelection = getInput.nextInt();
             }
         }
-        if(classChoice == 1){
-            playerClass = "Veteran Soldier";
-            hitDie = 12;
-            playerStrength = statDiceRoll(6, 4, 2);
-            playerDexterity = statDiceRoll(6, 4, 0);
-            playerConstitution = statDiceRoll(6, 4, 2);
-            playerIntelligence = statDiceRoll(6, 4, 0);
-            playerWisdom = statDiceRoll(6, 4, 1);
-            playerCharisma = statDiceRoll(6, 4, 0);
+        if(classSelection == 1){
+            player.pcClass = Player.classChoice.SOLDIER;
+//            hitDie = 12;
+//            playerStrength = statDiceRoll(6, 4, 2);
+//            playerDexterity = statDiceRoll(6, 4, 0);
+//            playerConstitution = statDiceRoll(6, 4, 2);
+//            playerIntelligence = statDiceRoll(6, 4, 0);
+//            playerWisdom = statDiceRoll(6, 4, 1);
+//            playerCharisma = statDiceRoll(6, 4, 0);
         }
-        if(classChoice == 2){
-            playerClass = "Forest Ranger";
-            hitDie = 8;
-            playerStrength = statDiceRoll(6, 4, 0);
-            playerDexterity = statDiceRoll(6, 4, 2);
-            playerConstitution = statDiceRoll(6, 4, 0);
-            playerIntelligence = statDiceRoll(6, 4, 2);
-            playerWisdom = statDiceRoll(6, 4, 1);
-            playerCharisma = statDiceRoll(6, 4, 0);
+        if(classSelection == 2){
+            player.pcClass = Player.classChoice.RANGER;
+//            hitDie = 8;
+//            playerStrength = statDiceRoll(6, 4, 0);
+//            playerDexterity = statDiceRoll(6, 4, 2);
+//            playerConstitution = statDiceRoll(6, 4, 0);
+//            playerIntelligence = statDiceRoll(6, 4, 2);
+//            playerWisdom = statDiceRoll(6, 4, 1);
+//            playerCharisma = statDiceRoll(6, 4, 0);
         }
-        if(classChoice == 3){
-            playerClass = "Tavern Brawler";
-            hitDie = 10;
-            playerStrength = statDiceRoll(6, 4, 2);
-            playerDexterity = statDiceRoll(6, 4, 0);
-            playerConstitution = statDiceRoll(6, 4, 1);
-            playerIntelligence = statDiceRoll(6, 4, 0);
-            playerWisdom = statDiceRoll(6, 4, 1);
-            playerCharisma = statDiceRoll(6, 4, 1);
+        if(classSelection == 3){
+            player.pcClass = Player.classChoice.BRAWLER;
+//            hitDie = 10;
+//            playerStrength = statDiceRoll(6, 4, 2);
+//            playerDexterity = statDiceRoll(6, 4, 0);
+//            playerConstitution = statDiceRoll(6, 4, 1);
+//            playerIntelligence = statDiceRoll(6, 4, 0);
+//            playerWisdom = statDiceRoll(6, 4, 1);
+//            playerCharisma = statDiceRoll(6, 4, 1);
         }
-        if(classChoice == 4){
-            playerClass = "Old Mage";
-            hitDie = 6;
-            playerStrength = statDiceRoll(6, 4, 0);
-            playerDexterity = statDiceRoll(6, 4, 1);
-            playerConstitution = statDiceRoll(6, 4, 0);
-            playerIntelligence = statDiceRoll(6, 4, 2);
-            playerWisdom = statDiceRoll(6, 4, 2);
-            playerCharisma = statDiceRoll(6, 4, 0);
+        if(classSelection == 4){
+            player.pcClass = Player.classChoice.MAGE;
+//            hitDie = 6;
+//            playerStrength = statDiceRoll(6, 4, 0);
+//            playerDexterity = statDiceRoll(6, 4, 1);
+//            playerConstitution = statDiceRoll(6, 4, 0);
+//            playerIntelligence = statDiceRoll(6, 4, 2);
+//            playerWisdom = statDiceRoll(6, 4, 2);
+//            playerCharisma = statDiceRoll(6, 4, 0);
         }
-        if(playerStrength < 8){
-            playerStrength = 8;
-        }
-        strMod = (playerStrength - 10) / 2;
-        if(playerDexterity < 8){
-            playerDexterity = 8;
-        }
-        dexMod = (playerDexterity - 10) / 2;
-        if(playerConstitution < 8){
-            playerConstitution = 8;
-        }
-        conMod = (playerConstitution - 10) / 2;
-        if(playerIntelligence < 8){
-            playerIntelligence = 8;
-        }
-        intMod = (playerIntelligence - 10) / 2;
-        if(playerWisdom < 8){
-            playerWisdom = 8;
-        }
-        wisMod = (playerWisdom - 10) / 2;
-        if(playerCharisma < 8){
-            playerCharisma = 8;
-        }
-        chaMod = (playerCharisma - 10) / 2;
-        playerHealth = healthDiceRoll(hitDie, 4, conMod);
+        System.out.println(player.pcClass);
+        player.classBuilder();
+//        if(playerStrength < 8){
+//            playerStrength = 8;
+//        }
+//        strMod = (playerStrength - 10) / 2;
+//        if(playerDexterity < 8){
+//            playerDexterity = 8;
+//        }
+//        dexMod = (playerDexterity - 10) / 2;
+//        if(playerConstitution < 8){
+//            playerConstitution = 8;
+//        }
+//        conMod = (playerConstitution - 10) / 2;
+//        if(playerIntelligence < 8){
+//            playerIntelligence = 8;
+//        }
+//        intMod = (playerIntelligence - 10) / 2;
+//        if(playerWisdom < 8){
+//            playerWisdom = 8;
+//        }
+//        wisMod = (playerWisdom - 10) / 2;
+//        if(playerCharisma < 8){
+//            playerCharisma = 8;
+//        }
+//        chaMod = (playerCharisma - 10) / 2;
+//        playerHealth = healthDiceRoll(hitDie, 4, conMod);
 
-
-        System.out.println("Health: " + playerHealth + "| Hit Die: " + hitDie);
-        System.out.println("Strength: " + playerStrength + "| Str Mod: " + strMod);
-        System.out.println("Dexterity: " + playerDexterity + "| Dex Mod: " + dexMod);
-        System.out.println("Constitution: " + playerConstitution + "| Con Mod: " + conMod);
-        System.out.println("Intelligence: " + playerIntelligence + "| Int Mod: " + intMod);
-        System.out.println("Wisdom: " + playerWisdom + "| Wis Mod: " + wisMod);
-        System.out.println("Charisma: " + playerCharisma + "| Cha Mod: " + chaMod);
+        System.out.println("Health: " + player.playerHealth + "| Hit Die: " + player.hitDie);
+        System.out.println("Strength: " + player.playerStrength + "| Str Mod: " + player.strMod);
+        System.out.println("Dexterity: " + player.playerDexterity + "| Dex Mod: " + player.dexMod);
+        System.out.println("Constitution: " + player.playerConstitution + "| Con Mod: " + player.conMod);
+        System.out.println("Intelligence: " + player.playerIntelligence + "| Int Mod: " + player.intMod);
+        System.out.println("Wisdom: " + player.playerWisdom + "| Wis Mod: " + player.wisMod);
+        System.out.println("Charisma: " + player.playerCharisma + "| Cha Mod: " + player.chaMod);
         int armor = 12;
 
-        slowPrint("Ok, great! All of those values above are your Character Stats. Those play super important roles in my world and are vital for interacting with my world in a significant way.");
-        slowPrint("Here are some examples to help things make sense:");
-        slowPrint("    Let's say you are trying to climb up a wall using a rope. I will make you roll a strength check, which means a d20 plus your Strength Modifier.");
-        slowPrint("        For you, that would be a modifier of " + strMod + ". And if you were grappled by an enemy you would have to make a strength save, using the same roll method.");
-        slowPrint("    The same goes for Dexterity: Stealing an item - Dexterity Check | Dodging a Fireball - Dexterity Save");
-        slowPrint("    Constitution: Constitution Modifier is added to hit die when getting extra health after a level up");
-        slowPrint("    Intelligence: You are trying to solve a riddle - Intelligence Check | Seeing through an enemy charming you");
-        slowPrint("    Wisdom: ");
-        slowPrint("    Charisma: ");
+//        slowPrint("Ok, great! All of those values above are your Character Stats. Those play super important roles in my world and are vital for interacting with my world in a significant way.");
+//        slowPrint("Here are some examples to help things make sense:");
+//        slowPrint("    Let's say you are trying to climb up a wall using a rope. I will make you roll a strength check, which means a d20 plus your Strength Modifier.");
+//        slowPrint("        For you, that would be a modifier of " + player.strMod + ". And if you were grappled by an enemy you would have to make a strength save, using the same roll method.");
+//        slowPrint("    The same goes for Dexterity: Stealing an item - Dexterity Check | Dodging a Fireball - Dexterity Save");
+//        slowPrint("    Constitution: Constitution Modifier is added to hit die when getting extra health after a level up");
+//        slowPrint("    Intelligence: You are trying to solve a riddle - Intelligence Check | Seeing through an enemy charming you");
+//        slowPrint("    Wisdom: ");
+//        slowPrint("    Charisma: ");
 
         slowPrint("Now that we've covered stats, lets test out your weapon on a training dummy. Don't worry, it usually won't hit back.");
 //        slowPrint("What would you like to do?");
 //        slowPrint("1. Attack  2. Move");
 //        slowPrint("3. Mock    4. Run");
         enemyHealth = 25;
-        enemyDamage = 0;
+        enemyDamage = 2;
         enemyArmor = 0;
         enemyCritChance = 0.0;
         int earnedExp = 0;
 
-        earnedExp = battleFrame(playerHealth, enemyHealth, attackDamage, enemyDamage, attackSpeed, armor, enemyArmor, critChance, enemyCritChance);
+        slowPrint("Your current level is: " + player.playerLevel);
+        slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
+        earnedExp = battleFrame(player.playerHealth, enemyHealth, attackDamage, enemyDamage, attackSpeed, armor, enemyArmor, critChance, enemyCritChance);
         player.playerExp += earnedExp;
+        slowPrint("Your ending health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
+        player.playerHealth = player.maxPlayerHealth;
+        slowPrint("Health restored, current health is: " + player.playerHealth);
         slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.playerExp);
-        slowPrint("Look at that, your Character Experience total went up! When you hit certain milestones of experience, you will level up and earn new class features.");
+        if(player.playerExp >= 3){
+            player.playerLevel += 1;
+            slowPrint("New Level: " + player.playerLevel);
+        }
+        slowPrint("Look at that, your Character Experience total went up enough to gain a new level! When you hit certain milestones of experience, you will level up and earn new class features.");
 
     }
 
@@ -322,24 +331,24 @@ public class Game {
         }
     }
 
-    public static int statDiceRoll(int numberOfSides, int numberOfDice, int rollModifier){
-
-        int minRoll = 100;
-        int rollValue;
-        int diceTotal = 0;
-
-        for(int i = 0; i < numberOfDice; i++) {
-            rollValue = (int) (Math.random() * numberOfSides + 1);
-            diceTotal += rollValue;
-            if(minRoll > rollValue){
-                minRoll = rollValue;
-            }
-        }
-        diceTotal -= minRoll;
-//        System.out.println("Dropped lowest value: " + minRoll);
-        diceTotal += rollModifier;
-        return diceTotal;
-    }
+//    public static int statDiceRoll(int numberOfSides, int numberOfDice, int rollModifier){
+//
+//        int minRoll = 100;
+//        int rollValue;
+//        int diceTotal = 0;
+//
+//        for(int i = 0; i < numberOfDice; i++) {
+//            rollValue = (int) (Math.random() * numberOfSides + 1);
+//            diceTotal += rollValue;
+//            if(minRoll > rollValue){
+//                minRoll = rollValue;
+//            }
+//        }
+//        diceTotal -= minRoll;
+////        System.out.println("Dropped lowest value: " + minRoll);
+//        diceTotal += rollModifier;
+//        return diceTotal;
+//    }
 
     public static int healthDiceRoll(int numberOfSides, int numberOfDice, int rollModifier){
 
@@ -349,7 +358,7 @@ public class Game {
         for(int i = 0; i < numberOfDice; i++) {
             rollValue = (int) (Math.random() * numberOfSides + 1);
             diceTotal += rollValue + rollModifier;
-            System.out.print(rollValue);
+            System.out.print(rollValue + " ");
          }
         System.out.println();
         return diceTotal;
@@ -372,7 +381,7 @@ public class Game {
             System.out.print(stringToChar[i]);
             System.out.flush();
             try {
-                Thread.sleep(70);
+                Thread.sleep(5);
             } catch(InterruptedException e) {
 
             }
