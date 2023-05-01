@@ -3,11 +3,11 @@ public class Player {
 
 //Stat declarations and initializations.
     //Identification
-    public String playerName;
+    String playerName;
 
     //Level and XP
-    public int playerLevel = 1;
-    public int playerExp = 0;
+    int playerLevel = 1;
+    int playerExp = 0;
 
     //Class details
     enum classChoice{
@@ -17,14 +17,21 @@ public class Player {
         MAGE
     }
     classChoice pcClass;
-
+    int classArmor;
     int hitDie;
 
     //Attack Stats
-    int weaponChoice;
-    int attackDamage = 4;
-    double critChance = 10.0;
-    double attackSpeed = 1.6;
+    enum weaponChoice{
+        SWORD,
+        CROSSBOW,
+        BAT,
+        WAND
+    }
+    weaponChoice playerWeapon;
+    int attackDamage;
+    double critChance;
+    double attackSpeed;
+    int damageMod;
 
     //Stats and Modifiers
     int maxPlayerHealth;
@@ -46,11 +53,10 @@ public class Player {
         //Build Character Stats
         switch (pcClass){
             case SOLDIER:
+                classArmor = 15;
                 hitDie = 12;
                 maxPlayerHealth = hitDie;
-                System.out.println(maxPlayerHealth);
-//                Game.player.maxPlayerHealth = hitDie;
-//                System.out.println("Max health (Class Builder): " + Game.player.maxPlayerHealth);
+//                System.out.println(maxPlayerHealth);
                 playerStrength = Functions.statDiceRoll(6, 4, 2);
                 playerDexterity = Functions.statDiceRoll(6, 4, 0);
                 playerConstitution = Functions.statDiceRoll(6, 4, 2);
@@ -59,7 +65,10 @@ public class Player {
                 playerCharisma = Functions.statDiceRoll(6, 4, 0);
                 break;
             case RANGER:
+                classArmor = 12;
                 hitDie = 8;
+                maxPlayerHealth = hitDie;
+//                System.out.println(maxPlayerHealth);
                 playerStrength = Functions.statDiceRoll(6, 4, 0);
                 playerDexterity = Functions.statDiceRoll(6, 4, 2);
                 playerConstitution = Functions.statDiceRoll(6, 4, 0);
@@ -68,7 +77,10 @@ public class Player {
                 playerCharisma = Functions.statDiceRoll(6, 4, 0);
                 break;
             case BRAWLER:
+                classArmor = 14;
                 hitDie = 10;
+                maxPlayerHealth = hitDie;
+//                System.out.println(maxPlayerHealth);
                 playerStrength = Functions.statDiceRoll(6, 4, 2);
                 playerDexterity = Functions.statDiceRoll(6, 4, 0);
                 playerConstitution = Functions.statDiceRoll(6, 4, 1);
@@ -77,7 +89,9 @@ public class Player {
                 playerCharisma = Functions.statDiceRoll(6, 4, 1);
                 break;
             case MAGE:
+                classArmor = 10;
                 hitDie = 6;
+                maxPlayerHealth = hitDie;
                 playerStrength = Functions.statDiceRoll(6, 4, 0);
                 playerDexterity = Functions.statDiceRoll(6, 4, 1);
                 playerConstitution = Functions.statDiceRoll(6, 4, 0);
@@ -116,6 +130,31 @@ public class Player {
         playerHealth = maxPlayerHealth;
 //        System.out.println(playerHealth);
 
+    }
+
+    public void setWeaponChoice() {
+        switch(playerWeapon){
+            case SWORD:
+                attackDamage = 3;
+                attackSpeed = 1.6;
+                critChance = 15.0;
+                break;
+            case CROSSBOW:
+                attackDamage = 5;
+                attackSpeed = 1.0;
+                critChance = 19.5;
+                break;
+            case BAT:
+                attackDamage = 3;
+                attackSpeed = 1.8;
+                critChance = 11.0;
+                break;
+            case WAND:
+                attackDamage = 4;
+                attackSpeed = 2.0;
+                critChance = 0.0;
+                break;
+        }
     }
 
     public void statPrinter(){

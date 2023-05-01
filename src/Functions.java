@@ -146,9 +146,9 @@ public class Functions {
 
         for(int i = 0; i < numberOfDice; i++) {
             rollValue = ((int) (Math.random() * numberOfSides + 1)) + rollModifier;
-            System.out.print(diceTotal + " + roll " + rollValue);
+//            System.out.print(diceTotal + " + roll " + rollValue);
             diceTotal += rollValue;
-            System.out.println(" = New health: " + diceTotal + ".");
+//            System.out.println(" = New health: " + diceTotal + ".");
         }
 //        System.out.println();
         return diceTotal;
