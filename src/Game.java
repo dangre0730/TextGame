@@ -111,7 +111,7 @@ public class Game {
 //        Functions.slowPrint();("    Charisma: ");
 
         Functions.slowPrint("Now that we've covered stats, lets test out your weapon on a training dummy. Don't worry, it usually won't hit back.");
-        enemyHealth = 35;
+        enemyHealth = 15;
         enemyDamage = 2;
         enemyArmor = 0;
         enemyCritChance = 0.0;
@@ -119,16 +119,16 @@ public class Game {
 
         Functions.slowPrint("Your current level is: " + player.playerLevel);
         Functions.slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-        earnedExp = Functions.battleFrame(player.playerHealth, enemyHealth, player.attackDamage, enemyDamage, player.attackSpeed, player.classArmor, enemyArmor, player.critChance, enemyCritChance);
+        earnedExp = Functions.battleFrame(enemyHealth, player.attackDamage, enemyDamage, player.attackSpeed, player.classArmor, enemyArmor, player.critChance, enemyCritChance);
         player.playerExp += earnedExp;
         Functions.slowPrint("Your ending health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
 //        player.playerHealth = player.maxPlayerHealth;
 //        Functions.slowPrint("Health restored, current health is: " + player.playerHealth);
         Functions.slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.playerExp);
-        while(player.playerExp < 10){
+        while(player.playerExp < 20){
             Functions.slowPrint("Lets fight another enemy!");
             Functions.slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-            earnedExp = Functions.battleFrame(player.playerHealth, enemyHealth, player.attackDamage, enemyDamage, player.attackSpeed, player.classArmor, enemyArmor, player.critChance, enemyCritChance);
+            earnedExp = Functions.battleFrame(enemyHealth, player.attackDamage, enemyDamage, player.attackSpeed, player.classArmor, enemyArmor, player.critChance, enemyCritChance);
             player.playerExp += earnedExp;
             Functions.slowPrint("Your ending health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
             Functions.slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.playerExp);

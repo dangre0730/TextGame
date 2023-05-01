@@ -23,10 +23,11 @@ public class Functions {
         return diceTotal;
     }
 
-    public static int battleFrame(int playerHealth, int enemyHealth, int attackDamage, int enemyDamage, double attackSpeed, int playerArmor, int enemyArmor, double playerCritChance, double enemyCritChance){
+    public static int battleFrame(int enemyHealth, int attackDamage, int enemyDamage, double attackSpeed, int playerArmor, int enemyArmor, double playerCritChance, double enemyCritChance){
         //Had idea about storing all player and enemy stats in arrays and trying to pass the entire array to this method for input.
         //That would make this much cleaner and easier to call in Main method.
 
+        int playerHealth = Game.player.playerHealth;
         int earnedXP = 0;
         int damageDealt = 0;
         double extraAttack = 0.0;
@@ -64,7 +65,7 @@ public class Functions {
                             earnedXP += 3;
                         } else {
                             slowPrint("Player failed to deal damage this round");
-                            earnedXP += 3;
+                            earnedXP += 0;
                         }
                         if(enemyHealth > 0){
                             slowPrint("Enemy Health is " + enemyHealth);
@@ -89,7 +90,7 @@ public class Functions {
                 slowPrint("Enemy Turn Begins.");
                 damageDealt = makeAnAttack(enemyDamage, playerArmor, enemyCritChance);
                 if (damageDealt > 0) {
-                    Game.player.playerHealth -= damageDealt;
+                    playerHealth -= damageDealt;
                 } else {
                     slowPrint("Enemy failed to deal damage this round");
                 }
@@ -102,9 +103,11 @@ public class Functions {
         }
         if(playerHealth == 0){
             System.out.println("You lost the fight");
+            Game.player.playerHealth = playerHealth;
             return earnedXP;
         } else if(enemyHealth == 0){
             slowPrint("You won the fight!");
+            Game.player.playerHealth = playerHealth;
             return earnedXP;
         }
         // while(())
