@@ -47,6 +47,10 @@ public class Player {
         switch (pcClass){
             case SOLDIER:
                 hitDie = 12;
+                maxPlayerHealth = hitDie;
+                System.out.println(maxPlayerHealth);
+//                Game.player.maxPlayerHealth = hitDie;
+//                System.out.println("Max health (Class Builder): " + Game.player.maxPlayerHealth);
                 playerStrength = Functions.statDiceRoll(6, 4, 2);
                 playerDexterity = Functions.statDiceRoll(6, 4, 0);
                 playerConstitution = Functions.statDiceRoll(6, 4, 2);
@@ -106,9 +110,25 @@ public class Player {
             playerCharisma = 8;
         }
         chaMod = (playerCharisma - 10) / 2;
-        maxPlayerHealth = Game.healthDiceRoll(hitDie, 4, conMod);
+        System.out.println("Starting health is " + maxPlayerHealth);
+        maxPlayerHealth = Functions.healthDiceRoll(maxPlayerHealth, hitDie, 3, conMod);
+//        System.out.println(maxPlayerHealth);
         playerHealth = maxPlayerHealth;
+//        System.out.println(playerHealth);
 
+    }
 
+    public void statPrinter(){
+        System.out.println(playerHealth + " playerHealth.");
+        System.out.println(maxPlayerHealth + " maxPlayerHealth.");
+        System.out.println(pcClass + " pcClass.");
+        System.out.println(playerLevel + " playerLevel.");
+        System.out.println(playerExp + " playerExp.");
+        System.out.println(playerStrength + " playerStrength.");
+        System.out.println(playerDexterity + " playerDexterity.");
+        System.out.println(playerConstitution + " playerConstitution.");
+        System.out.println(playerWisdom + " playerWisdom.");
+        System.out.println(playerCharisma + " playerCharisma.");
+        System.out.println(playerName + " playerName.");
     }
 }
