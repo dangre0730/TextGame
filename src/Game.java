@@ -115,9 +115,9 @@ public class Game {
         enemyDamage = 2;
         enemyArmor = 0;
         enemyCritChance = 0.0;
-        int earnedExp = 0;;
+        int earnedExp = 0;
 
-        Functions.slowPrint("Your current level is: " + player.playerLevel);;
+        Functions.slowPrint("Your current level is: " + player.playerLevel);
         Functions.slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
         earnedExp = Functions.battleFrame(enemyHealth, player.attackDamage, enemyDamage, player.attackSpeed, player.classArmor, enemyArmor, player.critChance, enemyCritChance);
         player.playerExp += earnedExp;
