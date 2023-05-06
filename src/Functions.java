@@ -80,7 +80,8 @@ public class Functions {
                 } else if(frameSelection == 3){
                     slowPrint("The Mock Module doesn't exist yet.");
                 } else {
-                    slowPrint("Adventurers don't run from fights.");
+                    slowPrint("Adventurer abandoned their Quest...");
+                    return 40;
                 }
 
             } else {
@@ -101,12 +102,12 @@ public class Functions {
                 slowPrint("Enemy health has been reduced to 0.");
             }
         }
-        if(playerHealth == 0){
+        if(playerHealth <= 0){
             System.out.println("You lost the fight");
             Game.player.playerHealth = playerHealth;
             return earnedXP;
-        } else if(enemyHealth == 0){
-            slowPrint("You won the fight!");
+        } else if(enemyHealth <= 0){
+            slowPrint("You won the fight! Your closing health is " + playerHealth);
             Game.player.playerHealth = playerHealth;
             return earnedXP;
         }

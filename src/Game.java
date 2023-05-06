@@ -1,32 +1,27 @@
 import java.util.Scanner;
 public class Game {
 
-    public static Player player = new Player();
+    public static Player player = new Player(); //Creates Player object that will store our PC's stats
 
     public static void main(String[] args) {
 
 
 //      Variable definitions
         String playerWeapon;
-
         player.playerExp = 0;
         int weaponSelect;
         int classSelection;
-//        int attackDamage;
         int enemyHealth;
         int enemyDamage;
         int enemyArmor;
         double enemyCritChance;
 
-//        double critChance;
-//        double attackSpeed;
-
+        //Get player name
         Scanner getInput = new Scanner(System.in);
         System.out.println("Hello, Traveler! I'm Abernathy, what is your name?");
         player.playerName = getInput.nextLine();
-//        attackDamage = 10;
-//        attackSpeed = 2;
-//        critChance = 0.0;
+
+        //Get PC weapon selected
         Functions.slowPrint("Well then, it's nice to meet you, " + player.playerName + ". This is my world, made with these two hands, and I use it to test out cool new features for my game.");
 //        Functions.slowPrint("Today is 'Character Building Day' and, great news, you are my Test Subject! So lets start with a simple questionnaire.");
         Functions.slowPrint("Which would you prefer in a fight? (Enter the corresponding number to the weapon of choice)");
@@ -44,7 +39,8 @@ public class Game {
             Functions.slowPrint("4. Baseball Bat");
             weaponSelect = getInput.nextInt();
         }
-
+        System.out.println(I WANT TO RANDOMLY SELECT AN ENEMY FROM AN ENUM IN THE LEVELUP CLASS);
+        //Convert numeric weapon choice to ENUM weapon in Player class
         if(weaponSelect == 1){
             player.playerWeapon = Player.weaponChoice.SWORD;
         } else if(weaponSelect == 2){
@@ -54,9 +50,11 @@ public class Game {
         } else {
             player.playerWeapon = Player.weaponChoice.BAT;
         }
+        //Initialize damage stats and store them in Player class
         player.setWeaponChoice();
-
         Functions.slowPrint("Ok, so you chose the " + player.playerWeapon + ". Which deals " + player.attackDamage + " damage, has an attack speed of " + player.attackSpeed + ", and " + player.critChance + "% critical chance.");
+
+        //Get PC Class choice
         Functions.slowPrint("Now, lets go ahead and have you pick a class.");
 //        Classes determine the likelihood that certain stats will roll better than others, ");
 //        Functions.slowPrint("    though that doesn't mean you can't roll poorly. Your stats are based on die rolls with different modifiers based on your");
@@ -65,8 +63,8 @@ public class Game {
         Functions.slowPrint("2. Ranger");
         Functions.slowPrint("3. Brawler");
         Functions.slowPrint("4. Mage");
-
         classSelection = getInput.nextInt();
+
         if((classSelection != 1) && (classSelection != 2) && (classSelection != 3 ) && (classSelection != 4)){
             while((classSelection != 1) && (classSelection != 2) && (classSelection != 3 ) && (classSelection != 4)){
                 Functions.slowPrint("That's not one of the options. Try picking something that I have available.");
@@ -77,6 +75,8 @@ public class Game {
                 classSelection = getInput.nextInt();
             }
         }
+
+        //Convert numeric class choice to ENUM class in Player class
         if(classSelection == 1){
             player.pcClass = Player.classChoice.SOLDIER;
         }
@@ -89,9 +89,12 @@ public class Game {
         if(classSelection == 4){
             player.pcClass = Player.classChoice.MAGE;
         }
-        System.out.println(player.pcClass);
+
+        //Initialize PC stats and store them in the Player Class
         player.classBuilder();
 
+        //List out player details
+        System.out.println("Ok, you are a " + player.pcClass + " and as one, your stats have been randomly generated as: ");
         System.out.println("Health: " + player.playerHealth + " | Max Health: " + player.maxPlayerHealth + " | Hit Die: " + player.hitDie);
         System.out.println("Strength: " + player.playerStrength + " |  Str Mod: " + player.strMod);
         System.out.println("Dexterity: " + player.playerDexterity + " | Dex Mod: " + player.dexMod);
@@ -100,6 +103,7 @@ public class Game {
         System.out.println("Wisdom: " + player.playerWisdom + " | Wis Mod: " + player.wisMod);
         System.out.println("Charisma: " + player.playerCharisma + " | Cha Mod: " + player.chaMod);
 
+        //Describe what each stat governs in the game.
 //        Functions.slowPrint();("Ok, great! All of those values above are your Character Stats. Those play super important roles in my world and are vital for interacting with my world in a significant way.");
 //        Functions.slowPrint();("Here are some examples to help things make sense:");
 //        Functions.slowPrint();("    Let's say you are trying to climb up a wall using a rope. I will make you roll a strength check, which means a d20 plus your Strength Modifier.");
