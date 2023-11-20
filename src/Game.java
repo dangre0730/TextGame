@@ -13,8 +13,10 @@ public class Game {
         int classSelection;
         int enemyHealth;
         int enemyDamage;
+        int continueGameSelect;
         int enemyArmor;
         double enemyCritChance;
+        boolean continueGame = true;
 
         //Get player name
         Scanner getInput = new Scanner(System.in);
@@ -22,8 +24,14 @@ public class Game {
         player.playerName = getInput.nextLine();
 
         //Get PC weapon selected
-        Functions.slowPrint("Well then, it's nice to meet you, " + player.playerName + ". This is my world, made with these two hands, and I use it to test out cool new features for my game.");
-//        Functions.slowPrint("Today is 'Character Building Day' and, great news, you are my Test Subject! So lets start with a simple questionnaire.");
+        Functions.slowPrint("Well then, it's nice to meet you, " + player.playerName + ". This is my world, made with these two hands figuratively speaking, and I use it to test out cool new features for my game.");
+        System.out.println();
+        Functions.slowPrint("All of the text you are seeing for now, has been written directly in the main class using standard println statements.");
+        Functions.slowPrint("Later on, I will be learning how to implement JSON files to store and read dialog. I think that will be cleaner in the long run, but it's early days right now.");
+        System.out.println();
+        Functions.slowPrint("I'll talk more about that later, but for now just enjoy this test experience and remember, THIS IS A TEST AND I'M STILL LEARNING! :)");
+        System.out.println();
+        Functions.slowPrint("Today is 'Character Building Day' and, great news, you are my Test Subject! So lets start with a simple questionnaire.");
         Functions.slowPrint("Which would you prefer in a fight? (Enter the corresponding number to the weapon of choice)");
         Functions.slowPrint("1. A Sword");
         Functions.slowPrint("2. A Wand");
@@ -39,7 +47,7 @@ public class Game {
             Functions.slowPrint("4. Baseball Bat");
             weaponSelect = getInput.nextInt();
         }
-        System.out.println(I WANT TO RANDOMLY SELECT AN ENEMY FROM AN ENUM IN THE LEVELUP CLASS);
+//        System.out.println(I WANT TO RANDOMLY SELECT AN ENEMY FROM AN ENUM IN THE LEVELUP CLASS);
         //Convert numeric weapon choice to ENUM weapon in Player class
         if(weaponSelect == 1){
             player.playerWeapon = Player.weaponChoice.SWORD;
@@ -65,7 +73,7 @@ public class Game {
         Functions.slowPrint("4. Mage");
         classSelection = getInput.nextInt();
 
-        if((classSelection != 1) && (classSelection != 2) && (classSelection != 3 ) && (classSelection != 4)){
+//        if((classSelection != 1) && (classSelection != 2) && (classSelection != 3 ) && (classSelection != 4)){
             while((classSelection != 1) && (classSelection != 2) && (classSelection != 3 ) && (classSelection != 4)){
                 Functions.slowPrint("That's not one of the options. Try picking something that I have available.");
                 Functions.slowPrint("1. Soldier");
@@ -74,7 +82,7 @@ public class Game {
                 Functions.slowPrint("4. Mage");
                 classSelection = getInput.nextInt();
             }
-        }
+//        }
 
         //Convert numeric class choice to ENUM class in Player class
         if(classSelection == 1){
@@ -121,27 +129,50 @@ public class Game {
         enemyCritChance = 0.0;
         int earnedExp = 0;
 
-        Functions.slowPrint("Your current level is: " + player.playerLevel);
-        Functions.slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-        earnedExp = Functions.battleFrame(enemyHealth, player.attackDamage, enemyDamage, player.attackSpeed, player.classArmor, enemyArmor, player.critChance, enemyCritChance);
-        player.playerExp += earnedExp;
-        Functions.slowPrint("Your ending health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-//        player.playerHealth = player.maxPlayerHealth;
-//        Functions.slowPrint("Health restored, current health is: " + player.playerHealth);
-        Functions.slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.playerExp);
-        while(player.playerExp < 20){
-            Functions.slowPrint("Lets fight another enemy!");
+        while(player.playerLevel != 4 && continueGame) {
+
+            Functions.slowPrint("Your current level is: " + player.playerLevel);
             Functions.slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
             earnedExp = Functions.battleFrame(enemyHealth, player.attackDamage, enemyDamage, player.attackSpeed, player.classArmor, enemyArmor, player.critChance, enemyCritChance);
             player.playerExp += earnedExp;
             Functions.slowPrint("Your ending health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
+//        player.playerHealth = player.maxPlayerHealth;
+//        Functions.slowPrint("Health restored, current health is: " + player.playerHealth);
             Functions.slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.playerExp);
-        }
-        player.playerLevel += 1;
-        Functions.slowPrint("New Level: " + player.playerLevel);
-        Functions.slowPrint("Look at that, your Character Experience total went up enough to gain a new level! When you hit certain milestones of experience, you will level up and earn new class features.");
+            while (player.playerExp < 20) {
+                Functions.slowPrint("Lets fight another enemy!");
+                Functions.slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
+                earnedExp = Functions.battleFrame(enemyHealth, player.attackDamage, enemyDamage, player.attackSpeed, player.classArmor, enemyArmor, player.critChance, enemyCritChance);
+                player.playerExp += earnedExp;
+                Functions.slowPrint("Your ending health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
+                Functions.slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.playerExp);
+            }
+            player.playerLevel += 1;
+            Functions.slowPrint("New Level: " + player.playerLevel);
+            Functions.slowPrint("Look at that, your Character Experience total went up enough to gain a new level! When you hit certain milestones of experience, you will level up and earn new class features.");
 
-        player.statPrinter();
+            player.statPrinter();
+
+            if (player.playerHealth > 2) {
+                Functions.slowPrint("Since you are still standing, would you like to practice some more?");
+                Functions.slowPrint("1. Keep Playing!");
+                Functions.slowPrint("2. Exit Simulation!");
+                continueGameSelect = getInput.nextInt();
+
+                if (continueGameSelect == 1) {
+                    continue;
+                } else if (continueGameSelect == 2) {
+                    continueGame = false;
+                } else {
+                    continueGame = false;
+                }
+            }
+        }
+
+        System.out.println("Next up, I need to get the battleframe function + playerExp going into the fight to check if a level up occurred after the fight concluded.");
+        System.out.println("We are going to need to write a levelUp method that checks if the player has levelled up using playerExp. Then notify them and roll a dice for hp gained and improve a stat at level 4.");
+        System.out.println("Good luck with that homie! You got this and remember, this is literally just for fun. You've always wanted to tell a story through a game and this is our pre-rough draft.");
+        System.out.println("I believe in you");
     }
 
 }
