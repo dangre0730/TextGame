@@ -8,6 +8,7 @@ public class Player {
     //Level and XP
     int playerLevel = 1;
     int playerExp = 0;
+    int nextLevel = 20;
 
     //Class details
     enum classChoice{
@@ -129,6 +130,12 @@ public class Player {
 //        System.out.println(maxPlayerHealth);
         playerHealth = maxPlayerHealth;
 //        System.out.println(playerHealth);
+        switch (pcClass){
+            case SOLDIER -> damageMod = strMod;
+            case RANGER -> damageMod = dexMod;
+            case BRAWLER -> damageMod = strMod;
+            case MAGE -> damageMod = wisMod;
+        }
 
     }
 
@@ -158,16 +165,14 @@ public class Player {
     }
 
     public void statPrinter(){
-        System.out.println(playerHealth + " playerHealth.");
-        System.out.println(maxPlayerHealth + " maxPlayerHealth.");
-        System.out.println(pcClass + " pcClass.");
-        System.out.println(playerLevel + " playerLevel.");
-        System.out.println(playerExp + " playerExp.");
-        System.out.println(playerStrength + " playerStrength.");
-        System.out.println(playerDexterity + " playerDexterity.");
-        System.out.println(playerConstitution + " playerConstitution.");
-        System.out.println(playerWisdom + " playerWisdom.");
-        System.out.println(playerCharisma + " playerCharisma.");
-        System.out.println(playerName + " playerName.");
+        Functions.slowPrint("Ok, you are a " + pcClass + " and as one, your stats have been randomly generated as: ");
+        Functions.slowPrint("Health: " + playerHealth + " | Max Health: " + maxPlayerHealth + " | Hit Die: " + hitDie);
+        Functions.slowPrint("Strength: " + playerStrength + " |  Str Mod: " + strMod);
+        Functions.slowPrint("Dexterity: " + playerDexterity + " | Dex Mod: " + dexMod);
+        Functions.slowPrint("Constitution: " + playerConstitution + " | Con Mod: " + conMod);
+        Functions.slowPrint("Intelligence: " + playerIntelligence + " | Int Mod: " + intMod);
+        Functions.slowPrint("Wisdom: " + playerWisdom + " | Wis Mod: " + wisMod);
+        Functions.slowPrint("Charisma: " + playerCharisma + " | Cha Mod: " + chaMod);
+        Functions.slowPrint("Player Level: " + playerLevel);
     }
 }

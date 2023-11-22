@@ -8,14 +8,16 @@ public class Game {
 
 //      Variable definitions
         String playerWeapon;
-        player.playerExp = 0;
+//        player.playerExp = 0;
         int weaponSelect;
         int classSelection;
         int enemyHealth;
         int enemyDamage;
+        int enemyDamageMod;
         int continueGameSelect;
         int enemyArmor;
         double enemyCritChance;
+        boolean hasLevelled = false;
         boolean continueGame = true;
 
         //Get player name
@@ -102,14 +104,8 @@ public class Game {
         player.classBuilder();
 
         //List out player details
-        System.out.println("Ok, you are a " + player.pcClass + " and as one, your stats have been randomly generated as: ");
-        System.out.println("Health: " + player.playerHealth + " | Max Health: " + player.maxPlayerHealth + " | Hit Die: " + player.hitDie);
-        System.out.println("Strength: " + player.playerStrength + " |  Str Mod: " + player.strMod);
-        System.out.println("Dexterity: " + player.playerDexterity + " | Dex Mod: " + player.dexMod);
-        System.out.println("Constitution: " + player.playerConstitution + " | Con Mod: " + player.conMod);
-        System.out.println("Intelligence: " + player.playerIntelligence + " | Int Mod: " + player.intMod);
-        System.out.println("Wisdom: " + player.playerWisdom + " | Wis Mod: " + player.wisMod);
-        System.out.println("Charisma: " + player.playerCharisma + " | Cha Mod: " + player.chaMod);
+        player.statPrinter();
+
 
         //Describe what each stat governs in the game.
 //        Functions.slowPrint();("Ok, great! All of those values above are your Character Stats. Those play super important roles in my world and are vital for interacting with my world in a significant way.");
@@ -125,16 +121,24 @@ public class Game {
         Functions.slowPrint("Now that we've covered stats, lets test out your weapon on a training dummy. Don't worry, it usually won't hit back.");
         enemyHealth = 15;
         enemyDamage = 2;
+        enemyDamageMod = 0;
         enemyArmor = 0;
         enemyCritChance = 0.0;
         int earnedExp = 0;
 
         while(player.playerLevel != 4 && continueGame) {
 
-            Functions.slowPrint("Your current level is: " + player.playerLevel);
+            Functions.slowPrint("Your current level is: " + player.playerLevel + " and you need " + player.nextLevel + " experience to level up.");
             Functions.slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-            earnedExp = Functions.battleFrame(enemyHealth, player.attackDamage, enemyDamage, player.attackSpeed, player.classArmor, enemyArmor, player.critChance, enemyCritChance);
+            Functions.slowPrint("Enemy Health is " + enemyHealth);
+            earnedExp = Functions.battleFrame(enemyHealth, player.attackDamage, player.damageMod, enemyDamage, enemyDamageMod, player.attackSpeed, player.classArmor, enemyArmor, player.critChance, enemyCritChance);
             player.playerExp += earnedExp;
+            hasLevelled = Functions.hasLevelled(player.playerExp, player.nextLevel);
+            if(hasLevelled){
+                player.playerLevel += 1;
+                player.nextLevel = Functions.nextLevel(player.playerLevel, player.nextLevel);
+                hasLevelled = false;
+            }
             Functions.slowPrint("Your ending health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
 //        player.playerHealth = player.maxPlayerHealth;
 //        Functions.slowPrint("Health restored, current health is: " + player.playerHealth);
@@ -142,12 +146,18 @@ public class Game {
             while (player.playerExp < 20) {
                 Functions.slowPrint("Lets fight another enemy!");
                 Functions.slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-                earnedExp = Functions.battleFrame(enemyHealth, player.attackDamage, enemyDamage, player.attackSpeed, player.classArmor, enemyArmor, player.critChance, enemyCritChance);
+                earnedExp = Functions.battleFrame(enemyHealth, player.attackDamage, player.damageMod, enemyDamage, enemyDamageMod, player.attackSpeed, player.classArmor, enemyArmor, player.critChance, enemyCritChance);
                 player.playerExp += earnedExp;
                 Functions.slowPrint("Your ending health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
                 Functions.slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.playerExp);
+                hasLevelled = Functions.hasLevelled(player.playerExp, player.nextLevel);
+                if(hasLevelled){
+                    player.playerLevel += 1;
+                    player.nextLevel = Functions.nextLevel(player.playerLevel, player.nextLevel);
+                    hasLevelled = false;
+                }
             }
-            player.playerLevel += 1;
+//            player.playerLevel += 1;
             Functions.slowPrint("New Level: " + player.playerLevel);
             Functions.slowPrint("Look at that, your Character Experience total went up enough to gain a new level! When you hit certain milestones of experience, you will level up and earn new class features.");
 

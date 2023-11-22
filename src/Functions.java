@@ -2,7 +2,18 @@ import java.util.Scanner;
 
 public class Functions {
 
+    public static boolean hasLevelled(int playerExp, int nextLevel){
+        if(playerExp >= nextLevel){
+            return true;
+        }
+        return false;
+    }
 
+    public static int nextLevel(int playerLevel, int nextLevel){
+        nextLevel = (int) (nextLevel * 1.2);
+        Game.player.playerLevel += 1;
+        return nextLevel;
+    }
 
     public static int statDiceRoll(int numberOfSides, int numberOfDice, int rollModifier){
 
@@ -23,7 +34,7 @@ public class Functions {
         return diceTotal;
     }
 
-    public static int battleFrame(int enemyHealth, int attackDamage, int enemyDamage, double attackSpeed, int playerArmor, int enemyArmor, double playerCritChance, double enemyCritChance){
+    public static int battleFrame(int enemyHealth, int playerAttackDamage, int playerDamageMod, int enemyDamage, int enemyDamageMod, double attackSpeed, int playerArmor, int enemyArmor, double playerCritChance, double enemyCritChance){
         //Had idea about storing all player and enemy stats in arrays and trying to pass the entire array to this method for input.
         //That would make this much cleaner and easier to call in Main method.
 
@@ -42,7 +53,7 @@ public class Functions {
 
             if((frameSelection == 1) || (frameSelection == 2) || (frameSelection == 3) || (frameSelection == 4)) {
                 if (frameSelection == 1) {
-                    damageDealt = makeAnAttack(attackDamage, enemyArmor, playerCritChance);
+                    damageDealt = makeAnAttack(playerAttackDamage, playerDamageMod, enemyArmor, playerCritChance);
                     extraAttack += attackSpeed - 1d;
                     if(damageDealt > 0) {
                         enemyHealth -= damageDealt;
@@ -59,7 +70,7 @@ public class Functions {
                     }
                     if(extraAttack >= 1){
                         slowPrint("---EXTRA ATTACK---");
-                        damageDealt = makeAnAttack(attackDamage, enemyArmor, playerCritChance);
+                        damageDealt = makeAnAttack(playerAttackDamage, playerDamageMod, enemyArmor, playerCritChance);
                         if(damageDealt > 0) {
                             enemyHealth -= damageDealt;
                             earnedXP += 3;
@@ -89,7 +100,7 @@ public class Functions {
             }
             if(enemyHealth > 0) {
                 slowPrint("Enemy Turn Begins.");
-                damageDealt = makeAnAttack(enemyDamage, playerArmor, enemyCritChance);
+                damageDealt = makeAnAttack(enemyDamage, enemyDamageMod, playerArmor, enemyCritChance);
                 if (damageDealt > 0) {
                     playerHealth -= damageDealt;
                 } else {
@@ -119,8 +130,8 @@ public class Functions {
         }
     }
 
-    public static int makeAnAttack(int attackerDamage, int targetArmor, double attackerCritChance) {
-        int finalDamage = attackerDamage;
+    public static int makeAnAttack(int attackerDamage, int attackerDamageMod, int targetArmor, double attackerCritChance) {
+        int finalDamage = attackerDamage + attackerDamageMod;
         int reducedDamage = targetArmor / 10;
         boolean isCrit = false;
         double criticalStrike = attackerCritChance / 100;
