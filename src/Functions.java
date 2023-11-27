@@ -10,8 +10,10 @@ public class Functions {
     }
 
     public static int nextLevel(int playerLevel, int nextLevel){
-        nextLevel = (int) (nextLevel * 1.2);
-        Game.player.playerLevel += 1;
+        nextLevel += (int) (nextLevel * 1.2);
+        Game.player.level += 1;
+        slowPrint("New Level: " + Game.player.level);
+        slowPrint("Look at that, your Character Experience total went up enough to gain a new level! When you hit certain milestones of experience, you will level up and earn new class features.");
         return nextLevel;
     }
 

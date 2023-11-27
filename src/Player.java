@@ -3,11 +3,11 @@ public class Player {
 
 //Stat declarations and initializations.
     //Identification
-    String playerName;
+    String name;
 
     //Level and XP
-    int playerLevel = 1;
-    int playerExp = 0;
+    int level = 1;
+    int experience = 0;
     int nextLevel = 20;
 
     //Class details
@@ -30,7 +30,7 @@ public class Player {
     }
     weaponChoice playerWeapon;
     int attackDamage;
-    double critChance;
+    double criticalChance;
     double attackSpeed;
     int damageMod;
 
@@ -57,7 +57,7 @@ public class Player {
                 classArmor = 15;
                 hitDie = 12;
                 maxPlayerHealth = hitDie;
-//                System.out.println(maxPlayerHealth);
+                System.out.println("Your attack modifier is Strength!");
                 playerStrength = Functions.statDiceRoll(6, 4, 2);
                 playerDexterity = Functions.statDiceRoll(6, 4, 0);
                 playerConstitution = Functions.statDiceRoll(6, 4, 2);
@@ -69,7 +69,7 @@ public class Player {
                 classArmor = 12;
                 hitDie = 8;
                 maxPlayerHealth = hitDie;
-//                System.out.println(maxPlayerHealth);
+                System.out.println("Your attack modifier is Dexterity!");
                 playerStrength = Functions.statDiceRoll(6, 4, 0);
                 playerDexterity = Functions.statDiceRoll(6, 4, 2);
                 playerConstitution = Functions.statDiceRoll(6, 4, 0);
@@ -81,7 +81,7 @@ public class Player {
                 classArmor = 14;
                 hitDie = 10;
                 maxPlayerHealth = hitDie;
-//                System.out.println(maxPlayerHealth);
+                System.out.println("Your attack modifier is Strength!");
                 playerStrength = Functions.statDiceRoll(6, 4, 2);
                 playerDexterity = Functions.statDiceRoll(6, 4, 0);
                 playerConstitution = Functions.statDiceRoll(6, 4, 1);
@@ -93,6 +93,7 @@ public class Player {
                 classArmor = 10;
                 hitDie = 6;
                 maxPlayerHealth = hitDie;
+                System.out.println("Your attack modifier is Intelligence!");
                 playerStrength = Functions.statDiceRoll(6, 4, 0);
                 playerDexterity = Functions.statDiceRoll(6, 4, 1);
                 playerConstitution = Functions.statDiceRoll(6, 4, 0);
@@ -131,10 +132,9 @@ public class Player {
         playerHealth = maxPlayerHealth;
 //        System.out.println(playerHealth);
         switch (pcClass){
-            case SOLDIER -> damageMod = strMod;
+            case SOLDIER, BRAWLER -> damageMod = strMod;
             case RANGER -> damageMod = dexMod;
-            case BRAWLER -> damageMod = strMod;
-            case MAGE -> damageMod = wisMod;
+            case MAGE -> damageMod = intMod;
         }
 
     }
@@ -144,22 +144,22 @@ public class Player {
             case SWORD:
                 attackDamage = 3;
                 attackSpeed = 1.6;
-                critChance = 15.0;
+                criticalChance = 15.0;
                 break;
             case CROSSBOW:
                 attackDamage = 5;
                 attackSpeed = 1.0;
-                critChance = 19.5;
+                criticalChance = 19.5;
                 break;
             case BAT:
                 attackDamage = 3;
                 attackSpeed = 1.8;
-                critChance = 11.0;
+                criticalChance = 11.0;
                 break;
             case WAND:
                 attackDamage = 4;
                 attackSpeed = 2.0;
-                critChance = 0.0;
+                criticalChance = 0.0;
                 break;
         }
     }
@@ -173,6 +173,6 @@ public class Player {
         Functions.slowPrint("Intelligence: " + playerIntelligence + " | Int Mod: " + intMod);
         Functions.slowPrint("Wisdom: " + playerWisdom + " | Wis Mod: " + wisMod);
         Functions.slowPrint("Charisma: " + playerCharisma + " | Cha Mod: " + chaMod);
-        Functions.slowPrint("Player Level: " + playerLevel);
+        Functions.slowPrint("Player Level: " + level);
     }
 }
