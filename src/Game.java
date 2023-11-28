@@ -4,6 +4,7 @@ public class Game {
     //Create objects that will be utilized in game. These objects can and will be accessed from other classes given their existence outside the main method and having 'public static'.
     public static Player player = new Player(); //Creates Player object that will store our PC's stats
     public static Enemy enemy = new Enemy(); //Create Enemy Object that has enemy names and stats.
+    public static Room room = new Room(); //Create Room Object that will track where the player is, room description, and adjacent rooms.
     public static void main(String[] args) {
 
         //Global / Player Variable definitions
@@ -14,17 +15,10 @@ public class Game {
         int continueGameSelect;
         //Doubles
         //Booleans
-        boolean hasLevelled = false;
+        boolean hasLevelled;
         boolean continueGame = true;
-
-        //Enemy Variable Definitions
-        //Integers
-        int enemyHealth;
-        int enemyDamage;
-        int enemyDamageMod;
-        int enemyArmor;
-        //Doubles
-        double enemyCriticalChance;
+        //Strings
+        String roomSelect;
 
         //Get player name
         Scanner getInput = new Scanner(System.in); //Create Scanner object which will be used to take input from the player.
@@ -34,27 +28,16 @@ public class Game {
         player.name = getInput.nextLine(); //Take the string value, no matter the characters, and set the player objects 'playerName' string variable to the input value.
         Dialog.intro(player.name);    //Run the 'intro' method from the Dialog class and pass the player name that was just set.
 
+        Functions.slowPrint("Today is 'Character Building Day' and, great news, you are my Test Subject! So lets start with a simple questionnaire.");
+
         //Get PC Class choice
-        Functions.slowPrint("Now, lets go ahead and have you pick a class.");
-//        Classes determine the likelihood that certain stats will roll better than others,
-//        Functions.slowPrint("    though that doesn't mean you can't roll poorly. Your stats are based on die rolls with different modifiers based on your");
-//        Functions.slowPrint("    chosen class. Anyway, go ahead and pick a class so, we can proceed to the fun stuff.");
-        Functions.slowPrint("1. Soldier");
-        Functions.slowPrint("2. Ranger");
-        Functions.slowPrint("3. Brawler");
-        Functions.slowPrint("4. Mage");
+        Dialog.classSelection();
         playerClassSelection = getInput.nextInt();
 
-//        if((playerClassSelection != 1) && (playerClassSelection != 2) && (playerClassSelection != 3 ) && (playerClassSelection != 4)){
-            while((playerClassSelection != 1) && (playerClassSelection != 2) && (playerClassSelection != 3 ) && (playerClassSelection != 4)){
-                Functions.slowPrint("That's not one of the options. Try picking something that I have available.");
-                Functions.slowPrint("1. Soldier");
-                Functions.slowPrint("2. Ranger");
-                Functions.slowPrint("3. Brawler");
-                Functions.slowPrint("4. Mage");
-                playerClassSelection = getInput.nextInt();
-            }
-//        }
+        while((playerClassSelection != 1) && (playerClassSelection != 2) && (playerClassSelection != 3 ) && (playerClassSelection != 4)){
+            Dialog.classSelectionLoop();
+            playerClassSelection = getInput.nextInt();
+        }
 
         //Convert numeric class choice to ENUM class in Player class
         if(playerClassSelection == 1){
@@ -77,23 +60,14 @@ public class Game {
         player.statPrinter();
 
         //Get PC weapon selected
-        Functions.slowPrint("Today is 'Character Building Day' and, great news, you are my Test Subject! So lets start with a simple questionnaire.");
-        Functions.slowPrint("Which would you prefer in a fight? (Enter the corresponding number to the weapon of choice)");
-        Functions.slowPrint("1. A Sword");
-        Functions.slowPrint("2. A Wand");
-        Functions.slowPrint("3. A Crossbow");
-        Functions.slowPrint("4. Brass Knuckles");
+        Dialog.weaponSelection();
         playerWeaponSelect = getInput.nextInt();
 
         while((playerWeaponSelect != 1) && (playerWeaponSelect != 2) && (playerWeaponSelect != 3 ) && (playerWeaponSelect != 4)){
-            Functions.slowPrint("That's not one of the options. Try picking something that I have available.");
-            Functions.slowPrint("1. A Sword");
-            Functions.slowPrint("2. A Wand");
-            Functions.slowPrint("3. A Crossbow");
-            Functions.slowPrint("4. Baseball Bat");
+            Dialog.weaponSelectionLoop();
             playerWeaponSelect = getInput.nextInt();
         }
-//        System.out.println(I WANT TO RANDOMLY SELECT AN ENEMY FROM AN ENUM IN THE LEVELUP CLASS);
+
         //Convert numeric weapon choice to ENUM weapon in Player class
         if(playerWeaponSelect == 1){
             player.playerWeapon = Player.weaponChoice.SWORD;
@@ -108,59 +82,44 @@ public class Game {
         player.setWeaponChoice();
         Functions.slowPrint("Ok, so you chose the " + player.playerWeapon + ". Which deals " + player.attackDamage + " base damage plus your damage modifier of " + player.damageMod + ", has an attack speed of " + player.attackSpeed + ", and " + player.criticalChance + "% critical chance.");
 
-        //Describe what each stat governs in the game.
-//        Functions.slowPrint();("Ok, great! All of those values above are your Character Stats. Those play super important roles in my world and are vital for interacting with my world in a significant way.");
-//        Functions.slowPrint();("Here are some examples to help things make sense:");
-//        Functions.slowPrint();("    Let's say you are trying to climb up a wall using a rope. I will make you roll a strength check, which means a d20 plus your Strength Modifier.");
-//        Functions.slowPrint();("        For you, that would be a modifier of " + player.strMod + ". And if you were grappled by an enemy you would have to make a strength save, using the same roll method.");
-//        Functions.slowPrint();("    The same goes for Dexterity: Stealing an item - Dexterity Check | Dodging a Fireball - Dexterity Save");
-//        Functions.slowPrint();("    Constitution: Constitution Modifier is added to hit die when getting extra health after a level up");
-//        Functions.slowPrint();("    Intelligence: You are trying to solve a riddle - Intelligence Check | Seeing through an enemy charming you");
-//        Functions.slowPrint();("    Wisdom: ");
-//        Functions.slowPrint();("    Charisma: ");
-
-        Functions.slowPrint("Now that we've covered stats, lets test out your weapon on a training dummy. Don't worry, it usually won't hit back.");
-        enemyHealth = 15;
-        enemyDamage = 2;
-        enemyDamageMod = 0;
-        enemyArmor = 0;
-        enemyCriticalChance = 0.0;
-        int earnedExp = 0;
+        Functions.slowPrint("Now that we've covered stats, lets test out your combat skills! Don't worry, your enemies won't hit back very hard :)");
+        int earnedExp;
 
         while(player.level != 4 && continueGame) {
-
             Functions.slowPrint("Your current level is: " + player.level + " and you need " + player.nextLevel + " experience to level up.");
             Functions.slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-            Functions.slowPrint("Enemy Health is " + enemyHealth);
-            earnedExp = Functions.battleFrame(enemyHealth, player.attackDamage, player.damageMod, enemyDamage, enemyDamageMod, player.attackSpeed, player.classArmor, enemyArmor, player.criticalChance, enemyCriticalChance);
+
+            enemy.enemySelection = Functions.rollEnemy();
+//            enemy.getEnemy(enemy.enemySelection);
+            enemy.enemyStats(enemy.enemySelection);
+
+            earnedExp = Functions.battleFrame(enemy.enemyHealth, player.attackDamage, player.damageMod, enemy.enemyDamage, enemy.enemyDamageMod, player.attackSpeed, player.classArmor, enemy.enemyArmor, player.criticalChance, enemy.enemyCriticalChance);
             player.experience += earnedExp;
+            Functions.slowPrint("You currently have " + player.experience + " experience points. In order to reach the next level, you need " + player.nextLevel + " total experience points to level up.");
             hasLevelled = Functions.hasLevelled(player.experience, player.nextLevel);
             if(hasLevelled){
                 player.nextLevel = Functions.nextLevel(player.level, player.nextLevel);
-                hasLevelled = false;
             }
             Functions.slowPrint("Your ending health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-//        player.playerHealth = player.maxPlayerHealth;
-//        Functions.slowPrint("Health restored, current health is: " + player.playerHealth);
-            Functions.slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.experience);
+//            Functions.slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.experience);
             while (player.experience < 20) {
+                enemy.enemySelection = Functions.rollEnemy();
+//                enemy.getEnemy(enemy.enemySelection);
+                enemy.enemyStats(enemy.enemySelection);
                 Functions.slowPrint("Lets fight another enemy!");
                 Functions.slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-                earnedExp = Functions.battleFrame(enemyHealth, player.attackDamage, player.damageMod, enemyDamage, enemyDamageMod, player.attackSpeed, player.classArmor, enemyArmor, player.criticalChance, enemyCriticalChance);
+                earnedExp = Functions.battleFrame(enemy.enemyHealth, player.attackDamage, player.damageMod, enemy.enemyDamage, enemy.enemyDamageMod, player.attackSpeed, player.classArmor, enemy.enemyArmor, player.criticalChance, enemy.enemyCriticalChance);
                 player.experience += earnedExp;
                 Functions.slowPrint("Your ending health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-                Functions.slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.experience);
+//                Functions.slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.experience);
                 hasLevelled = Functions.hasLevelled(player.experience, player.nextLevel);
                 if(hasLevelled){
-//                    player.playerLevel += 1;
                     player.nextLevel = Functions.nextLevel(player.level, player.nextLevel);
-                    hasLevelled = false;
                 }
             }
-//            player.playerLevel += 1;
 
-
-            player.statPrinter();
+            Functions.slowPrint("You currently have " + player.experience + " experience points. In order to reach the next level, you need " + player.nextLevel + " total experience points to level up.");
+//            player.statPrinter();
 
             if (player.playerHealth > 2) {
                 Functions.slowPrint("Since you are still standing, would you like to practice some more?");
@@ -168,19 +127,36 @@ public class Game {
                 Functions.slowPrint("2. Exit Simulation!");
                 continueGameSelect = getInput.nextInt();
 
-                if (continueGameSelect == 1) {
-                    continue;
-                } else if (continueGameSelect == 2) {
-                    continueGame = false;
-                } else {
+                if (continueGameSelect != 1) {
                     continueGame = false;
                 }
             }
         }
 
-        System.out.println("Next up, I need to get the battleframe function + playerExp going into the fight to check if a level up occurred after the fight concluded.");
-        System.out.println("We are going to need to write a levelUp method that checks if the player has levelled up using playerExp. Then notify them and roll a dice for hp gained and improve a stat at level 4.");
-        System.out.println("Good luck with that homie! You got this and remember, this is literally just for fun. You've always wanted to tell a story through a game and this is our pre-rough draft.");
+        Functions.slowPrint("Hey buddy, it's me, Abernathy, again. Would you mind terribly if I placed you in my new house?");
+        Functions.slowPrint("It's still under construction, but check out the couple of rooms that have been built and let me know if you get lost!");
+        Functions.slowPrint("Although, I suppose it will be hard for you to let me know if you are lost...ehh, lets not worry about that right now.");
+
+        room.currentRoom = 1; //Set player into the Entry room of the Mansion.
+        room.getRoom(room.currentRoom);
+        Functions.slowPrint(room.description);
+        roomSelect = getInput.nextLine();
+        while(roomSelect != "Exit" || roomSelect != "exit") {
+            switch (roomSelect) {
+                case "North", "north" -> room.currentRoom = room.adjacentRooms[0];
+                case "East", "east" -> room.currentRoom = room.adjacentRooms[1];
+                case "South", "south" -> room.currentRoom = room.adjacentRooms[2];
+                case "West", "west" -> room.currentRoom = room.adjacentRooms[3];
+            }
+            room.getRoom(room.currentRoom);
+            Functions.slowPrint(room.description);
+            roomSelect = getInput.nextLine();
+            if(roomSelect == "exit" || roomSelect == "Exit"){
+                break;
+            }
+        }
+
+        System.out.println("Good luck! You got this and remember, this is literally just for fun. You've always wanted to tell a story through a game and this is our pre-rough draft.");
         System.out.println("I believe in you");
     }
 

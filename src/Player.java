@@ -39,18 +39,19 @@ public class Player {
     int playerHealth;
     int playerStrength; // = 12;
     int strMod; // = 1;
-    int playerDexterity = 14;
-    int dexMod = 2;
-    int playerConstitution = 12;
-    int conMod = 1;
-    int playerIntelligence = 8;
-    int intMod = -1;
-    int playerWisdom = 10;
-    int wisMod = 0;
-    int playerCharisma = 10;
-    int chaMod = 0;
+    int playerDexterity;
+    int dexMod;
+    int playerConstitution;
+    int conMod;
+    int playerIntelligence;
+    int intMod;
+    int playerWisdom;
+    int wisMod;
+    int playerCharisma;
+    int chaMod;
 
     public void classBuilder(){
+
         //Build Character Stats
         switch (pcClass){
             case SOLDIER:

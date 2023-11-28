@@ -36,6 +36,10 @@ public class Functions {
         return diceTotal;
     }
 
+    public static int rollEnemy(){
+        int rollValue = (int) (Math.random() * 2);
+        return rollValue;
+    }
     public static int battleFrame(int enemyHealth, int playerAttackDamage, int playerDamageMod, int enemyDamage, int enemyDamageMod, double attackSpeed, int playerArmor, int enemyArmor, double playerCritChance, double enemyCritChance){
         //Had idea about storing all player and enemy stats in arrays and trying to pass the entire array to this method for input.
         //That would make this much cleaner and easier to call in Main method.
@@ -59,10 +63,10 @@ public class Functions {
                     extraAttack += attackSpeed - 1d;
                     if(damageDealt > 0) {
                         enemyHealth -= damageDealt;
-                        earnedXP += 3;
+//                        earnedXP += 3;
                     } else {
                         slowPrint("Player failed to deal damage this round");
-                        earnedXP += 3;
+//                        earnedXP += 3;
                     }
                     if(enemyHealth > 0){
                         slowPrint("Enemy Health is " + enemyHealth);
@@ -75,10 +79,10 @@ public class Functions {
                         damageDealt = makeAnAttack(playerAttackDamage, playerDamageMod, enemyArmor, playerCritChance);
                         if(damageDealt > 0) {
                             enemyHealth -= damageDealt;
-                            earnedXP += 3;
+//                            earnedXP += 3;
                         } else {
                             slowPrint("Player failed to deal damage this round");
-                            earnedXP += 0;
+//                            earnedXP += 0;
                         }
                         if(enemyHealth > 0){
                             slowPrint("Enemy Health is " + enemyHealth);
@@ -115,21 +119,25 @@ public class Functions {
                 slowPrint("Enemy health has been reduced to 0.");
             }
         }
-        if(playerHealth <= 0){
-            System.out.println("You lost the fight");
-            Game.player.playerHealth = playerHealth;
-            return earnedXP;
-        } else if(enemyHealth <= 0){
+//        if(playerHealth <= 0){
+//            System.out.println("You lost the fight");
+//            Game.player.playerHealth = playerHealth;
+//            return earnedXP;
+//        } else
+        if(enemyHealth <= 0){
             slowPrint("You won the fight! Your closing health is " + playerHealth);
             Game.player.playerHealth = playerHealth;
-            return earnedXP;
+//            return earnedXP;
+            return Game.enemy.earnedExp;
+        } else {
+            return 0;
         }
         // while(())
-        if(earnedXP < 3){
-            return 3;
-        } else {
-            return earnedXP;
-        }
+//        if(earnedXP < 3){
+//            return 3;
+//        } else {
+//            return earnedXP;
+//        }
     }
 
     public static int makeAnAttack(int attackerDamage, int attackerDamageMod, int targetArmor, double attackerCritChance) {

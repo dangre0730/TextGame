@@ -12,4 +12,34 @@ public class Dialog {
         Functions.slowPrint("I'll talk more about that later, but for now just enjoy this test experience and remember, THIS IS A TEST AND I'M STILL LEARNING! :)");
         System.out.println();
     }
+    public static void classSelection(){
+        Functions.slowPrint("If you were the Hero of an Adventure, what class would you want to play?");
+        Functions.slowPrint("1. Soldier");
+        Functions.slowPrint("2. Ranger");
+        Functions.slowPrint("3. Brawler");
+        Functions.slowPrint("4. Mage");
+    }
+
+    public static void classSelectionLoop(){
+        Functions.slowPrint("That's not one of the options! Try picking something that I have given you.");
+        Functions.slowPrint("1. Soldier");
+        Functions.slowPrint("2. Ranger");
+        Functions.slowPrint("3. Brawler");
+        Functions.slowPrint("4. Mage");
+    }
+    public static void weaponSelection(){
+        Functions.slowPrint("Which would you prefer in a fight?");
+        Functions.slowPrint("1. A Sword");
+        Functions.slowPrint("2. A Wand");
+        Functions.slowPrint("3. A Crossbow");
+        Functions.slowPrint("4. Baseball Bat");
+    }
+
+    public static void weaponSelectionLoop(){
+        Functions.slowPrint("That's not one of the options. Try picking something that I have available.");
+        Functions.slowPrint("1. A Sword");
+        Functions.slowPrint("2. A Wand");
+        Functions.slowPrint("3. A Crossbow");
+        Functions.slowPrint("4. Baseball Bat");
+    }
 }
