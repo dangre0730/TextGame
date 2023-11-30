@@ -137,11 +137,13 @@ public class Game {
         Functions.slowPrint("It's still under construction, but check out the couple of rooms that have been built and let me know if you get lost!");
         Functions.slowPrint("Although, I suppose it will be hard for you to let me know if you are lost...ehh, lets not worry about that right now.");
 
+        //Initiate room traversal section
         room.currentRoom = 1; //Set player into the Entry room of the Mansion.
         room.getRoom(room.currentRoom);
         Functions.slowPrint(room.description);
-        roomSelect = getInput.nextLine();
-        while(roomSelect != "Exit" || roomSelect != "exit") {
+        //Super important to remember!! USE '.next', NOT '.nextLine'!! It will enter a carriage return instead of prompting for input.
+        roomSelect = getInput.next();
+        while(!roomSelect.equals("Exit") || !roomSelect.equals("exit")) {
             switch (roomSelect) {
                 case "North", "north" -> room.currentRoom = room.adjacentRooms[0];
                 case "East", "east" -> room.currentRoom = room.adjacentRooms[1];
@@ -150,8 +152,8 @@ public class Game {
             }
             room.getRoom(room.currentRoom);
             Functions.slowPrint(room.description);
-            roomSelect = getInput.nextLine();
-            if(roomSelect == "exit" || roomSelect == "Exit"){
+            roomSelect = getInput.next();
+            if(roomSelect.equals("exit") || roomSelect.equals("Exit")){
                 break;
             }
         }
