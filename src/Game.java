@@ -136,6 +136,8 @@ public class Game {
         Functions.slowPrint("Hey buddy, it's me, Abernathy, again. Would you mind terribly if I placed you in my new house?");
         Functions.slowPrint("It's still under construction, but check out the couple of rooms that have been built and let me know if you get lost!");
         Functions.slowPrint("Although, I suppose it will be hard for you to let me know if you are lost...ehh, lets not worry about that right now.");
+        Functions.slowPrint("Ah and one last thing. If you wish to leave the house, at any point, simply say 'Exit' or 'exit' and you will be allowed to leave.");
+        System.out.println();
 
         //Initiate room traversal section
         room.currentRoom = 1; //Set player into the Entry room of the Mansion.
@@ -158,6 +160,7 @@ public class Game {
             }
         }
 
+        System.out.println("Next up? How about we learn how to have some rooms initiate a fight if the player enters them.");
         System.out.println("Good luck! You got this and remember, this is literally just for fun. You've always wanted to tell a story through a game and this is our pre-rough draft.");
         System.out.println("I believe in you");
     }
