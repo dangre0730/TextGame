@@ -28,7 +28,7 @@ public class Game {
         player.name = getInput.nextLine(); //Take the string value, no matter the characters, and set the player objects 'playerName' string variable to the input value.
         Dialog.intro(player.name);    //Run the 'intro' method from the Dialog class and pass the player name that was just set.
 
-        Functions.slowPrint("Today is 'Character Building Day' and, great news, you are my Test Subject! So lets start with a simple questionnaire.");
+        Functions.slowPrint("Today is \"Character Building Day\" and, great news, you are my Test Subject! So lets start with a simple questionnaire.");
 
         //Get PC Class choice
         Dialog.classSelection();
@@ -141,8 +141,8 @@ public class Game {
 
         //Initiate room traversal section
         room.currentRoom = 1; //Set player into the Entry room of the Mansion.
-        room.getRoom(room.currentRoom);
-        Functions.slowPrint(room.description);
+        room.getRoom(room.currentRoom); //Initialize the variables in the room object, so that they can be printed for player.
+        Functions.slowPrint(room.description); //Print currentRoom Description.
         //Super important to remember!! USE '.next', NOT '.nextLine'!! It will enter a carriage return instead of prompting for input.
         roomSelect = getInput.next();
         while(!roomSelect.equals("Exit") || !roomSelect.equals("exit")) {

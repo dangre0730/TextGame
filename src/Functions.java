@@ -3,10 +3,7 @@ import java.util.Scanner;
 public class Functions {
 
     public static boolean hasLevelled(int playerExp, int nextLevel){
-        if(playerExp >= nextLevel){
-            return true;
-        }
-        return false;
+        return playerExp >= nextLevel;
     }
 
     public static int nextLevel(int playerLevel, int nextLevel){
