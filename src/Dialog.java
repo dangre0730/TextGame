@@ -1,6 +1,4 @@
 public class Dialog {
-    //Multi-dimensional test array
-    public String[][] treeDArray = new String[4][4];
 
     public static void greeting(){
         Functions.slowPrint("Hello, Traveler! I'm Abernathy, what is your name?");
