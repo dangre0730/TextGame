@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.awt.*;
 import java.util.Scanner;
 public class Game {
 
@@ -5,6 +7,7 @@ public class Game {
     public static Player player = new Player(); //Creates Player object that will store our PC's stats
     public static Enemy enemy = new Enemy(); //Create Enemy Object that has enemy names and stats.
     public static Room room = new Room(); //Create Room Object that will track where the player is, room description, and adjacent rooms.
+
     public static void main(String[] args) {
 
         //Global / Player Variable definitions
@@ -19,6 +22,32 @@ public class Game {
         boolean continueGame = true;
         //Strings
         String roomSelect;
+
+        // Create UI
+        JFrame ui = new JFrame();
+        ui.setSize(720, 480);
+        ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ui.getContentPane().setBackground(Color.BLACK);
+        ui.setLayout(null); // Disable the default layout, so we can set our own format.
+        ui.setVisible(true);
+
+        // Create containers for ui
+        Container textCon = ui.getContentPane();
+
+        // Create title name Panel
+        JPanel titleNamePanel = new JPanel();
+        titleNamePanel.setBounds(180, 100, 400, 70);
+        titleNamePanel.setBackground(Color.GRAY);
+        textCon.add(titleNamePanel);
+
+        // Create Font for title label
+        Font titleFont = new Font("Courier", Font.PLAIN, 40);
+
+        // Create title label
+        JLabel titleNameLabel = new JLabel("Abernathy's Mansion");
+        titleNameLabel.setForeground(Color.WHITE);
+        titleNameLabel.setFont(titleFont);
+        titleNamePanel.add(titleNameLabel);
 
         //Get player name
         Scanner getInput = new Scanner(System.in); //Create Scanner object which will be used to take input from the player.
