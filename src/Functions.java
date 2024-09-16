@@ -59,8 +59,10 @@ public class Functions {
                     damageDealt = makeAnAttack(playerAttackDamage, playerDamageMod, enemyArmor, playerCritChance);
                     extraAttack += attackSpeed - 1d;
                     if(damageDealt > 0) {
+                        slowPrint("B A M !");
                         enemyHealth -= damageDealt;
 //                        earnedXP += 3;
+                        slowPrint("Wow! You dealt " + damageDealt + " damage to the target.");
                     } else {
                         slowPrint("Player failed to deal damage this round");
 //                        earnedXP += 3;
@@ -75,8 +77,10 @@ public class Functions {
                         slowPrint("---EXTRA ATTACK---");
                         damageDealt = makeAnAttack(playerAttackDamage, playerDamageMod, enemyArmor, playerCritChance);
                         if(damageDealt > 0) {
+                            slowPrint("P O W !");
                             enemyHealth -= damageDealt;
 //                            earnedXP += 3;
+                            slowPrint("Wow! You dealt " + damageDealt + " damage to the target.");
                         } else {
                             slowPrint("Player failed to deal damage this round");
 //                            earnedXP += 0;
@@ -110,6 +114,7 @@ public class Functions {
                     slowPrint("Enemy failed to deal damage this round");
                 }
                 if(playerHealth > 0){
+                    slowPrint("You took " + damageDealt + " damage.");
                     slowPrint("Player health is " + playerHealth);
                 }
             } else {
