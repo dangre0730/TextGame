@@ -127,8 +127,8 @@ public class Player {
             playerCharisma = 8;
         }
         chaMod = (playerCharisma - 10) / 2;
-        System.out.println("Starting health is " + maxPlayerHealth);
         maxPlayerHealth = Functions.healthDiceRoll(maxPlayerHealth, hitDie, 3, conMod);
+        System.out.println("Starting health is " + maxPlayerHealth);
 //        System.out.println(maxPlayerHealth);
         playerHealth = maxPlayerHealth;
 //        System.out.println(playerHealth);
