@@ -10,7 +10,7 @@ public class UserInterface {
     Font titleFont, menuFont;
     Container mainCon;
     JPanel titleNamePanel, startButtonPanel, mainTextPanel, choiceButtonPanel;
-    JLabel titleNameLabel;
+    JLabel titleNameLabel, mainTextLabel, choiceLabel;
     JButton startButton;
     JTextArea mainTextArea;
     TitleHandler tsHandler;
@@ -22,24 +22,37 @@ public class UserInterface {
 
         // Create Text Panel
         mainTextPanel = new JPanel();
-        mainTextPanel.setBackground(Color.green);
+        mainTextPanel.setBackground(Color.gray);
         mainTextPanel.setBounds(120, 100, 1060, 200);
         mainCon.add(mainTextPanel);
 
+        // Create Text Panel Label and display text so you know what element it is
+        mainTextLabel = new JLabel("Main Text Label");
+        mainTextPanel.add(mainTextLabel);
+
         choiceButtonPanel = new JPanel();
         choiceButtonPanel.setBounds(266, 400, 250, 100);
-        choiceButtonPanel.setBackground(Color.blue);
+        choiceButtonPanel.setBackground(Color.gray);
         mainCon.add(choiceButtonPanel);
 
-        // Create Text Area
-        mainTextArea = new JTextArea(Dialog.greeting());
-        mainTextArea.setBounds(120, 100, 1060, 200);
+        // Create Choice Panel Label and display text so you know what element it is
+        choiceLabel = new JLabel("Choose your choice");
+        choiceButtonPanel.add(choiceLabel);
+
+        // Create Text Area. Set the width of this area to be 16 pixels smaller than the text panel so that it has a buffer around it
+        mainTextArea = new JTextArea(); //JTextArea(Dialog.greeting());
+        mainTextArea.setBounds(120, 100, mainTextPanel.getWidth() - 16, 200);
         mainTextArea.setBackground(Color.black);
         mainTextArea.setForeground(Color.white);
         mainTextArea.setFont(menuFont);
         mainTextArea.setLineWrap(true);
+        mainTextArea.setEditable(false);
         mainTextPanel.add(mainTextArea);
 
+        // Append text to mainTextArea so you know what element it is
+        displayText("Main Text Area\n\n\n");
+
+        displayText(Dialog.chatTracker[0][0]);
     }
 
     public void createUI(){
@@ -82,6 +95,7 @@ public class UserInterface {
         startButton = new JButton("START");
         startButton.setBackground(Color.black);
         startButton.setForeground(Color.WHITE);
+        startButton.setBorderPainted(false);
         startButton.setFont(menuFont);
         startButton.addActionListener(tsHandler);
 
@@ -95,6 +109,20 @@ public class UserInterface {
 
         // UI Learning area close
     }
+
+    public void displayText(String text){
+        mainTextArea.append(text);
+    }
+
+    public void clearText(){
+        mainTextArea.setText("");
+    }
+
+    public String getPlayerInput(){
+        // add in the future
+        return "something";
+    }
+
     public class TitleHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
