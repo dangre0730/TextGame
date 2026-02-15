@@ -6,6 +6,7 @@ public class Game {
     public static Enemy enemy = new Enemy(); //Create Enemy Object that has enemy names and stats.
     public static Room room = new Room(); //Create Room Object that will track where the player is, room description, and adjacent rooms.
     public static UserInterface ui = new UserInterface();
+    public static Dialog dialog = new Dialog();
 
     public static void main(String[] args) {
 
@@ -25,13 +26,19 @@ public class Game {
         // Load UI
         ui.createUI();
 
+
+
         //Get player name
         Scanner getInput = new Scanner(System.in); //Create Scanner object which will be used to take input from the player.
 
         //Execute Dialog methods
-        Dialog.greeting();
+//        Dialog.greeting();
+        Dialog.chatter(dialog.chatTracker[0]);
+//        Functions.slowPrint(dialog.chatTracker[dialog.chatLevel][0]);
         player.name = getInput.nextLine(); //Take the string value, no matter the characters, and set the player objects 'playerName' string variable to the input value.
-        Dialog.intro(player.name);    //Run the 'intro' method from the Dialog class and pass the player name that was just set.
+//        Dialog.intro(player.name);    //Run the 'intro' method from the Dialog class and pass the player name that was just set.
+        dialog.chatLevel = 1;
+        Dialog.chatter(dialog.chatTracker[dialog.chatLevel]);
 
         Functions.slowPrint("Today is \"Character Building Day\" and, great news, you are my Test Subject! So lets start with a simple questionnaire.");
 
