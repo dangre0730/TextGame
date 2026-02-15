@@ -1,4 +1,30 @@
+//import com.fasterxml.jackson.databind //Trying to figure out how to download and learn to use the Jackson library for JSON to POJO
+
 public class Dialog {
+
+    static String[][] chatTracker = {
+            {   // [0,N] greeting dialog
+                "Hello, Traveler! I'm Abernathy, what is your name?"
+            },
+            {   // [1, N] intro dialog
+                "Well then, it's nice to meet you, " + Game.player.name + ". This is my world, coded with these two hands, and I use it to test out cool new features for my game.",
+                "",
+                "All of the text you are seeing for now, has been written in the \"Dialog.java\" class using println statements.",
+                "Later on, I want to learn how to implement JSON files to store and read dialog. I think that will be cleaner in the long run, but it's early days right now.",
+                "",
+                "I'll talk more about that later, but for now just enjoy this test experience and remember, THIS IS A TEST AND I'M STILL LEARNING! :)",
+                ""
+            }
+    };
+
+    Integer chatLevel = 0;
+
+    public static void chatter(String[] chatTracker){
+        for(int i = 0; i < chatTracker.length; i++){
+            Functions.slowPrint(chatTracker[i]);
+
+        }
+    }
 
     public static void greeting(){
         Functions.slowPrint("Hello, Traveler! I'm Abernathy, what is your name?");
