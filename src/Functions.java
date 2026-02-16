@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Scanner;
 
 public class Functions {
@@ -204,6 +205,29 @@ public class Functions {
             }
         }
         System.out.println();
+    }
+
+    public static void slowPrintText(String[] text, JTextArea textArea) {
+
+        for(int i = 0; i < text.length; i++){
+            String string = text[i];
+
+            char[] stringToChar = string.toCharArray();
+
+            for(int j = 0; j < string.length(); j++){
+                char currentChar = stringToChar[j];
+
+                try {
+                    Thread.sleep(5);
+                    textArea.append(String.valueOf(currentChar));
+                } catch(InterruptedException e) {
+                    textArea.append(String.valueOf(currentChar));
+                    System.out.println("Error encountered! " + e.getMessage());
+                }
+            }
+        }
+
+//        System.out.println();
     }
 
 }
