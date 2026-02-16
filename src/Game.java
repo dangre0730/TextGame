@@ -26,7 +26,21 @@ public class Game {
         // Load UI
         ui.createUI();
 
+        int gameStartWaitCounter = 0;
+        while (!ui.gameStarted){
+            gameStartWaitCounter++;
+            try {
+                Thread.sleep(15);
+            }  catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
+            if (gameStartWaitCounter == 1000){
+                System.out.println("Time exceeded, you have been labeled as 'inactive' by the system! Game will now exit. You failed!");
+                System.exit(0);
+            }
+        }
+        Functions.slowPrintText(Dialog.chatTracker[dialog.chatLevel], ui.mainTextArea);
 
         //Get player name
         Scanner getInput = new Scanner(System.in); //Create Scanner object which will be used to take input from the player.
