@@ -40,7 +40,7 @@ public class Game {
                 System.exit(0);
             }
         }
-        Functions.slowPrintText(Dialog.chatTracker[dialog.chatLevel], ui.mainTextArea);
+//        Functions.slowPrintText(Dialog.chatTracker[dialog.chatLevel], ui.mainTextArea);
 
         //Get player name
         Scanner getInput = new Scanner(System.in); //Create Scanner object which will be used to take input from the player.
