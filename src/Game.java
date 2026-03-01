@@ -41,6 +41,10 @@ public class Game {
         // Load UI
         ui.createUI();
 
+        // CURRENT NEXT STEP: Add weapon stats to textArea information then update the playersheet to match the information that is relevant to us.
+        //                      Add option to type 'QUIT GAME' at any time to close the game immediately.
+        //                      Figure out how we integrate the battleframe functionality.
+
 //        Functions.slowPrint("Now that we've covered stats, lets test out your combat skills! Don't worry, your enemies won't hit back very hard :)");
 //        int earnedExp;
 //
