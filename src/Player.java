@@ -18,6 +18,7 @@ public class Player {
         MAGE
     }
     classChoice pcClass;
+    String className, attackModifier, weaponName;
     int classArmor;
     int hitDie;
 
@@ -55,10 +56,11 @@ public class Player {
         //Build Character Stats
         switch (pcClass){
             case SOLDIER:
+                className = "Soldier";
+                attackModifier = "STRENGTH";
                 classArmor = 15;
                 hitDie = 12;
                 maxPlayerHealth = hitDie;
-                System.out.println("Your attack modifier is Strength!");
                 playerStrength = Functions.statDiceRoll(6, 4, 2);
                 playerDexterity = Functions.statDiceRoll(6, 4, 0);
                 playerConstitution = Functions.statDiceRoll(6, 4, 2);
@@ -67,10 +69,11 @@ public class Player {
                 playerCharisma = Functions.statDiceRoll(6, 4, 0);
                 break;
             case RANGER:
+                className = "Ranger";
+                attackModifier = "DEXTERITY";
                 classArmor = 12;
                 hitDie = 8;
                 maxPlayerHealth = hitDie;
-                System.out.println("Your attack modifier is Dexterity!");
                 playerStrength = Functions.statDiceRoll(6, 4, 0);
                 playerDexterity = Functions.statDiceRoll(6, 4, 2);
                 playerConstitution = Functions.statDiceRoll(6, 4, 0);
@@ -79,10 +82,11 @@ public class Player {
                 playerCharisma = Functions.statDiceRoll(6, 4, 0);
                 break;
             case BRAWLER:
+                className = "Brawler";
+                attackModifier = "STRENGTH";
                 classArmor = 14;
                 hitDie = 10;
                 maxPlayerHealth = hitDie;
-                System.out.println("Your attack modifier is Strength!");
                 playerStrength = Functions.statDiceRoll(6, 4, 2);
                 playerDexterity = Functions.statDiceRoll(6, 4, 0);
                 playerConstitution = Functions.statDiceRoll(6, 4, 1);
@@ -91,10 +95,11 @@ public class Player {
                 playerCharisma = Functions.statDiceRoll(6, 4, 1);
                 break;
             case MAGE:
+                className = "Mage";
+                attackModifier = "INTELLIGENCE";
                 classArmor = 10;
                 hitDie = 6;
                 maxPlayerHealth = hitDie;
-                System.out.println("Your attack modifier is Intelligence!");
                 playerStrength = Functions.statDiceRoll(6, 4, 0);
                 playerDexterity = Functions.statDiceRoll(6, 4, 1);
                 playerConstitution = Functions.statDiceRoll(6, 4, 0);
@@ -103,6 +108,10 @@ public class Player {
                 playerCharisma = Functions.statDiceRoll(6, 4, 0);
                 break;
         }
+
+        System.out.println("Congratulations! You've selected the " + className + " class type!");
+        System.out.println("Your attack modifier is " + attackModifier + "!");
+
         if(playerStrength < 8){
             playerStrength = 8;
         }
@@ -143,21 +152,25 @@ public class Player {
     public void setWeaponChoice() {
         switch(playerWeapon){
             case SWORD:
+                weaponName = "SWORD";
                 attackDamage = 3;
                 attackSpeed = 1.6;
                 criticalChance = 15.0;
                 break;
             case CROSSBOW:
+                weaponName = "CROSSBOW";
                 attackDamage = 5;
                 attackSpeed = 1.0;
                 criticalChance = 19.5;
                 break;
             case BAT:
+                weaponName = "BAT";
                 attackDamage = 3;
                 attackSpeed = 1.8;
                 criticalChance = 11.0;
                 break;
             case WAND:
+                weaponName = "WAND";
                 attackDamage = 4;
                 attackSpeed = 2.0;
                 criticalChance = 0.0;
