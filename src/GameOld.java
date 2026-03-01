@@ -51,7 +51,7 @@ public class GameOld {
         Dialog.chatter(dialog.chatTracker[0]);
 //        Functions.slowPrint(dialog.chatTracker[dialog.chatLevel][0]);
 
-        player.name = ui.getPlayerInput();
+//        player.name = ui.getPlayerInput();
 //        player.name = getInput.nextLine(); //Take the string value, no matter the characters, and set the player objects 'playerName' string variable to the input value.
 //        Dialog.intro(player.name);    //Run the 'intro' method from the Dialog class and pass the player name that was just set.
         dialog.chatLevel = 1;
