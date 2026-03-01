@@ -212,19 +212,93 @@ public class Functions {
         for(int i = 0; i < text.length; i++){
             String string = text[i];
 
+            if (string.contains("${playerName}")) {
+                string = string.replace("${playerName}", Game.player.name);
+            }
+            if (string.contains("${playerClass}")) {
+                string = string.replace("${playerClass}", Game.player.className);
+            }
+            if (string.contains("${playerWeapon}")) {
+                string = string.replace("${playerWeapon}", Game.player.weaponName);
+            }
+            if (string.contains("${playerLevel}")) {
+                string = string.replace("${playerLevel}", Integer.toString(Game.player.level));
+            }
+            if (string.contains("${attackModifier}")) {
+                string = string.replace("${attackModifier}", Game.player.attackModifier);
+            }
+            if (string.contains("${strength}")) {
+                string = string.replace("${strength}", Integer.toString(Game.player.playerStrength));
+            }
+            if (string.contains("${strMod}")) {
+                string = string.replace("${strMod}", Integer.toString(Game.player.strMod));
+            }
+            if (string.contains("${dexterity}")) {
+                string = string.replace("${dexterity}", Integer.toString(Game.player.playerDexterity));
+            }
+            if (string.contains("${dexMod}")) {
+                string = string.replace("${dexMod}", Integer.toString(Game.player.dexMod));
+            }
+            if (string.contains("${constitution}")) {
+                string = string.replace("${constitution}", Integer.toString(Game.player.playerConstitution));
+            }
+            if (string.contains("${conMod}")) {
+                string = string.replace("${conMod}", Integer.toString(Game.player.conMod));
+            }
+            if (string.contains("${intelligence}")) {
+                string = string.replace("${intelligence}", Integer.toString(Game.player.playerIntelligence));
+            }
+            if (string.contains("${intMod}")) {
+                string = string.replace("${intMod}", Integer.toString(Game.player.intMod));
+            }
+            if (string.contains("${wisdom}")) {
+                string = string.replace("${wisdom}",  Integer.toString(Game.player.playerWisdom));
+            }
+            if (string.contains("${wisMod}")) {
+                string = string.replace("${wisMod}", Integer.toString(Game.player.wisMod));
+            }
+            if (string.contains("${charisma}")) {
+                string = string.replace("${charisma}", Integer.toString(Game.player.playerCharisma));
+            }
+            if (string.contains("${chaMod}")) {
+                string = string.replace("${chaMod}", Integer.toString(Game.player.chaMod));
+            }
+            if (string.contains("${currentHP}")) {
+                string = string.replace("${currentHP}", Integer.toString(Game.player.playerHealth));
+            }
+            if (string.contains("${maxHP}")) {
+                string = string.replace("${maxHP}", Integer.toString(Game.player.maxPlayerHealth));
+            }
+            if (string.contains("${hitDie}")) {
+                string = string.replace("${hitDie}", Integer.toString(Game.player.hitDie));
+            }
             char[] stringToChar = string.toCharArray();
 
             for(int j = 0; j < string.length(); j++){
                 char currentChar = stringToChar[j];
 
                 try {
-                    Thread.sleep(5);
+                    Thread.sleep(1);
                     textArea.append(String.valueOf(currentChar));
+
+                    // Trying to understand how javax.swing.Timer works and / or how SwingWorker works. Not sure where this even should go really though.
+//                    ActionListener sleepPrint = new ActionListener() {
+//                        public void actionPerformed(ActionEvent e) {
+//                            textArea.append(String.valueOf(currentChar));
+//                        }
+//                    };
+//                    Timer printTimer = new Timer(5, sleepPrint);
+//                    printTimer.start();
+//                    printTimer.stop();
+//                    Game.ui.mainCon.revalidate();     // WHY ARE YOU NOT SLOW PRINTING? INSTEAD YOU JUST WAIT THE TIME IT WOULD HAVE TAKEN TO SLOWPRINT AND THEN IT ALL APPEARS AT ONCE.
+//                    Game.ui.mainCon.repaint();
                 } catch(InterruptedException e) {
                     textArea.append(String.valueOf(currentChar));
                     System.out.println("Error encountered! " + e.getMessage());
                 }
             }
+
+            textArea.append("\n");
         }
 
 //        System.out.println();
