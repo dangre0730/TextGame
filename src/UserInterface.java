@@ -22,21 +22,44 @@ public class UserInterface {
             armorPanel,
             statsPanel,
             mainTextPanel,
+            playerInputPanel,
             choiceButtonPanel;
-    JLabel titleNameLabel, mainTextLabel, choiceLabel;
+    JLabel
+            titleNameLabel,
+            mainTextLabel,
+            choiceLabel;
     JButton startButton;
     JTextArea mainTextArea;
+    JTextField playerInputField;
     TitleHandler tsHandler;
-    Font titleFont, menuFont;
-    Color uiBackgroundColor, statsBackgroundColor;
+    PlayerInputHandler pHandler;
+    Font
+            titleFont,
+            menuFont;
+    Color
+            uiBackgroundColor,
+            statsBackgroundColor;
     GridLayout statsLayout;
     BoxLayout nameClassLayout; //, choiceLayout;
 
     Boolean gameStarted = false;
     Integer gameWidth = 1280;
     Integer gameHeight = 720;
+    String playerInput = "";
+
+    enum CurrentScreen {
+        TITLE,
+        EXPLORATION,
+        COMBAT,
+        PAUSE,
+        INVENTORY
+    }
+
+    CurrentScreen currentScreen;
 
     public void createUI(){
+
+        currentScreen = CurrentScreen.TITLE;
 
         uiBackgroundColor = new Color(19, 99, 83);
         statsBackgroundColor = new Color(168, 161, 103);
@@ -114,7 +137,7 @@ public class UserInterface {
         playerPanel.setBackground(statsBackgroundColor);
 //        playerPanel.setBounds(16, 16, gameWidth - 16, 160);
         playerPanel.setLocation(16, 16);
-        playerPanel.setSize(mainCon.getWidth() - 32, (mainCon.getHeight() / 3) - 16);
+        playerPanel.setSize(mainCon.getWidth() - 32, (mainCon.getHeight() / 4) - 16);
         playerPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         playerPanel.setLayout(new GridLayout(1, 0, 8, 8));
         mainCon.add(playerPanel);
@@ -291,6 +314,7 @@ public class UserInterface {
         weaponPanel.setBounds(16, 16, playerPanelElementsWidth, 140);
         weaponPanel.setLayout(new BoxLayout(weaponPanel, BoxLayout.PAGE_AXIS));
 
+
 //        JLabel playerWeaponNameLabel = new JLabel("WEAPON: Brass Knuckles");
 //            playerWeaponNameLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 //            playerWeaponNameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -397,61 +421,183 @@ public class UserInterface {
         mainCon.repaint();
 
         // Create Text Panel
-//        mainTextPanel = new JPanel();
-//        mainTextPanel.setBackground(Color.black);
-//        mainTextPanel.setBounds(nameClassLevelPanel.getX(), nameClassLevelPanel.getY() + nameClassLevelPanel.getHeight(), nameClassLevelPanel.getWidth() + 8 + statsPanel.getWidth(), 340);
-//        mainCon.add(mainTextPanel);
+        mainTextPanel = new JPanel();
+        mainTextPanel.setBackground(Color.black);
+        mainTextPanel.setBounds(playerPanel.getX(), playerPanel.getY() + playerPanel.getHeight(), playerPanel.getWidth(), ((mainCon.getHeight() / 2) + (mainCon.getHeight() / 8) + (mainCon.getHeight() / 16)) - 16);
+        mainCon.add(mainTextPanel);
 
         // Create Text Panel Label and display text so you know what element it is
-//        mainTextLabel = new JLabel("Main Text Label - GAME CONSOLE SHOULD PRINT DIALOG HERE");
-//        mainTextPanel.add(mainTextLabel);
+        mainTextLabel = new JLabel("GAME CONSOLE");
+        mainTextPanel.add(mainTextLabel);
 
-//        choiceButtonPanel = new JPanel();
-//        choiceButtonPanel.setBounds(nameClassLevelPanel.getX(), mainTextPanel.getY() + mainTextPanel.getHeight(), mainTextPanel.getWidth(), 170);
-//        choiceButtonPanel.setBackground(Color.gray);
-//        mainCon.add(choiceButtonPanel);
+        playerInputPanel = new JPanel();
+        playerInputPanel.setBounds(playerPanel.getX(), mainTextPanel.getY() + mainTextPanel.getHeight(), mainTextPanel.getWidth(), (mainCon.getHeight() / 16));
+        playerInputPanel.setBackground(Color.darkGray);
+
+        JLabel playerInputLabel = new JLabel(">");        ////////Trying to add a > right before the text field like the HTML game. Not displaying currently.
+        playerInputLabel.setLocation(playerInputPanel.getX() + 8, playerInputPanel.getY());
+        playerInputLabel.setFont(new Font("Arial", Font.BOLD, playerInputPanel.getWidth() / 50));
+        playerInputLabel.setForeground(Color.black);
+        playerInputPanel.add(playerInputLabel);
+
+        pHandler = new PlayerInputHandler();
+        playerInputField = new JTextField();
+            playerInputField.setPreferredSize(new Dimension(playerInputPanel.getWidth() - 32, playerInputPanel.getHeight() - 8));
+            playerInputField.setLocation(playerInputLabel.getX() + 24, playerInputLabel.getY());
+            playerInputField.setFont(new Font("Arial", Font.PLAIN, playerInputPanel.getWidth() / 50));
+            playerInputField.setBackground(Color.darkGray);
+            playerInputField.setForeground(Color.black);
+            playerInputField.setBorder(null);
+            // Two ways to handle this action monitor. Did it this commented out way first, but realized I could 'reuse' the TitleHandler class.
+            // Commented out so I have it as a reference.
+//            playerInputField.addActionListener(e -> {
+//                if (playerInputField.isFocusOwner()){
+//                    System.out.println(playerInputField.getText());
+//                    playerInputField.setText("");
+//                }
+//            });
+            playerInputField.addActionListener(pHandler);
+        playerInputPanel.add(playerInputField);
+
+        mainCon.add(playerInputPanel);
 
         // Create Choice Panel Label and display text so you know what element it is
 //        choiceLabel = new JLabel("Make your choice");
 //        choiceButtonPanel.add(choiceLabel);
 
         // Create Text Area. Set the width of this area to be 16 pixels smaller than the text panel so that it has a buffer around it
-//        mainTextArea = new JTextArea(); //JTextArea(Dialog.greeting());
-//        mainTextArea.setBounds(120, 100, mainTextPanel.getWidth() - 16, 200);
+        mainTextArea = new JTextArea(); //JTextArea(Dialog.greeting());
+        mainTextArea.setBounds(mainTextPanel.getX() + 8, mainTextPanel.getY() + 8, mainTextPanel.getWidth() - 8, mainTextPanel.getHeight() - 8);
 //        mainTextArea.setBorder(BorderFactory.createLineBorder(Color.gray));
-//        mainTextArea.setBackground(Color.black);
-//        mainTextArea.setForeground(Color.white);
-//        mainTextArea.setFont(menuFont);
-//        mainTextArea.setLineWrap(true);
-//        mainTextArea.setEditable(false);
-//        mainTextArea.append("Main Text Area\n\n\n");
-//        mainTextPanel.add(mainTextArea);
+        mainTextArea.setBackground(Color.black);
+        mainTextArea.setForeground(Color.white);
+        mainTextArea.setFont(new Font("monospaced", Font.BOLD, 22));
+        mainTextArea.setLineWrap(true);
+        mainTextArea.setWrapStyleWord(true);
+        mainTextArea.setEditable(false);
+        mainTextArea.append("Main Text Area\n\n\n");
+        mainTextPanel.add(mainTextArea);
+
+        mainCon.revalidate();
+        mainCon.repaint();
 
         gameStarted = true;
 
-        // Append text to mainTextArea so you know what element it is
-//        displayText("Main Text Area\n\n\n");
+        playerInputField.requestFocusInWindow();
 
-//        displayText(Dialog.chatTracker[0][0]);
+        Functions.slowPrintText(Dialog.chatTracker[Game.dialog.chatLevel], Game.ui.mainTextArea);
+
     }
 
-    public void displayText(String text){
-        mainTextArea.append(text);
+    public void displayText(){
+//        mainTextArea.append(text);
+        Functions.slowPrintText(Dialog.chatTracker[Game.dialog.chatLevel], Game.ui.mainTextArea);
     }
 
     public void clearText(){
         mainTextArea.setText("");
     }
 
-    public String getPlayerInput(){
-        // add in the future
-        return "something";
+    public void getPlayerInput(){
+        if (playerInputField.isFocusOwner()) {
+
+            boolean validInput = true;
+
+            System.out.println(Game.gameState);
+
+            Game.playerInput = playerInputField.getText().toUpperCase();
+
+            switch (Game.gameState) {
+                case WAITING_ON_GAME_START -> {
+                }
+                case WAITING_ON_PLAYER_NAME -> {
+                    Game.setPlayerName(playerInputField.getText());
+                    Game.gameState = Game.GameState.WAITING_ON_CONTINUE;
+                    System.out.println("Game.player.name: " + Game.player.name);
+                    clearText();
+                    Game.dialog.chatLevel = 1;
+                    displayText();
+                }
+                case WAITING_ON_CONTINUE -> {
+                    if (Game.playerInput.equals("CONTINUE")) {
+                        Game.gameState = Game.GameState.WAITING_ON_PLAYER_CLASS;
+                        clearText();
+                        Game.dialog.chatLevel++;
+                        displayText();
+                    } else {
+                        Game.ui.playerInputField.setText("");
+                    }
+                }
+                case WAITING_ON_PLAYER_CLASS -> {
+
+                    switch (Game.playerInput) {
+                        case "SOLDIER" -> Game.player.pcClass = Player.classChoice.SOLDIER;
+                        case "RANGER" -> Game.player.pcClass = Player.classChoice.RANGER;
+                        case "BRAWLER" -> Game.player.pcClass = Player.classChoice.BRAWLER;
+                        case "MAGE" -> Game.player.pcClass = Player.classChoice.MAGE;
+                        default -> validInput = false;
+                    }
+                    if (validInput) {
+                        Game.player.classBuilder();
+                        Game.player.statPrinter();
+                        Game.dialog.chatLevel++;
+                        clearText();
+//                        Game.dialog.chatLevel = 2;
+                        Game.gameState = Game.GameState.WAITING_ON_PLAYER_WEAPON;
+                        displayText();
+                    } else {
+                        Game.ui.playerInputField.setText("");
+                    }
+                }
+                case WAITING_ON_PLAYER_WEAPON -> {
+                    System.out.println(Game.gameState);
+
+                    switch (Game.playerInput) {
+                        case "SWORD" -> Game.player.playerWeapon = Player.weaponChoice.SWORD;
+                        case "CROSSBOW" -> Game.player.playerWeapon = Player.weaponChoice.CROSSBOW;
+                        case "BAT" -> Game.player.playerWeapon = Player.weaponChoice.BAT;
+                        case "WAND" -> Game.player.playerWeapon = Player.weaponChoice.WAND;
+                        default -> validInput = false;
+                    }
+
+                    if (validInput) {
+                        Game.player.setWeaponChoice();
+                        Game.dialog.chatLevel++;
+                        clearText();
+                        displayText();
+                    }
+                }
+                case EXPLORING -> {
+                }
+                case IN_COMBAT -> {
+                }
+                case IN_INVENTORY -> {
+                }
+                default -> System.out.println("gameState default switch");
+            }
+
+            playerInputField.setText("");
+        }
     }
 
     public class TitleHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             createGameScreen();
+//            currentScreen = CurrentScreen.EXPLORATION;
+            Game.gameState = Game.GameState.WAITING_ON_PLAYER_NAME;
+        }
+    }
+
+    public class PlayerInputHandler implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            getPlayerInput();
+//            if (playerInputField.isFocusOwner()){
+//                System.out.println(playerInputField.getText());
+//                playerInput = playerInputField.getText();
+//                playerInputField.setText("");
+//            }
         }
     }
 }
