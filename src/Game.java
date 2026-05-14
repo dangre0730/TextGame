@@ -1,40 +1,54 @@
 public class Game {
 
-    //Create objects that will be utilized in game. These objects can and will be accessed from other classes given their existence outside the main method and having 'public static'.
-    public static Player player = new Player(); //Creates Player object that will store our PC's stats
-    public static Enemy enemy = new Enemy(); //Create Enemy Object that has enemy names and stats.
-    public static Room room = new Room(); //Create Room Object that will track where the player is, room description, and adjacent rooms.
-    public static UserInterface ui = new UserInterface();
-    public static Dialog dialog = new Dialog();
-    public static String playerInput;
+/* #########################################
+        GLOBAL VARIABLES / OBJECTS
+ #########################################*/
 
-    enum GameState {
+    // Game flow is dependent on the current game state. The UI object will keep the game running and actions taken
+    //  will trigger code to run dependent on the game state.
+    public enum GameState {
         WAITING_ON_GAME_START,
         WAITING_ON_PLAYER_NAME,
         WAITING_ON_CONTINUE,
         WAITING_ON_PLAYER_CLASS,
         WAITING_ON_PLAYER_WEAPON,
+        ROOM_TUTORIAL,
         EXPLORING,
         IN_COMBAT,
         IN_INVENTORY
     }
 
-    // gameState
+    // Object that controls the current state of the game
     static GameState gameState; // = GameState.WAITING_ON_GAME_START;
+    static GameState previousGameState;
+
+    //Create objects that will be utilized in game.
+    // These objects can and will be accessed from other classes given their existence outside the main method and having 'public static'.
+    public static Player player = new Player(); //Creates Player object that will store our PC's stats
+    public static Enemy enemy = new Enemy(); //Create Enemy Object that has enemy names and stats.
+    public static Room room = new Room(); //Create Room Object that will track where the player is, room description, and adjacent rooms.
+    public static UserInterface ui = new UserInterface(); //Create UserInterface object that handles rendering the UI and triggers.
+    public static Dialog dialog = new Dialog();
+    public static String playerInput;
 
     public static void main(String[] args) {
 
+        // Set the default game state so the correct UI is displayed when the game launches.
         gameState = GameState.WAITING_ON_GAME_START;
+        previousGameState = GameState.WAITING_ON_GAME_START;
         //Global / Player Variable definitions
 
         //Integers
         int playerWeaponSelect;
         int playerClassSelection;
         int continueGameSelect;
+
         //Doubles
+
         //Booleans
         boolean hasLevelled;
         boolean continueGame = true;
+
         //Strings
         String roomSelect;
 
@@ -44,6 +58,11 @@ public class Game {
         // CURRENT NEXT STEP: Add weapon stats to textArea information then update the playersheet to match the information that is relevant to us.
         //                      Add option to type 'QUIT GAME' at any time to close the game immediately.
         //                      Figure out how we integrate the battleframe functionality.
+        //
+        //      ANOTHER UNRELATED IDEA: Use a linked list to track what rooms have been previously entered. Same thing for NPCs
+        //                                  so that you can create a new object for each as they are encountered, to prevent creating objects
+        //                                  for each NPC unnecessarily. Logically: if ROOM or NPC id doesn't exist in the linked lists create a
+        //                                  new object and insert their id to the linked list.
 
 //        Functions.slowPrint("Now that we've covered stats, lets test out your combat skills! Don't worry, your enemies won't hit back very hard :)");
 //        int earnedExp;
@@ -128,9 +147,114 @@ public class Game {
 //        System.out.println("I believe in you");
     }
 
+    public static void handleInput (String playerInput) {
+        boolean validInput = true;
+
+        switch (gameState) {
+            case WAITING_ON_GAME_START -> {
+            }
+            case WAITING_ON_PLAYER_NAME -> {
+                setPlayerName(playerInput);
+
+                setGameState(GameState.WAITING_ON_CONTINUE);
+                System.out.println("Game.player.name: " + player.name);
+                ui.clearText();
+                dialog.chatLevel = 1;
+                ui.displayText();
+            }
+            case WAITING_ON_CONTINUE -> {
+                if (playerInput.equals("CONTINUE")) {
+                    setGameState(GameState.WAITING_ON_PLAYER_CLASS);
+                    ui.clearText();
+                    dialog.chatLevel++;
+                    ui.displayText();
+                } else {
+                    ui.playerInputField.setText("");
+                }
+            }
+            case WAITING_ON_PLAYER_CLASS -> {
+                setPlayerClass(playerInput);
+            }
+            case WAITING_ON_PLAYER_WEAPON -> {
+                setPlayerWeapon(playerInput);
+            }
+            case ROOM_TUTORIAL -> {
+
+            }
+            case EXPLORING -> {
+            }
+            case IN_COMBAT -> {
+            }
+            case IN_INVENTORY -> {
+            }
+            default -> System.out.println("gameState default switch");
+        }
+    }
+
     public static void setPlayerName(String playerInput) {
         player.name = playerInput;
-//        dialog.playerName = player.name;
+    }
+
+    public static void setPlayerClass(String playerInput) {
+        boolean validInput = true;
+
+        switch (playerInput) {
+            case "SOLDIER", "1" -> player.pcClass = Player.classChoice.SOLDIER;
+            case "RANGER", "2" -> player.pcClass = Player.classChoice.RANGER;
+            case "BRAWLER", "3" -> player.pcClass = Player.classChoice.BRAWLER;
+            case "MAGE", "4" -> player.pcClass = Player.classChoice.MAGE;
+            default -> validInput = false;
+        }
+
+        if (validInput) {
+            player.classBuilder();
+            player.statPrinter();
+            ui.updatePlayerPanelLabels(player);
+            dialog.chatLevel++;
+            ui.clearText();
+            setGameState(GameState.WAITING_ON_PLAYER_WEAPON);
+            ui.displayText();
+        } else {
+            ui.playerInputField.setText("");
+        }
+    }
+
+    public static void setPlayerWeapon(String playerInput) {
+        boolean validInput = true;
+
+        System.out.println(gameState);
+
+        switch (playerInput) {
+            case "SWORD", "1" -> player.playerWeapon = Player.weaponChoice.SWORD;
+            case "CROSSBOW", "2" -> player.playerWeapon = Player.weaponChoice.CROSSBOW;
+            case "BAT", "3" -> player.playerWeapon = Player.weaponChoice.BAT;
+            case "WAND", "4" -> player.playerWeapon = Player.weaponChoice.WAND;
+            default -> validInput = false;
+        }
+
+        if (validInput) {
+            player.setWeaponChoice();
+            ui.updatePlayerPanelLabels(player);
+            if(Dialog.chatTracker.length <= dialog.chatLevel + 1) {
+                System.out.println("cannot iterate chatLevel further | " + dialog.chatLevel + " | " + Dialog.chatTracker.length);
+            } else {
+                dialog.chatLevel++;
+                setGameState(GameState.WAITING_ON_CONTINUE);
+                ui.clearText();
+                ui.displayText();
+            }
+        } else {
+            ui.playerInputField.setText("");
+        }
+    }
+
+    public static void setGameState(GameState gameState) {
+        if (Game.gameState != gameState) {
+            if (gameState != GameState.WAITING_ON_CONTINUE) {
+                Game.previousGameState = Game.gameState;
+            }
+            Game.gameState = gameState;
+        }
     }
 
 }
