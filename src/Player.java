@@ -54,8 +54,8 @@ public class Player {
     public void classBuilder(){
 
         //Build Character Stats
-        switch (pcClass){
-            case SOLDIER:
+        switch (pcClass) {
+            case SOLDIER -> {
                 className = "Soldier";
                 attackModifier = "STRENGTH";
                 classArmor = 15;
@@ -67,8 +67,8 @@ public class Player {
                 playerIntelligence = Functions.statDiceRoll(6, 4, 0);
                 playerWisdom = Functions.statDiceRoll(6, 4, 1);
                 playerCharisma = Functions.statDiceRoll(6, 4, 0);
-                break;
-            case RANGER:
+            }
+            case RANGER -> {
                 className = "Ranger";
                 attackModifier = "DEXTERITY";
                 classArmor = 12;
@@ -80,8 +80,8 @@ public class Player {
                 playerIntelligence = Functions.statDiceRoll(6, 4, 2);
                 playerWisdom = Functions.statDiceRoll(6, 4, 1);
                 playerCharisma = Functions.statDiceRoll(6, 4, 0);
-                break;
-            case BRAWLER:
+            }
+            case BRAWLER -> {
                 className = "Brawler";
                 attackModifier = "STRENGTH";
                 classArmor = 14;
@@ -93,8 +93,8 @@ public class Player {
                 playerIntelligence = Functions.statDiceRoll(6, 4, 0);
                 playerWisdom = Functions.statDiceRoll(6, 4, 1);
                 playerCharisma = Functions.statDiceRoll(6, 4, 1);
-                break;
-            case MAGE:
+            }
+            case MAGE -> {
                 className = "Mage";
                 attackModifier = "INTELLIGENCE";
                 classArmor = 10;
@@ -106,7 +106,7 @@ public class Player {
                 playerIntelligence = Functions.statDiceRoll(6, 4, 2);
                 playerWisdom = Functions.statDiceRoll(6, 4, 2);
                 playerCharisma = Functions.statDiceRoll(6, 4, 0);
-                break;
+            }
         }
 
         System.out.println("Congratulations! You've selected the " + className + " class type!");
