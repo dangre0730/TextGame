@@ -41,8 +41,19 @@ public class Dialog {
                     "[PLAYER NAME: ${playerName} | PLAYER CLASS: ${playerClass} (${attackModifier}) | PLAYER WEAPON: ${playerWeapon}]",
                     "[PLAYER LEVEL: ${playerLevel} | HP: ${currentHP} / ${maxHP} | HIT DIE: d${hitDie}]",
                     "[STRENGTH: ${strength} (${strMod}) | DEXTERITY: ${dexterity} (${dexMod}) | CONSTITUTION: ${constitution} (${conMod})]",
-                    "[INTELLIGENCE: ${intelligence} (${intMod}) | WISDOM: ${wisdom} (${wisMod}) | CHARISMA: ${charisma} (${chaMod})]"
+                    "[INTELLIGENCE: ${intelligence} (${intMod}) | WISDOM: ${wisdom} (${wisMod}) | CHARISMA: ${charisma} (${chaMod})]",
+                    "",
+                    "Type 'Continue' when you are ready..."
             },
+            {
+                    String.valueOf(false),
+                    "---BEGIN EXPLORATION?---",
+                    "Now that we understand who you are, you are welcome to explore the manor's grounds.",
+                    "What would you like to do?",
+                    "",
+                    "1. Explore",
+                    "2. Quit"
+            }
 //            {   // [5, N]
 //            String.valueOf(false),
 //                "Ok, you're now a fully generated character!",
@@ -53,16 +64,16 @@ public class Dialog {
 //                    "Anywho...what do you think?",
 //                    "Yes / No"
 //            },
-            {
-                String.valueOf(false),
-                "---GRAND DINING HALL---",
-                    "You enter a grand dining hall, where the floor, walls, and ceiling are decorated in gold leaf.",
-                    "A massive dining table that could easily seat 30 people is laden with steaming foods beyond your imagination.",
-                    "Three small children are seated at the table, devouring the food before them. You try to get their attention, but they pay you no mind.",
-                    "\nAlong the East wall, a door sits ajar. Through the crack you can see a forest, though it doesn't seem like the door should be going outside...",
-                    "To the South, is a Large Black Door.",
-                    "To the West, is a small white interior door."
-            }
+//            {
+//                String.valueOf(false),
+//                "---GRAND DINING HALL---",
+//                    "You enter a grand dining hall, where the floor, walls, and ceiling are decorated in gold leaf.",
+//                    "A massive dining table that could easily seat 30 people is laden with steaming foods beyond your imagination.",
+//                    "Three small children are seated at the table, devouring the food before them. You try to get their attention, but they pay you no mind.",
+//                    "\nAlong the East wall, a door sits ajar. Through the crack you can see a forest, though it doesn't seem like the door should be going outside...",
+//                    "To the South, is a Large Black Door.",
+//                    "To the West, is a small white interior door."
+//            }
     };
 
     Integer chatLevel = 0;
