@@ -525,12 +525,10 @@ public class UserInterface {
         mainTextPanel.add(mainTextArea);
     }
 
-    /**
-     * Calls slowPrint method from Functions class to print each character in a text array with a short delay
+    /** Calls slowPrint method from Functions class to print each character in a text array with a short delay
      *  on each character index. This creates the illusion of text being 'written' in real time for the player
      */
     public void displayText(){
-//        mainTextArea.append(text);
         Functions.slowPrintText(Dialog.chatTracker[Game.dialog.chatLevel], Game.ui.mainTextArea);
     }
 
@@ -550,6 +548,8 @@ public class UserInterface {
      *  - Clear out any text in the input field
      */
     public void getPlayerInput(){
+        System.out.println(Game.dialog.chatLevel);
+
             String playerInput = playerInputField.getText().toUpperCase();
             if (playerInput.equals("QUIT")) {
                 System.exit(0);
@@ -562,8 +562,8 @@ public class UserInterface {
             playerInputField.setText("");
     }
 
-    /*
-        Old class, deprecated
+    /**
+     * Old class, deprecated
      */
     public void progressDialog(){
         String playerInput = playerInputField.getText().toUpperCase();
@@ -571,100 +571,163 @@ public class UserInterface {
 
     }
 
-    // Update text for player name
+    /** Update text for player name
+     *
+     * @param playerName
+     */
     public void updatePlayerNameLabel(String playerName) {
         playerNameLabel.setText("NAME: " + playerName);
     }
 
-    // Update text for player class
+    /** Update text for player class
+     *
+     * @param className
+     * @param classLevel
+     */
     public void updatePlayerClassLabel(String className, int classLevel) {
         playerClassLabel.setText("CLASS: " + className + " [" + classLevel + "]");
     }
 
-    // deprecated?
+    /** deprecated
+     *
+     * @param attackModifier
+     */
     public void updatePlayerClassModLabel(String attackModifier) {
         playerLevelLabel.setText("CLASS MOD: " + attackModifier.substring(0, 3));
     }
 
-    // Update text for player health
+    /** Update text for player health
+     *
+     * @param health
+     * @param maxHealth
+     * @param hitDie
+     */
     public void updatePlayerHealthLabel(int health, int maxHealth, int hitDie) {
         playerHealthLabel.setText("HEALTH: " + health + " / " + maxHealth + " [d" + hitDie + "]");
     }
 
-    // Update text for player
+    /** Update text for player
+     *
+     * @param strength
+     * @param strMod
+     */
     public void updatePlayerStrengthLabel(int strength, int strMod) {
         playerStrengthLabel.setText("STRENGTH: " + strength + " (" + strMod + ")");
     }
 
-    // Update text for player dexterity
+    /** Update text for player dexterity
+     *
+     * @param dexterity
+     * @param dexMod
+     */
     public void updatePlayerDexterityLabel(int dexterity, int dexMod) {
         playerDexterityLabel.setText("DEXTERITY: " + dexterity + " (" + dexMod + ")");
     }
 
-    // Update text for player constitution
+    /** Update text for player constitution
+     *
+     * @param constitution
+     * @param conMod
+     */
     public void updatePlayerConstitutionLabel(int constitution, int conMod) {
         playerConstitutionLabel.setText("CONSTITUTION: " + constitution + " (" + conMod + ")");
     }
 
-    // Update text for player intelligence
+    /** Update text for player intelligence
+     *
+     * @param intelligence
+     * @param intMod
+     */
     public void updatePlayerIntelligenceLabel(int intelligence, int intMod) {
         playerIntelligenceLabel.setText("INTELLIGENCE: " + intelligence + " (" + intMod + ")");
     }
 
-    // Update text for player wisdom
+    /** Update text for player wisdom
+     *
+     * @param wisdom
+     * @param wisMod
+     */
     public void updatePlayerWisdomLabel(int wisdom, int wisMod) {
         playerWisdomLabel.setText("WISDOM: " + wisdom + " (" + wisMod + ")");
     }
 
-    // Update text for player charisma
+    /** Update text for player charisma
+     *
+     * @param charisma
+     * @param charMod
+     */
     public void updatePlayerCharismaLabel(int charisma, int charMod) {
         playerCharismaLabel.setText("CHARISMA: " + charisma + " (" + charMod + ")");
     }
 
-    // Update text for player weapon name
+    /** Update text for player weapon name
+     *
+     * @param weaponName
+     */
     public void updatePlayerWeaponLabel(String weaponName) {
         playerWeaponLabel.setText("WEAPON: " + weaponName);
     }
 
-    // deprecated?
+    /** deprecated?
+     *
+     * @param protBonus
+     */
     public void updatePlayerProtBonusLabel(String protBonus) {
         armorBonusLabel.setText("PROT_BONUS: " + protBonus);
     }
 
-    // Update text for player armor class
+    /** Update text for player armor class
+     *
+     * @param ac
+     */
     public void updatePlayerACLabel(int ac) {
         playerACLabel.setText("ARMOR CLASS: " + ac);
     }
 
-    // Update text for player initiative
+    /** Update text for player initiative
+     *
+     * @param dexMod
+     */
     public void updatePlayerInitiativeLabel(int dexMod) {
         playerInitiativeLabel.setText("INITIATIVE: " + dexMod);
     }
 
-    // deprecated?
+    /** deprecated?
+     *
+     * @param hitDie
+     */
     public void updatePlayerHitDieLabel(int hitDie) {
         playerHitDieLabel.setText("HIT DIE: d" + hitDie);
     }
 
-    // Update text for player's weapon damage
+    /** Update text for player's weapon damage
+     *
+     * @param damage
+     */
     public void updatePlayerWeaponDamageLabel(int damage) {
         playerWeaponDamageLabel.setText("DAMAGE: " + damage);
     }
 
-    // Update text for player's weapon crit chance
+    /** Update text for player's weapon crit chance
+     *
+     * @param critChance
+     */
     public void updatePlayerWeaponCritLabel(double critChance) {
         playerWeaponCritLabel.setText("CRIT %: " + critChance);
     }
 
-    // Update text for player's weapon attack speed
+    /** Update text for player's weapon attack speed
+     *
+     * @param atkSpeed
+     */
     public void updatePlayerWeaponAtkSpeedLabel(double atkSpeed) {
         playerWeaponSpeedLabel.setText("ATK SPEED: " + atkSpeed);
     }
 
-    /*
-        Run each updatePlayerNNNLabel, passing relevant variables into each, then update ui to reflect any changes
-            made to the player panel only
-    */
+    /** Run each updatePlayerNNNLabel, passing relevant variables into each, then update ui to reflect any changes made to the player panel only
+     *
+     * @param player
+     */
     public void updatePlayerPanelLabels(Player player) {
         updatePlayerNameLabel(player.name);
         updatePlayerClassLabel(player.className, player.level);
