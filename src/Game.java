@@ -12,7 +12,8 @@ public class Game {
         WAITING_ON_CONTINUE,
         WAITING_ON_PLAYER_CLASS,
         WAITING_ON_PLAYER_WEAPON,
-        ROOM_TUTORIAL,
+        STAT_ACKNOWLEDGEMENT,
+        EXPLORING_PROMPT,
         EXPLORING,
         IN_COMBAT,
         IN_INVENTORY
@@ -178,8 +179,11 @@ public class Game {
             case WAITING_ON_PLAYER_WEAPON -> {
                 setPlayerWeapon(playerInput);
             }
-            case ROOM_TUTORIAL -> {
-
+            case STAT_ACKNOWLEDGEMENT -> {
+                statAcknowledge(playerInput);
+            }
+            case EXPLORING_PROMPT -> {
+                startExploration(playerInput);
             }
             case EXPLORING -> {
             }
@@ -239,13 +243,63 @@ public class Game {
                 System.out.println("cannot iterate chatLevel further | " + dialog.chatLevel + " | " + Dialog.chatTracker.length);
             } else {
                 dialog.chatLevel++;
-                setGameState(GameState.WAITING_ON_CONTINUE);
+                setGameState(GameState.STAT_ACKNOWLEDGEMENT);
                 ui.clearText();
                 ui.displayText();
             }
         } else {
             ui.playerInputField.setText("");
         }
+    }
+
+    public static void statAcknowledge(String playerInput) {
+        boolean validInput = false;
+
+        System.out.println(gameState);
+
+        switch (playerInput) {
+            case "CONTINUE" -> validInput = true;
+        }
+
+        if (validInput) {
+            dialog.chatLevel++;
+            ui.clearText();
+            setGameState(GameState.EXPLORING_PROMPT);
+            ui.displayText();
+        }  else {
+            ui.playerInputField.setText("");
+        }
+    }
+
+    public static void startExploration(String playerInput) {
+        boolean validInput = false;
+
+        System.out.println(gameState);
+
+        switch (playerInput) {
+            case "YES", "1" -> validInput = true;
+            case "QUIT", "2" -> System.exit(0);
+        }
+
+        if (validInput) {
+            dialog.chatLevel++;
+            ui.clearText();
+            setGameState(GameState.EXPLORING);
+            ui.displayText();
+        } else {
+            ui.playerInputField.setText("");
+        }
+    }
+
+    public static void exploringLoop(String playerInput) {
+        boolean validInput = false;
+        System.out.println(gameState);
+        /*
+            We need to transition over to the Room class' state tracking at this point of the game.
+            * Set default room state
+            * Create new UI methods for room-based movement that clear the existing UI and enable writing from new arrays
+            * iterate through new game loop
+         */
     }
 
     public static void setGameState(GameState gameState) {
