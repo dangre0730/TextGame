@@ -3,13 +3,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+// This public class handles the User Interface generation of the game. Call it in the main class.
 public class UserInterface {
-    // This class handles the User Interface generation of the game. Call it in the main class.
-////////////////////////////
-///                     ///
-///  Declare UI Objects ///
-///                     ///
-///////////////////////////
+
+    // ============================================
+    //      UI Object & Variable Declarations
+    // ============================================
+
+    // region
 
     // This is the actual game window
     JFrame ui;
@@ -112,6 +113,14 @@ public class UserInterface {
     // Generate screen state object
     CurrentScreen currentScreen;
 
+    // endregion
+
+    // ============================================
+    //      UI Builder Methods
+    // ============================================
+
+    // region Count: 5
+
     /**
      *  Draws UI for the first time and displays title menu for player
      */
@@ -130,7 +139,7 @@ public class UserInterface {
     }
 
     /**
-     *
+     *  Draw actual UI elements within JFrame window
      */
     public void createGameScreen(){
         //<editor-fold defaultstate="collapsed" desc="temporary minimize">
@@ -436,6 +445,20 @@ public class UserInterface {
     private void createUIBox() {
         uiBackgroundColor = new Color(19, 99, 83);
 
+        // Auto-size UI JFrame to half current screen resolution. Set default sizing catch to avoid making UI too small.
+        try {
+            Dimension monitorSize = Toolkit.getDefaultToolkit().getScreenSize();
+            int monitorWidth = (int) (monitorSize.getWidth() * 0.5);
+            int monitorHeight = (int) (monitorSize.getHeight() * 0.5);
+
+            if (monitorWidth > gameWidth && monitorHeight > gameHeight) {
+                gameWidth = monitorWidth;
+                gameHeight = monitorHeight;
+            }
+        } catch (HeadlessException e) {
+            throw new RuntimeException(e);
+        }
+
         // Create UI. Currently static size of 1280 x 720, or gameWidth x gameHeight. Will figure out how to make this dynamic later along with all relevant elements.
         ui = new JFrame();
 //        ui.setSize(gameWidth, gameHeight);
@@ -444,6 +467,7 @@ public class UserInterface {
         ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ui.getContentPane().setBackground(uiBackgroundColor);
         ui.setLayout(null); // Disable the default layout, so we can set our own format.
+        ui.setLocationRelativeTo(null);
 //        ui.setVisible(true);
 
         // Create primary container for managing the UI
@@ -497,14 +521,6 @@ public class UserInterface {
     }
 
     /**
-     * Updates game UI with current states of all objects / variables
-     */
-    private void refreshGameScreen() {
-        mainCon.revalidate();
-        mainCon.repaint();
-    }
-
-    /**
      * Creates the text area where game text / dialog will be drawn for the player
      *  - Using monospaced font for a classic text game feeling
      *  - Wrap text if it exceeds length of the box
@@ -525,11 +541,26 @@ public class UserInterface {
         mainTextPanel.add(mainTextArea);
     }
 
+    // endregion
+
+
+    // ============================================
+    //      UI Updater Methods
+    // ============================================
+
+    // region Count: 19
+
     /** Calls slowPrint method from Functions class to print each character in a text array with a short delay
      *  on each character index. This creates the illusion of text being 'written' in real time for the player
      */
     public void displayText(){
-        Functions.slowPrintText(Dialog.chatTracker[Game.dialog.chatLevel], Game.ui.mainTextArea);
+        // Print text from appropriate class dependent on GameState
+        if(Game.gameState != Game.GameState.EXPLORING) {
+            Functions.slowPrintText(Dialog.chatTracker[Game.dialog.chatLevel], Game.ui.mainTextArea);
+        } else {
+            // Use Room class descriptions...how though?
+            Functions.slowPrintText(Game.room.description, Game.ui.mainTextArea);
+        }
     }
 
     /**
@@ -538,6 +569,178 @@ public class UserInterface {
     public void clearText(){
         mainTextArea.setText("");
     }
+
+    /** Update text for player name
+     *
+     * @param playerName - Name of player
+     */
+    public void updatePlayerNameLabel(String playerName) {
+        playerNameLabel.setText("NAME: " + playerName);
+    }
+
+    /** Update text for player class
+     *
+     * @param className - Player Class name
+     * @param classLevel - Player Class level
+     */
+    public void updatePlayerClassLabel(String className, int classLevel) {
+        playerClassLabel.setText("CLASS: " + className + " [" + classLevel + "]");
+    }
+
+    /** Update text for player health
+     *
+     * @param health - Current Player Health
+     * @param maxHealth - Maximum Player Health
+     * @param hitDie - Die type used when rolling health increases
+     */
+    public void updatePlayerHealthLabel(int health, int maxHealth, int hitDie) {
+        playerHealthLabel.setText("HEALTH: " + health + " / " + maxHealth + " [d" + hitDie + "]");
+    }
+
+    /** Update text for player
+     *
+     * @param strength - Player strength stat
+     * @param strMod - Player strength modifier
+     */
+    public void updatePlayerStrengthLabel(int strength, int strMod) {
+        playerStrengthLabel.setText("STRENGTH: " + strength + " (" + strMod + ")");
+    }
+
+    /** Update text for player dexterity
+     *
+     * @param dexterity - Player dexterity stat
+     * @param dexMod - Player dexterity modifier
+     */
+    public void updatePlayerDexterityLabel(int dexterity, int dexMod) {
+        playerDexterityLabel.setText("DEXTERITY: " + dexterity + " (" + dexMod + ")");
+    }
+
+    /** Update text for player constitution
+     *
+     * @param constitution - Player constitution stat
+     * @param conMod - Player constitution modifier
+     */
+    public void updatePlayerConstitutionLabel(int constitution, int conMod) {
+        playerConstitutionLabel.setText("CONSTITUTION: " + constitution + " (" + conMod + ")");
+    }
+
+    /** Update text for player intelligence
+     *
+     * @param intelligence - Player intelligence stat
+     * @param intMod - Player intelligence modifier
+     */
+    public void updatePlayerIntelligenceLabel(int intelligence, int intMod) {
+        playerIntelligenceLabel.setText("INTELLIGENCE: " + intelligence + " (" + intMod + ")");
+    }
+
+    /** Update text for player wisdom
+     *
+     * @param wisdom - Player wisdom stat
+     * @param wisMod - Player wisdom modifier
+     */
+    public void updatePlayerWisdomLabel(int wisdom, int wisMod) {
+        playerWisdomLabel.setText("WISDOM: " + wisdom + " (" + wisMod + ")");
+    }
+
+    /** Update text for player charisma
+     *
+     * @param charisma - Player charisma stat
+     * @param charMod - Player charisma modifier
+     */
+    public void updatePlayerCharismaLabel(int charisma, int charMod) {
+        playerCharismaLabel.setText("CHARISMA: " + charisma + " (" + charMod + ")");
+    }
+
+    /** Update text for player weapon name
+     *
+     * @param weaponName - Player equipped weapon name
+     */
+    public void updatePlayerWeaponLabel(String weaponName) {
+        playerWeaponLabel.setText("WEAPON: " + weaponName);
+    }
+
+    /** Update text for player armor class
+     *
+     * @param ac - Player armor class stat
+     */
+    public void updatePlayerACLabel(int ac) {
+        playerACLabel.setText("ARMOR CLASS: " + ac);
+    }
+
+    /** Update text for player initiative
+     *
+     * @param dexMod - Player dexterity modifier doubles as initiative base modifier
+     */
+    public void updatePlayerInitiativeLabel(int dexMod) {
+        playerInitiativeLabel.setText("INITIATIVE: " + dexMod);
+    }
+
+    /** Update text for player's weapon damage
+     *
+     * @param damage - Player weapon damage value
+     */
+    public void updatePlayerWeaponDamageLabel(int damage) {
+        playerWeaponDamageLabel.setText("DAMAGE: " + damage);
+    }
+
+    /** Update text for player's weapon crit chance
+     *
+     * @param critChance - Player weapon chance to strike critically
+     */
+    public void updatePlayerWeaponCritLabel(double critChance) {
+        playerWeaponCritLabel.setText("CRIT %: " + critChance);
+    }
+
+    /** Update text for player's weapon attack speed
+     *
+     * @param atkSpeed - Player weapon attack rate per round of combat
+     */
+    public void updatePlayerWeaponAtkSpeedLabel(double atkSpeed) {
+        playerWeaponSpeedLabel.setText("ATK SPEED: " + atkSpeed);
+    }
+
+    /** Run each updatePlayerNNNLabel, passing relevant variables into each, then update ui to reflect any changes made to the player panel only
+     *
+     * @param player - Player object that holds all relevant instance values
+     */
+    public void updatePlayerPanelLabels(Player player) {
+        updatePlayerNameLabel(player.name);
+        updatePlayerClassLabel(player.className, player.level);
+        updatePlayerHealthLabel(player.playerHealth, player.maxPlayerHealth, player.hitDie);
+        updatePlayerInitiativeLabel(player.dexMod);
+        updatePlayerStrengthLabel(player.playerStrength, player.strMod);
+        updatePlayerDexterityLabel(player.playerDexterity, player.dexMod);
+        updatePlayerConstitutionLabel(player.playerConstitution, player.conMod);
+        updatePlayerIntelligenceLabel(player.playerIntelligence, player.intMod);
+        updatePlayerWisdomLabel(player.playerWisdom, player.wisMod);
+        updatePlayerCharismaLabel(player.playerCharisma, player.chaMod);
+        updatePlayerACLabel(player.classArmor);
+        updatePlayerWeaponLabel(player.weaponName);
+        updatePlayerWeaponDamageLabel(player.attackDamage);
+        updatePlayerWeaponCritLabel(player.criticalChance);
+        updatePlayerWeaponAtkSpeedLabel(player.attackSpeed);
+//        updatePlayerProtBonusLabel(player.protBonus);     // Will enable later once we are using the armor type
+
+        playerPanel.repaint();
+        playerPanel.revalidate();
+    }
+
+    /**
+     * Updates game UI with current states of all objects / variables
+     */
+    private void refreshGameScreen() {
+        mainCon.revalidate();
+        mainCon.repaint();
+    }
+
+    //endregion
+
+
+    // ============================================
+    //      UI Interaction Methods
+    // ============================================
+
+    // region Count: 3
 
     /**
      * Gets string from text field and passes it over to the Game class to be parsed and worked
@@ -560,194 +763,6 @@ public class UserInterface {
             Game.handleInput(playerInput);
 
             playerInputField.setText("");
-    }
-
-    /**
-     * Old class, deprecated
-     */
-    public void progressDialog(){
-        String playerInput = playerInputField.getText().toUpperCase();
-        System.out.println(Game.gameState);
-
-    }
-
-    /** Update text for player name
-     *
-     * @param playerName
-     */
-    public void updatePlayerNameLabel(String playerName) {
-        playerNameLabel.setText("NAME: " + playerName);
-    }
-
-    /** Update text for player class
-     *
-     * @param className
-     * @param classLevel
-     */
-    public void updatePlayerClassLabel(String className, int classLevel) {
-        playerClassLabel.setText("CLASS: " + className + " [" + classLevel + "]");
-    }
-
-    /** deprecated
-     *
-     * @param attackModifier
-     */
-    public void updatePlayerClassModLabel(String attackModifier) {
-        playerLevelLabel.setText("CLASS MOD: " + attackModifier.substring(0, 3));
-    }
-
-    /** Update text for player health
-     *
-     * @param health
-     * @param maxHealth
-     * @param hitDie
-     */
-    public void updatePlayerHealthLabel(int health, int maxHealth, int hitDie) {
-        playerHealthLabel.setText("HEALTH: " + health + " / " + maxHealth + " [d" + hitDie + "]");
-    }
-
-    /** Update text for player
-     *
-     * @param strength
-     * @param strMod
-     */
-    public void updatePlayerStrengthLabel(int strength, int strMod) {
-        playerStrengthLabel.setText("STRENGTH: " + strength + " (" + strMod + ")");
-    }
-
-    /** Update text for player dexterity
-     *
-     * @param dexterity
-     * @param dexMod
-     */
-    public void updatePlayerDexterityLabel(int dexterity, int dexMod) {
-        playerDexterityLabel.setText("DEXTERITY: " + dexterity + " (" + dexMod + ")");
-    }
-
-    /** Update text for player constitution
-     *
-     * @param constitution
-     * @param conMod
-     */
-    public void updatePlayerConstitutionLabel(int constitution, int conMod) {
-        playerConstitutionLabel.setText("CONSTITUTION: " + constitution + " (" + conMod + ")");
-    }
-
-    /** Update text for player intelligence
-     *
-     * @param intelligence
-     * @param intMod
-     */
-    public void updatePlayerIntelligenceLabel(int intelligence, int intMod) {
-        playerIntelligenceLabel.setText("INTELLIGENCE: " + intelligence + " (" + intMod + ")");
-    }
-
-    /** Update text for player wisdom
-     *
-     * @param wisdom
-     * @param wisMod
-     */
-    public void updatePlayerWisdomLabel(int wisdom, int wisMod) {
-        playerWisdomLabel.setText("WISDOM: " + wisdom + " (" + wisMod + ")");
-    }
-
-    /** Update text for player charisma
-     *
-     * @param charisma
-     * @param charMod
-     */
-    public void updatePlayerCharismaLabel(int charisma, int charMod) {
-        playerCharismaLabel.setText("CHARISMA: " + charisma + " (" + charMod + ")");
-    }
-
-    /** Update text for player weapon name
-     *
-     * @param weaponName
-     */
-    public void updatePlayerWeaponLabel(String weaponName) {
-        playerWeaponLabel.setText("WEAPON: " + weaponName);
-    }
-
-    /** deprecated?
-     *
-     * @param protBonus
-     */
-    public void updatePlayerProtBonusLabel(String protBonus) {
-        armorBonusLabel.setText("PROT_BONUS: " + protBonus);
-    }
-
-    /** Update text for player armor class
-     *
-     * @param ac
-     */
-    public void updatePlayerACLabel(int ac) {
-        playerACLabel.setText("ARMOR CLASS: " + ac);
-    }
-
-    /** Update text for player initiative
-     *
-     * @param dexMod
-     */
-    public void updatePlayerInitiativeLabel(int dexMod) {
-        playerInitiativeLabel.setText("INITIATIVE: " + dexMod);
-    }
-
-    /** deprecated?
-     *
-     * @param hitDie
-     */
-    public void updatePlayerHitDieLabel(int hitDie) {
-        playerHitDieLabel.setText("HIT DIE: d" + hitDie);
-    }
-
-    /** Update text for player's weapon damage
-     *
-     * @param damage
-     */
-    public void updatePlayerWeaponDamageLabel(int damage) {
-        playerWeaponDamageLabel.setText("DAMAGE: " + damage);
-    }
-
-    /** Update text for player's weapon crit chance
-     *
-     * @param critChance
-     */
-    public void updatePlayerWeaponCritLabel(double critChance) {
-        playerWeaponCritLabel.setText("CRIT %: " + critChance);
-    }
-
-    /** Update text for player's weapon attack speed
-     *
-     * @param atkSpeed
-     */
-    public void updatePlayerWeaponAtkSpeedLabel(double atkSpeed) {
-        playerWeaponSpeedLabel.setText("ATK SPEED: " + atkSpeed);
-    }
-
-    /** Run each updatePlayerNNNLabel, passing relevant variables into each, then update ui to reflect any changes made to the player panel only
-     *
-     * @param player
-     */
-    public void updatePlayerPanelLabels(Player player) {
-        updatePlayerNameLabel(player.name);
-        updatePlayerClassLabel(player.className, player.level);
-        updatePlayerHealthLabel(player.playerHealth, player.maxPlayerHealth, player.hitDie);
-        updatePlayerInitiativeLabel(player.dexMod);
-        updatePlayerStrengthLabel(player.playerStrength, player.strMod);
-        updatePlayerDexterityLabel(player.playerDexterity, player.dexMod);
-        updatePlayerConstitutionLabel(player.playerConstitution, player.conMod);
-        updatePlayerIntelligenceLabel(player.playerIntelligence, player.intMod);
-        updatePlayerWisdomLabel(player.playerWisdom, player.wisMod);
-        updatePlayerCharismaLabel(player.playerCharisma, player.chaMod);
-        updatePlayerACLabel(player.classArmor);
-        updatePlayerWeaponLabel(player.weaponName);
-        updatePlayerWeaponDamageLabel(player.attackDamage);
-        updatePlayerWeaponCritLabel(player.criticalChance);
-        updatePlayerWeaponAtkSpeedLabel(player.attackSpeed);
-//        updatePlayerProtBonusLabel(player.protBonus);     // Will enable later once we are using the armor type
-
-        playerPanel.repaint();
-        playerPanel.revalidate();
     }
 
     /*
@@ -774,5 +789,50 @@ public class UserInterface {
             getPlayerInput();
         }
     }
+
+    // endregion
+
+
+    // ============================================
+    //      Deprecated Methods
+    // ============================================
+
+    // region Count: 4
+
+    /**
+     * Old class, deprecated
+     */
+    public void progressDialog(){
+        String playerInput = playerInputField.getText().toUpperCase();
+        System.out.println(Game.gameState);
+
+    }
+
+    /** deprecated?
+     *
+     * @param hitDie
+     */
+    public void updatePlayerHitDieLabel(int hitDie) {
+        playerHitDieLabel.setText("HIT DIE: d" + hitDie);
+    }
+
+    /** deprecated?
+     *
+     * @param protBonus
+     */
+    public void updatePlayerProtBonusLabel(String protBonus) {
+        armorBonusLabel.setText("PROT_BONUS: " + protBonus);
+    }
+
+    /** deprecated
+     *
+     * @param attackModifier
+     */
+    public void updatePlayerClassModLabel(String attackModifier) {
+        playerLevelLabel.setText("CLASS MOD: " + attackModifier.substring(0, 3));
+    }
+
+    // endregion
+
 
 }
