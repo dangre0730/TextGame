@@ -38,21 +38,21 @@ public class Dialog {
             {   // [4, N] Player stat presentation
                 String.valueOf(false),
                 "Alright, now that you've chosen your class and weapon I'll generate your stats...",
-                    "[PLAYER NAME: ${playerName} | PLAYER CLASS: ${playerClass} (${attackModifier}) | PLAYER WEAPON: ${playerWeapon}]",
-                    "[PLAYER LEVEL: ${playerLevel} | HP: ${currentHP} / ${maxHP} | HIT DIE: d${hitDie}]",
-                    "[STRENGTH: ${strength} (${strMod}) | DEXTERITY: ${dexterity} (${dexMod}) | CONSTITUTION: ${constitution} (${conMod})]",
-                    "[INTELLIGENCE: ${intelligence} (${intMod}) | WISDOM: ${wisdom} (${wisMod}) | CHARISMA: ${charisma} (${chaMod})]",
-                    "",
-                    "Type 'Continue' when you are ready..."
+                "[PLAYER NAME: ${playerName} | PLAYER CLASS: ${playerClass} (${attackModifier}) | PLAYER WEAPON: ${playerWeapon}]",
+                "[PLAYER LEVEL: ${playerLevel} | HP: ${currentHP} / ${maxHP} | HIT DIE: d${hitDie}]",
+                "[STRENGTH: ${strength} (${strMod}) | DEXTERITY: ${dexterity} (${dexMod}) | CONSTITUTION: ${constitution} (${conMod})]",
+                "[INTELLIGENCE: ${intelligence} (${intMod}) | WISDOM: ${wisdom} (${wisMod}) | CHARISMA: ${charisma} (${chaMod})]",
+                "",
+                "Type 'Continue' when you are ready..."
             },
             {
-                    String.valueOf(false),
-                    "---BEGIN EXPLORATION?---",
-                    "Now that we understand who you are, you are welcome to explore the manor's grounds.",
-                    "What would you like to do?",
-                    "",
-                    "1. Explore",
-                    "2. Quit"
+                String.valueOf(false),
+                "---BEGIN EXPLORATION?---",
+                "Now that we understand who you are, you are welcome to explore the manor's grounds.",
+                "What would you like to do?",
+                "",
+                "1. Explore",
+                "2. Quit"
             }
 //            {   // [5, N]
 //            String.valueOf(false),
