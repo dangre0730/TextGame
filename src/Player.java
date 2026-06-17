@@ -1,8 +1,12 @@
 public class Player {
 
+    // ============================================
+    //      Player Object & Variable Declarations
+    // ============================================
 
-//Stat declarations and initializations.
-    //Identification
+    // region
+
+    // Identification
     String name;
 
     //Level and XP
@@ -38,8 +42,8 @@ public class Player {
     //Stats and Modifiers
     int maxPlayerHealth;
     int playerHealth;
-    int playerStrength; // = 12;
-    int strMod; // = 1;
+    int playerStrength;
+    int strMod;
     int playerDexterity;
     int dexMod;
     int playerConstitution;
@@ -51,6 +55,18 @@ public class Player {
     int playerCharisma;
     int chaMod;
 
+    // endregion
+
+
+    // ============================================
+    //      Player Builder Methods
+    // ============================================
+
+    // region Count: 2
+
+    /**
+     * Rolls character stats based on the selected player class
+     */
     public void classBuilder(){
 
         //Build Character Stats
@@ -112,30 +128,39 @@ public class Player {
         System.out.println("Congratulations! You've selected the " + className + " class type!");
         System.out.println("Your attack modifier is " + attackModifier + "!");
 
+        /*
+                REVIEW ROUNDING BEHAVIOR HERE:
+                    ANYTHING BELOW 10 FOR A STAT ROUNDS 'DOWN TOWARD NEGATIVE INFINITY' USING THE FLOOR METHOD.
+                    playerStrength of 9 = -1 modifier
+                    playerStrength of 8 = -1 modifier
+                    playerStrength of 7 = -2 modifier
+                    ect.
+                    ect
+         */
         if(playerStrength < 8){
             playerStrength = 8;
         }
-        strMod = (playerStrength - 10) / 2;
+        strMod = (int) (Math.floor((double) (playerStrength - 10) / 2));
         if(playerDexterity < 8){
             playerDexterity = 8;
         }
-        dexMod = (playerDexterity - 10) / 2;
+        dexMod = (int) (Math.floor((double) (playerDexterity - 10) / 2));
         if(playerConstitution < 8){
             playerConstitution = 8;
         }
-        conMod = (playerConstitution - 10) / 2;
+        conMod = (int) (Math.floor((double) (playerConstitution - 10) / 2));
         if(playerIntelligence < 8){
             playerIntelligence = 8;
         }
-        intMod = (playerIntelligence - 10) / 2;
+        intMod = (int) (Math.floor((double) (playerIntelligence - 10) / 2));
         if(playerWisdom < 8){
             playerWisdom = 8;
         }
-        wisMod = (playerWisdom - 10) / 2;
+        wisMod = (int) (Math.floor((double) (playerWisdom - 10) / 2));
         if(playerCharisma < 8){
             playerCharisma = 8;
         }
-        chaMod = (playerCharisma - 10) / 2;
+        chaMod = (int) (Math.floor((double) (playerCharisma - 10) / 2));
         maxPlayerHealth = Functions.healthDiceRoll(maxPlayerHealth, hitDie, 3, conMod);
         System.out.println("Starting health is " + maxPlayerHealth);
 //        System.out.println(maxPlayerHealth);
@@ -149,6 +174,9 @@ public class Player {
 
     }
 
+    /**
+     * Populates weapon stats based on the selected player weapon
+     */
     public void setWeaponChoice() {
         switch(playerWeapon){
             case SWORD:
@@ -178,6 +206,31 @@ public class Player {
         }
     }
 
+    // endregion
+
+
+    // ============================================
+    //      Player Updater Methods
+    // ============================================
+
+    // region Count: 0
+
+
+
+    // endregion
+
+
+    // ============================================
+    //      Event Trigger & Take Action Methods
+    // ============================================
+
+    // region Count: 1
+
+    /**
+     * Prints player stats to the console for quick troubleshooting.
+     *
+     * Will deprecate in the future.
+     */
     public void statPrinter(){
         Functions.slowPrint("Ok, you are a " + pcClass + " and as one, your stats have been randomly generated as: ");
         Functions.slowPrint("Health: " + playerHealth + " | Max Health: " + maxPlayerHealth + " | Hit Die: " + hitDie);
@@ -189,4 +242,19 @@ public class Player {
         Functions.slowPrint("Charisma: " + playerCharisma + " | Cha Mod: " + chaMod);
         Functions.slowPrint("Player Level: " + level);
     }
+
+    // endregion
+
+
+    // ============================================
+    //      Deprecated Methods
+    // ============================================
+
+    // region Count: 0
+
+
+
+    // endregion
+
+
 }
