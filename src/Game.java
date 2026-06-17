@@ -56,9 +56,7 @@ public class Game {
         // Load UI
         ui.createUI();
 
-        // CURRENT NEXT STEP: Add weapon stats to textArea information then update the playersheet to match the information that is relevant to us.
-        //                      Add option to type 'QUIT GAME' at any time to close the game immediately.
-        //                      Figure out how we integrate the battleframe functionality.
+        // CURRENT NEXT STEP: Figure out how we integrate the battleframe functionality.
         //
         //      ANOTHER UNRELATED IDEA: Use a linked list to track what rooms have been previously entered. Same thing for NPCs
         //                                  so that you can create a new object for each as they are encountered, to prevent creating objects
@@ -116,33 +114,6 @@ public class Game {
 //            }
 //        }
 //
-//        Functions.slowPrint("Hey buddy, it's me, Abernathy, again. Would you mind terribly if I placed you in my new house?");
-//        Functions.slowPrint("It's still under construction, but check out the couple of rooms that have been built and let me know if you get lost!");
-//        Functions.slowPrint("Although, I suppose it will be hard for you to let me know if you are lost...ehh, lets not worry about that right now.");
-//        Functions.slowPrint("Ah and one last thing. If you wish to leave the house, at any point, simply say 'Exit' or 'exit' and you will be allowed to leave.");
-//        System.out.println();
-//
-//        //Initiate room traversal section
-//        room.currentRoom = 1; //Set player into the Entry room of the Mansion.
-//        room.getRoom(room.currentRoom); //Initialize the variables in the room object, so that they can be printed for player.
-//        Functions.slowPrint(room.description); //Print currentRoom Description.
-//        //Super important to remember!! USE '.next', NOT '.nextLine'!! It will enter a carriage return instead of prompting for input.
-//        roomSelect = getInput.next();
-//        while(!roomSelect.equals("Exit") || !roomSelect.equals("exit")) {
-//            switch (roomSelect) {
-//                case "North", "north" -> room.currentRoom = room.adjacentRooms[0];
-//                case "East", "east" -> room.currentRoom = room.adjacentRooms[1];
-//                case "South", "south" -> room.currentRoom = room.adjacentRooms[2];
-//                case "West", "west" -> room.currentRoom = room.adjacentRooms[3];
-//            }
-//            room.getRoom(room.currentRoom);
-//            Functions.slowPrint(room.description);
-//            roomSelect = getInput.next();
-//            if(roomSelect.equals("exit") || roomSelect.equals("Exit")){
-//                break;
-//            }
-//        }
-//
 //        System.out.println("Next up? How about we learn how to have some rooms initiate a fight if the player enters them.");
 //        System.out.println("Good luck! You got this and remember, this is literally just for fun. You've always wanted to tell a story through a game and this is our pre-rough draft.");
 //        System.out.println("I believe in you");
@@ -186,6 +157,7 @@ public class Game {
                 startExploration(playerInput);
             }
             case EXPLORING -> {
+                exploringLoop(playerInput);
             }
             case IN_COMBAT -> {
             }
@@ -283,6 +255,9 @@ public class Game {
 
         if (validInput) {
             dialog.chatLevel++;
+            room.currentRoomObject = Room.RoomObjects.ENTRY_ROOM_BASE;
+            room.lastRoomObject = Room.RoomObjects.ENTRY_ROOM_BASE;
+            room.getRoom(room.currentRoomObject);
             ui.clearText();
             setGameState(GameState.EXPLORING);
             ui.displayText();
@@ -292,14 +267,50 @@ public class Game {
     }
 
     public static void exploringLoop(String playerInput) {
-        boolean validInput = false;
+        boolean validInput = true;
+        boolean goingBack = false;
         System.out.println(gameState);
-        /*
-            We need to transition over to the Room class' state tracking at this point of the game.
-            * Set default room state
-            * Create new UI methods for room-based movement that clear the existing UI and enable writing from new arrays
-            * iterate through new game loop
-         */
+
+        System.out.println("B4 input - Current Room: " + room.currentRoomObject);
+        System.out.println("B4 input - Last Room: " + room.lastRoomObject);
+
+        System.out.println("Room is wall? " + room.currentRoomObject.equals(Room.RoomObjects.WALL));
+        System.out.println("Last room = current room? " + room.lastRoomObject.equals(room.currentRoomObject));
+
+        room.tempRoomObject = room.lastRoomObject;
+
+        if (!room.currentRoomObject.equals(Room.RoomObjects.WALL) && !room.lastRoomObject.equals(room.currentRoomObject)) {
+            room.lastRoomObject = room.currentRoomObject;
+        }
+
+        switch (playerInput) {
+            case "N", "NORTH", "1" -> room.currentRoomObject = room.nextRooms[0];
+            case "E", "EAST", "2" -> room.currentRoomObject = room.nextRooms[1];
+            case "S", "SOUTH", "3" -> room.currentRoomObject = room.nextRooms[2];
+            case "W", "WEST", "4" -> room.currentRoomObject = room.nextRooms[3];
+            case "B", "BACK" -> goingBack = true;
+            case "Q", "QUIT" -> System.exit(0);
+            default -> validInput = false;
+        }
+
+        if (goingBack) {
+            System.out.println(room.tempRoomObject);
+            room.lastRoomObject = room.currentRoomObject;
+            room.currentRoomObject = room.tempRoomObject;
+        }
+
+        if (validInput) {
+            room.getRoom(room.currentRoomObject);
+
+            System.out.println("After input - Current Room: " + room.currentRoomObject);
+            System.out.println("After input - Last Room: " + room.lastRoomObject);
+
+            ui.clearText();
+            ui.displayText();
+        } else {
+            ui.playerInputField.setText("");
+        }
+
     }
 
     public static void setGameState(GameState gameState) {
