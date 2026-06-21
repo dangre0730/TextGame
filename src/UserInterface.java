@@ -675,12 +675,27 @@ public class UserInterface {
         playerInitiativeLabel.setText("INITIATIVE: " + dexMod);
     }
 
+    /** Get the correct stat modifier for class
+     *
+     * @param classMod - Player class damage stat modifier
+     */
+    public int getPlayerClassModifier(String classMod) {
+        return switch (classMod) {
+            case "STRENGTH" -> Game.player.strMod;
+            case "DEXTERITY" -> Game.player.dexMod;
+            case "WISDOM" -> Game.player.wisMod;
+            case "INTELLIGENCE" -> Game.player.intMod;
+            case "CHARISMA" -> Game.player.chaMod;
+            default -> 0;
+        };
+    }
+
     /** Update text for player's weapon damage
      *
      * @param damage - Player weapon damage value
      */
-    public void updatePlayerWeaponDamageLabel(int damage) {
-        playerWeaponDamageLabel.setText("DAMAGE: " + damage);
+    public void updatePlayerWeaponDamageLabel(int damage, String classMod) {
+        playerWeaponDamageLabel.setText("DAMAGE: " + damage + " [" + getPlayerClassModifier(classMod)+ "]");
     }
 
     /** Update text for player's weapon crit chance
@@ -716,7 +731,7 @@ public class UserInterface {
         updatePlayerCharismaLabel(player.playerCharisma, player.chaMod);
         updatePlayerACLabel(player.classArmor);
         updatePlayerWeaponLabel(player.weaponName);
-        updatePlayerWeaponDamageLabel(player.attackDamage);
+        updatePlayerWeaponDamageLabel(player.attackDamage, player.classMod);
         updatePlayerWeaponCritLabel(player.criticalChance);
         updatePlayerWeaponAtkSpeedLabel(player.attackSpeed);
 //        updatePlayerProtBonusLabel(player.protBonus);     // Will enable later once we are using the armor type
