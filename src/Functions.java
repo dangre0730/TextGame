@@ -41,10 +41,6 @@ public class Functions {
         for(int i = 0; i < text.length; i++){
             String string = text[i];
 
-            if (string.equals("true")) {
-
-            }
-
             if (string.contains("${playerName}")) {
                 string = string.replace("${playerName}", Game.player.name);
             }
@@ -57,8 +53,8 @@ public class Functions {
             if (string.contains("${playerLevel}")) {
                 string = string.replace("${playerLevel}", Integer.toString(Game.player.level));
             }
-            if (string.contains("${attackModifier}")) {
-                string = string.replace("${attackModifier}", Game.player.attackModifier);
+            if (string.contains("${classMod}")) {
+                string = string.replace("${classMod}", Game.player.classMod);
             }
             if (string.contains("${strength}")) {
                 string = string.replace("${strength}", Integer.toString(Game.player.playerStrength));
