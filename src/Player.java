@@ -21,8 +21,16 @@ public class Player {
         BRAWLER,
         MAGE
     }
+    enum attackModifier {
+        STRENGTH,
+        DEXTERITY,
+        WISDOM,
+        INTELLIGENCE,
+        CHARISMA
+    }
     classChoice pcClass;
-    String className, attackModifier, weaponName;
+    attackModifier atkMod;
+    String className, weaponName, classMod;
     int classArmor;
     int hitDie;
 
@@ -73,7 +81,8 @@ public class Player {
         switch (pcClass) {
             case SOLDIER -> {
                 className = "Soldier";
-                attackModifier = "STRENGTH";
+                classMod = "STRENGTH";
+                atkMod = attackModifier.STRENGTH;
                 classArmor = 15;
                 hitDie = 12;
                 maxPlayerHealth = hitDie;
@@ -86,7 +95,8 @@ public class Player {
             }
             case RANGER -> {
                 className = "Ranger";
-                attackModifier = "DEXTERITY";
+                classMod = "DEXTERITY";
+                atkMod = attackModifier.DEXTERITY;
                 classArmor = 12;
                 hitDie = 8;
                 maxPlayerHealth = hitDie;
@@ -99,7 +109,8 @@ public class Player {
             }
             case BRAWLER -> {
                 className = "Brawler";
-                attackModifier = "STRENGTH";
+                classMod = "STRENGTH";
+                atkMod = attackModifier.STRENGTH;
                 classArmor = 14;
                 hitDie = 10;
                 maxPlayerHealth = hitDie;
@@ -112,7 +123,8 @@ public class Player {
             }
             case MAGE -> {
                 className = "Mage";
-                attackModifier = "INTELLIGENCE";
+                classMod = "INTELLIGENCE";
+                atkMod = attackModifier.INTELLIGENCE;
                 classArmor = 10;
                 hitDie = 6;
                 maxPlayerHealth = hitDie;
@@ -126,7 +138,7 @@ public class Player {
         }
 
         System.out.println("Congratulations! You've selected the " + className + " class type!");
-        System.out.println("Your attack modifier is " + attackModifier + "!");
+        System.out.println("Your attack modifier is " + classMod + "!");
 
         /*
                 REVIEW ROUNDING BEHAVIOR HERE:
@@ -163,9 +175,9 @@ public class Player {
         chaMod = (int) (Math.floor((double) (playerCharisma - 10) / 2));
         maxPlayerHealth = Functions.healthDiceRoll(maxPlayerHealth, hitDie, 3, conMod);
         System.out.println("Starting health is " + maxPlayerHealth);
-//        System.out.println(maxPlayerHealth);
+
         playerHealth = maxPlayerHealth;
-//        System.out.println(playerHealth);
+
         switch (pcClass){
             case SOLDIER, BRAWLER -> damageMod = strMod;
             case RANGER -> damageMod = dexMod;
