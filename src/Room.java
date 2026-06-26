@@ -60,6 +60,7 @@ public class Room {
 
         switch (roomObjects) {
             case RoomObjects.TUTORIAL -> System.out.println("Tutorial");
+            // [N: GDH, E: Wall, S: DarkBasement, W: Wall]
             case RoomObjects.ENTRY_ROOM_BASE -> {
                 if (revisitEntryRoomBase) {
                     getRoom(RoomObjects.ENTRY_ROOM_REVISIT);
@@ -85,6 +86,7 @@ public class Room {
                 };
                 nextRooms = new RoomObjects[]{RoomObjects.GRAND_DINING_HALL_BASE, RoomObjects.WALL, RoomObjects.DARK_BASEMENT_BASE, RoomObjects.WALL};
             }
+            // [N: Wall, E: BF_S, S: Entry, W: Bathroom]
             case RoomObjects.GRAND_DINING_HALL_BASE -> {
                 if (revisitGrandDiningHall){
                     getRoom(RoomObjects.GRAND_DINING_HALL_REVISIT);
@@ -115,6 +117,7 @@ public class Room {
                 };
                 nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.BAMBOO_FOREST_START_BASE, RoomObjects.ENTRY_ROOM_BASE, RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_BASE};
             }
+            // [N: Entry, E: Wall, S: Wall, W: Wall]
             case RoomObjects.DARK_BASEMENT_BASE -> {
                 if (revisitDarkBasement){
                     getRoom(RoomObjects.DARK_BASEMENT_REVISIT);
@@ -143,6 +146,7 @@ public class Room {
                 };
                 nextRooms = new RoomObjects[]{RoomObjects.ENTRY_ROOM_BASE, RoomObjects.WALL, RoomObjects.WALL, RoomObjects.WALL};
             }
+            // [N: BF_CB, E: Wall, S: Wall, W: GDH]
             case RoomObjects.BAMBOO_FOREST_START_BASE -> {
                 if (revisitBambooForestStart){
                     getRoom(RoomObjects.BAMBOO_FOREST_START_REVISIT);
@@ -171,6 +175,7 @@ public class Room {
                 };
                 nextRooms = new RoomObjects[]{RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_BASE, RoomObjects.WALL, RoomObjects.WALL, RoomObjects.GRAND_DINING_HALL_BASE};
             }
+            // [N: BF_T, E: BF_CR, S: BF_S, W: Wall]
             case RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_BASE -> {
                 if (revisitBambooForestCanyonBridge){
                     getRoom(RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_REVISIT);
@@ -205,6 +210,7 @@ public class Room {
                 };
                 nextRooms = new RoomObjects[]{RoomObjects.BAMBOO_FOREST_TURNBACK_BASE, RoomObjects.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomObjects.BAMBOO_FOREST_START_BASE, RoomObjects.WALL};
             }
+            // [N: Wall, E: Wall, S: BF_CB, W: Wall]
             case RoomObjects.BAMBOO_FOREST_TURNBACK_BASE -> {
                 if (revisitBambooForestTurnback){
                     getRoom(RoomObjects.BAMBOO_FOREST_TURNBACK_REVISIT);
@@ -241,6 +247,7 @@ public class Room {
                 };
                 nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.WALL, RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_BASE, RoomObjects.WALL};
             }
+            // [N: Wall, E: Wall, S: SDH, W: BF_CB]
             case RoomObjects.BAMBOO_FOREST_CANYON_RIVER_BASE -> {
                 if (revisitBambooForestCanyonRiver){
                     getRoom(RoomObjects.BAMBOO_FOREST_CANYON_RIVER_REVISIT);
@@ -281,6 +288,7 @@ public class Room {
                 };
                 nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.WALL, RoomObjects.SECRET_DWARVEN_HALLWAY_BASE, RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_BASE};
             }
+            // [N: BF_CR, E: Wall, S: Wall, W: DarkBasement]
             case RoomObjects.SECRET_DWARVEN_HALLWAY_BASE -> {
                 if (revisitSecretDwarvenHallway){
                     getRoom(RoomObjects.SECRET_DWARVEN_HALLWAY_REVISIT);
@@ -296,7 +304,7 @@ public class Room {
                             "To your east, the hallway awaits from the direction you came.",
                             "To your west, the dark room sits, expectantly."
                     };
-                    nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomObjects.WALL, RoomObjects.DARK_BASEMENT_BASE};
+                    nextRooms = new RoomObjects[]{RoomObjects.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomObjects.WALL, RoomObjects.WALL, RoomObjects.DARK_BASEMENT_BASE};
                     revisitSecretDwarvenHallway = true;
                 }
             }
@@ -313,8 +321,9 @@ public class Room {
                         "To your east, the hallway awaits from the direction you came.",
                         "To your west, the dark room sits, expectantly."
                 };
-                nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomObjects.WALL, RoomObjects.DARK_BASEMENT_BASE};
+                nextRooms = new RoomObjects[]{RoomObjects.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomObjects.WALL, RoomObjects.WALL, RoomObjects.DARK_BASEMENT_BASE};
             }
+            // [N: Wall, E: GDH, S: Wall, W: Wall]
             case RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_BASE -> {
                 if (revisitSuspiciouslyCleanBathroom){
                     getRoom(RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_REVISIT);
