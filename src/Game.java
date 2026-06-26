@@ -26,7 +26,7 @@ public class Game {
     //Create objects that will be utilized in game.
     // These objects can and will be accessed from other classes given their existence outside the main method and having 'public static'.
     public static Player player = new Player(); //Creates Player object that will store our PC's stats
-    public static Enemy enemy = new Enemy(); //Create Enemy Object that has enemy names and stats.
+    public static EnemyNPC enemyNPC = new EnemyNPC("Horned Devil", Room.RoomObjects.DARK_BASEMENT_BASE, 100, 16, 7); //Create Enemy Object that has enemy names and stats.
     public static Room room = new Room(); //Create Room Object that will track where the player is, room description, and adjacent rooms.
     public static UserInterface ui = new UserInterface(); //Create UserInterface object that handles rendering the UI and triggers.
     public static Dialog dialog = new Dialog();
@@ -38,7 +38,9 @@ public class Game {
         gameState = GameState.WAITING_ON_GAME_START;
         previousGameState = GameState.WAITING_ON_GAME_START;
         //Global / Player Variable definitions
-
+        QuestNPC abernathy = new QuestNPC("Abernathy", Room.RoomObjects.ENTRY_ROOM_BASE, Dialog.chatTracker);
+        System.out.println(abernathy.toString());
+        System.out.println(enemyNPC.toString());
         //Integers
         int playerWeaponSelect;
         int playerClassSelection;
