@@ -1,4 +1,4 @@
-public class Enemy {
+public class EnemyNPC extends NPC {
 //Using this class to teach myself how to create a large list of enemies with their stats.
 //  Then call this class in the main method and randomly select an enemy to fight.
 
@@ -16,6 +16,16 @@ public class Enemy {
     String enemyName;
     String region;
 
+    public EnemyNPC(String name, Room.RoomObjects location, int enemyHealth, int enemyArmor, int enemyDamage){
+        super(name, location);
+        this.enemyHealth = enemyHealth;
+        this.enemyArmor = enemyArmor;
+        this.enemyDamage = enemyDamage;
+    }
+
+    public String toString(){
+        return getClass().getName() + "[" + name + "," + location + "," + enemyHealth + "," + enemyArmor + "," + enemyDamage + "]";
+    }
 //    String[] enemyList = {"Training Dummy", "Swarm of Rats"};
     public void enemyStats(int enemySelection) {
         if(enemySelection == 0) {
