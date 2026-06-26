@@ -80,14 +80,14 @@ public class Dialog {
     // region
 
     // Constructor for all npcs, just abernathy for now, continue to build out variables and overloaded constructor methods.
-    public class NPC {
-        boolean alreadyMet = false;
-        boolean isAlive = true;
-        boolean isHostile = false;
-        String name = "";
-        String location = "";
-        int encounterNumber = 0;
-    }
+//    public class NPC {
+//        boolean alreadyMet = false;
+//        boolean isAlive = true;
+//        boolean isHostile = false;
+//        String name = "";
+//        String location = "";
+//        int encounterNumber = 0;
+//    }
 
     // endregion
 
