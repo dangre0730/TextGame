@@ -21,6 +21,38 @@ public class Functions {
         return diceTotal;
     }
 
+    // Like slowPrintText but without placeholder substitution.
+    //  Use for combat output where no ${variables} are needed.
+    public static void combatPrintText(String[] text, JTextArea textArea) {
+
+        for(String str : text){
+            char[] stringToChar = str.toCharArray();
+            for(char currentChar : stringToChar) {
+                try {
+                    Thread.sleep(1);
+                    textArea.append(String.valueOf(currentChar));
+
+                    // Trying to understand how javax.swing.Timer works and / or how SwingWorker works. Not sure where this even should go really though.
+//                    ActionListener sleepPrint = new ActionListener() {
+//                        public void actionPerformed(ActionEvent e) {
+//                            textArea.append(String.valueOf(currentChar));
+//                        }
+//                    };
+//                    Timer printTimer = new Timer(5, sleepPrint);
+//                    printTimer.start();
+//                    printTimer.stop();
+//                    Game.ui.mainCon.revalidate();     // WHY ARE YOU NOT SLOW PRINTING? INSTEAD YOU JUST WAIT THE TIME IT WOULD HAVE TAKEN TO SLOWPRINT AND THEN IT ALL APPEARS AT ONCE.
+//                    Game.ui.mainCon.repaint();
+                } catch(InterruptedException e) {
+                    textArea.append(String.valueOf(currentChar));
+                    System.out.println("Error encountered! " + e.getMessage());
+                }
+            }
+
+            textArea.append("\n");
+        }
+    }
+
     public static void slowPrint(String output){
         char[] stringToChar = output.toCharArray();
 
@@ -154,6 +186,7 @@ public class Functions {
         return nextLevel;
     }
 
+    // Rolls numberOfDice and drops the lowest result — standard D&D stat generation method.
     public static int statDiceRoll(int numberOfSides, int numberOfDice, int rollModifier){
 
         int minRoll = 100;
@@ -213,110 +246,119 @@ public class Functions {
         return rollValue;
     }
 
-    public static int battleFrame(int enemyHealth, int playerAttackDamage, int playerDamageMod, int enemyDamage, int enemyDamageMod, double attackSpeed, int playerArmor, int enemyArmor, double playerCritChance, double enemyCritChance){
-        //Had idea about storing all player and enemy stats in arrays and trying to pass the entire array to this method for input.
-        //That would make this much cleaner and easier to call in Main method.
-
-        int playerHealth = Game.player.playerHealth;
-        int earnedXP = 0;
-        int damageDealt = 0;
-        double extraAttack = 0.0;
-
-        Scanner getInput = new Scanner(System.in);
-        while((enemyHealth > 0) && (playerHealth > 0)){
-
-            System.out.println("What would you like to do?");
-            slowPrint("1. Attack  2. Move");
-            slowPrint("3. Mock    4. Run");
-            int frameSelection = getInput.nextInt();
-
-            if((frameSelection == 1) || (frameSelection == 2) || (frameSelection == 3) || (frameSelection == 4)) {
-                if (frameSelection == 1) {
-                    damageDealt = makeAnAttack(playerAttackDamage, playerDamageMod, enemyArmor, playerCritChance);
-                    extraAttack += attackSpeed - 1d;
-                    if(damageDealt > 0) {
-                        slowPrint("B A M !");
-                        enemyHealth -= damageDealt;
-//                        earnedXP += 3;
-                        slowPrint("Wow! You dealt " + damageDealt + " damage to the target.");
-                    } else {
-                        slowPrint("Player failed to deal damage this round");
-//                        earnedXP += 3;
-                    }
-                    if(enemyHealth > 0){
-                        slowPrint("Enemy Health is " + enemyHealth);
-                    } else {
-                        slowPrint("Enemy slain! You survived the battle.");
-                        break;
-                    }
-                    if(extraAttack >= 1){
-                        slowPrint("---EXTRA ATTACK---");
-                        damageDealt = makeAnAttack(playerAttackDamage, playerDamageMod, enemyArmor, playerCritChance);
-                        if(damageDealt > 0) {
-                            slowPrint("P O W !");
-                            enemyHealth -= damageDealt;
-//                            earnedXP += 3;
-                            slowPrint("Wow! You dealt " + damageDealt + " damage to the target.");
-                        } else {
-                            slowPrint("Player failed to deal damage this round");
-//                            earnedXP += 0;
-                        }
-                        if(enemyHealth > 0){
-                            slowPrint("Enemy Health is " + enemyHealth);
-                        } else {
-                            slowPrint("Enemy slain! You survived the battle.");
-                            break;
-                        }
-                        extraAttack = 0.0;
-                    }
-                } else if(frameSelection == 2) {
-                    slowPrint("The Movement Module doesn't exist yet.");
-                } else if(frameSelection == 3){
-                    slowPrint("The Mock Module doesn't exist yet.");
-                } else {
-                    slowPrint("Adventurer abandoned their Quest...");
-                    return 40;
-                }
-
-            } else {
-                slowPrint("That's not an option.");
-            }
-            if(enemyHealth > 0) {
-                slowPrint("Enemy Turn Begins.");
-                damageDealt = makeAnAttack(enemyDamage, enemyDamageMod, playerArmor, enemyCritChance);
-                if (damageDealt > 0) {
-                    playerHealth -= damageDealt;
-                } else {
-                    slowPrint("Enemy failed to deal damage this round");
-                }
-                if(playerHealth > 0){
-                    slowPrint("You took " + damageDealt + " damage.");
-                    slowPrint("Player health is " + playerHealth);
-                }
-            } else {
-                slowPrint("Enemy health has been reduced to 0.");
-            }
-        }
-//        if(playerHealth <= 0){
-//            System.out.println("You lost the fight");
-//            Game.player.playerHealth = playerHealth;
-//            return earnedXP;
-//        } else
-        if(enemyHealth <= 0){
-            slowPrint("You won the fight! Your closing health is " + playerHealth);
-            Game.player.playerHealth = playerHealth;
-//            return earnedXP;
-            return Game.enemyNPC.earnedExp;
-        } else {
-            return 0;
-        }
-        // while(())
-//        if(earnedXP < 3){
-//            return 3;
-//        } else {
-//            return earnedXP;
+//    public static int battleFrame(Player player, EnemyNPC enemy, JTextArea textArea) {
+////            int enemyHealth, int playerAttackDamage, int playerDamageMod, int enemyDamage, int enemyDamageMod, double attackSpeed, int playerArmor, int enemyArmor, double playerCritChance, double enemyCritChance){
+//        //Had idea about storing all player and enemy stats in arrays and trying to pass the entire array to this method for input.
+//        //That would make this much cleaner and easier to call in Main method.
+//
+////        int playerHealth = player.playerHealth;
+//        int earnedXP = 0;
+//        int damageDealt = 0;
+//        double extraAttack = 0.0;
+//
+//        String[] text = {
+//                "A " + enemy.enemyName + " stands before you. They clearly want a fight...",
+//                "",
+//                "What would you like to do?",
+//                "",
+//                "1. Attack  2. Move",
+//                "3. Mock    4. Run"
+//        };
+//
+//        while((enemy.enemyHealth > 0) && (player.playerHealth > 0)){
+//
+//            combatPrintText(player, enemy, text, textArea);
+//
+////            Game.ui.getPlayerInput();
+//
+//            switch(Game.playerInput) {
+//                case "1", "ATTACK" -> {
+//                    damageDealt = makeAnAttack(player.attackDamage, player.damageMod, enemy.enemyArmor, player.criticalChance);
+//                    extraAttack += player.attackSpeed - 1d;
+//                    if(damageDealt > 0) {
+//                        slowPrint("B A M !");
+//                        enemy.enemyHealth -= damageDealt;
+////                        earnedXP += 3;
+//                        slowPrint("Wow! You dealt " + damageDealt + " damage to the target.");
+//                    } else {
+//                        slowPrint("Player failed to deal damage this round");
+////                        earnedXP += 3;
+//                    }
+//                    if(enemy.enemyHealth > 0){
+//                        slowPrint("Enemy Health is " + enemy.enemyHealth);
+//                    } else {
+//                        slowPrint("Enemy slain! You survived the battle.");
+//                        break;
+//                    }
+//                    if(extraAttack >= 1){
+//                        slowPrint("---EXTRA ATTACK---");
+//                        damageDealt = makeAnAttack(player.attackDamage, player.damageMod, enemy.enemyArmor, player.criticalChance);
+//                        if(damageDealt > 0) {
+//                            slowPrint("P O W !");
+//                            enemy.enemyHealth -= damageDealt;
+////                            earnedXP += 3;
+//                            slowPrint("Wow! You dealt " + damageDealt + " damage to the target.");
+//                        } else {
+//                            slowPrint("Player failed to deal damage this round");
+////                            earnedXP += 0;
+//                        }
+//                        if(enemy.enemyHealth > 0){
+//                            slowPrint("Enemy Health is " + enemy.enemyHealth);
+//                        } else {
+//                            slowPrint("Enemy slain! You survived the battle.");
+//                            break;
+//                        }
+//                        extraAttack = 0.0;
+//                    }
+//                }
+//                case "2", "MOVE" -> {
+//                    slowPrint("The Movement Module doesn't exist yet.");
+//                }
+//                case "3", "MOCK" -> {
+//                    slowPrint("The Mock Module doesn't exist yet.");
+//                }
+//                case "4", "RUN" -> {
+//                    slowPrint("Adventurer abandoned their Quest...");
+//                }
+//                default -> slowPrint("That's not an option.");
+//            }
+//
+//            if(enemy.enemyHealth > 0) {
+//                slowPrint("Enemy Turn Begins.");
+//                damageDealt = makeAnAttack(enemy.enemyDamage, enemy.enemyDamageMod, player.classArmor, enemy.enemyCriticalChance);
+//                if (damageDealt > 0) {
+//                    player.playerHealth -= damageDealt;
+//                } else {
+//                    slowPrint("Enemy failed to deal damage this round");
+//                }
+//                if(player.playerHealth > 0){
+//                    slowPrint("You took " + damageDealt + " damage.");
+//                    slowPrint("Player health is " + player.playerHealth);
+//                }
+//            } else {
+//                slowPrint("Enemy health has been reduced to 0.");
+//            }
 //        }
-    }
+////        if(playerHealth <= 0){
+////            System.out.println("You lost the fight");
+////            Game.player.playerHealth = playerHealth;
+////            return earnedXP;
+////        } else
+//        if(enemy.enemyHealth <= 0){
+//            slowPrint("You won the fight! Your closing health is " + player.playerHealth);
+//            Game.player = player;
+////            return earnedXP;
+//            return enemy.earnedExp;
+//        } else {
+//            return 0;
+//        }
+//        // while(())
+////        if(earnedXP < 3){
+////            return 3;
+////        } else {
+////            return earnedXP;
+////        }
+//    }
 
     public static int CONSOLEbattleFrame(int enemyHealth, int playerAttackDamage, int playerDamageMod, int enemyDamage, int enemyDamageMod, double attackSpeed, int playerArmor, int enemyArmor, double playerCritChance, double enemyCritChance){
         //Had idea about storing all player and enemy stats in arrays and trying to pass the entire array to this method for input.
@@ -429,7 +471,10 @@ public class Functions {
         boolean isCrit = false;
         double criticalStrike = attackerCritChance / 100;
 
+        // Armor value doubles as hit threshold (0-100). Higher armor = harder to hit, not just damage reduction.
         if((Math.random() * 100) >= targetArmor){
+            // criticalStrike is already converted from percentage (e.g. 15.0 -> 0.15).
+            //  Random must exceed (1 - critChance) to crit.
             if(Math.random() >= (1 - criticalStrike)){
                 isCrit = true;
                 System.out.println("It's a crit!");
