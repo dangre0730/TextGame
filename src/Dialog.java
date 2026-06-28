@@ -11,6 +11,7 @@ public class Dialog {
     // region
 
     // 2D String array that stores the intro character building dialog
+    // Index matches dialog.chatLevel. Increment chatLevel in Game.java to advance to next dialog block.
     static String[][] chatTracker = {
             {   // [0,N] greeting dialog
                     "Hello, Traveler! I'm Abernathy, what is your name? Enter your desired name and then hit enter!"
@@ -40,7 +41,7 @@ public class Dialog {
                     "3. A Bat",
                     "4. A Wand"
             },
-            {   // [4, N] Player stat presentation
+            {   // [4, N] Player stat presentation -Placeholders are substituted at print time by slowPrintText() in Functions.java.
                     "Alright, now that you've chosen your class and weapon I'll generate your stats...",
                     "[PLAYER NAME: ${playerName} | PLAYER CLASS: ${playerClass} (${classMod}) | PLAYER WEAPON: ${playerWeapon}]",
                     "[PLAYER LEVEL: ${playerLevel} | HP: ${currentHP} / ${maxHP} | HIT DIE: d${hitDie}]",
