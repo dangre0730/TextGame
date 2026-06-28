@@ -1,3 +1,4 @@
+// Stub. XP thresholds for leveling. Currently disconnected — Player.nextLevel is managed independently in Game.java.
 public class LevelUp {
     // https://roll20.net/compendium/dnd5e/Character%20Advancement#content
 
