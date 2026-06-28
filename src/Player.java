@@ -46,6 +46,8 @@ public class Player {
     double criticalChance;
     double attackSpeed;
     int damageMod;
+    // Persists between combatLoop calls. Accumulates fractional attacks from attackSpeed; triggers a bonus attack when >= 1.
+    double extraAttack;
 
     //Stats and Modifiers
     int maxPlayerHealth;
@@ -141,6 +143,8 @@ public class Player {
         System.out.println("Your attack modifier is " + classMod + "!");
 
         /*
+            Minimum stat of 8 enforced to prevent extreme negative modifiers from breaking combat math.
+
                 REVIEW ROUNDING BEHAVIOR HERE:
                     ANYTHING BELOW 10 FOR A STAT ROUNDS 'DOWN TOWARD NEGATIVE INFINITY' USING THE FLOOR METHOD.
                     playerStrength of 9 = -1 modifier
