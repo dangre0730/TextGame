@@ -29,6 +29,7 @@ public class Room {
         SECRET_DWARVEN_HALLWAY_REVISIT,
         SUSPICIOUSLY_CLEAN_BATHROOM_BASE,
         SUSPICIOUSLY_CLEAN_BATHROOM_REVISIT,
+        TRAINING_ROOM,
         WALL
     }
 
@@ -323,7 +324,7 @@ public class Room {
                 };
                 nextRooms = new RoomObjects[]{RoomObjects.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomObjects.WALL, RoomObjects.WALL, RoomObjects.DARK_BASEMENT_BASE};
             }
-            // [N: Wall, E: GDH, S: Wall, W: Wall]
+            // [N: (special) TrainingRoom, E: GDH, S: Wall, W: Wall]
             case RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_BASE -> {
                 if (revisitSuspiciouslyCleanBathroom){
                     getRoom(RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_REVISIT);
@@ -331,6 +332,7 @@ public class Room {
                     description = new String[]{
                             "---SUSPICIOUSLY CLEAN BATHROOM---",
                             "You find yourself in a exceptionally clean bathroom. It's so clean, you probably shouldn't use it.",
+                            "A pristine white toilet sits against the western wall.",
                             "To your East, is the bathroom door you entered through."
                     };
                     nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.GRAND_DINING_HALL_BASE, RoomObjects.WALL, RoomObjects.WALL};
@@ -345,6 +347,15 @@ public class Room {
                         "To your East, is the bathroom door you entered through."
                 };
                 nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.GRAND_DINING_HALL_BASE, RoomObjects.WALL, RoomObjects.WALL};
+            }
+            case RoomObjects.TRAINING_ROOM -> {
+                description = new String[]{
+                        "---TRAINING ROOM---",
+                        "You enter the room that was hidden behind the false wall.",
+                        "You may initiate battle practice here if you wish, by typing 'fight'.",
+                        "If you wish to leave, the bathroom is to your south."
+                };
+                nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.WALL, RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_BASE, RoomObjects.WALL};
             }
             case RoomObjects.WALL -> {
 
