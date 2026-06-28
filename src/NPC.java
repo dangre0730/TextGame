@@ -13,6 +13,11 @@ public class NPC {
 //    boolean isHostile = false;
     int encounterNumber = 0;
 
+    public NPC() {
+
+    }
+
+    // Not yet used in logic. Placeholder for future NPC behavior branching (e.g. merchant vs. enemy).
     enum type {
         QUEST_GIVER,
         MERCHANT,
