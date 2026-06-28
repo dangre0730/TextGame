@@ -1,4 +1,4 @@
-import javax.swing.*;
+import java.util.ArrayList;
 
 public class Game {
 
@@ -367,7 +367,9 @@ public class Game {
                 player.extraAttack = 0D;
                 System.out.println(enemyNPC.name);
                 text = new String[]{
-                        "A " + enemyNPC.name + " stands before you. They clearly want a fight...",
+                        enemyNPC.name + "|  HP-" + enemyNPC.enemyHealth + "; ATK-" + (enemyNPC.enemyDamage + enemyNPC.enemyDamageMod) + "; CRIT-" + enemyNPC.enemyCriticalChance + "%",
+                        "",
+                        "Your opponent stands before you. They clearly want a fight...",
                         "",
                         "What would you like to do?",
                         "",
@@ -379,6 +381,8 @@ public class Game {
                 ++enemyNPC.turnsTaken;
             } else {
                 ++enemyNPC.turnsTaken;
+                ArrayList<String> tempList = new ArrayList<>();
+                tempList.add("");
 
                 int earnedXP = 0;
                 int damageDealt = 0;
@@ -394,71 +398,100 @@ public class Game {
                         damageDealt = Functions.makeAnAttack(player.attackDamage, player.damageMod, enemyNPC.enemyArmor, player.criticalChance);
                         player.extraAttack += player.attackSpeed - 1d;
                         if (damageDealt > 0) {
-                            Functions.slowPrint("B A M !");
+                            tempList.add("B A M !");
+//                            tempList.add("");
                             enemyNPC.enemyHealth -= damageDealt;
 //                        earnedXP += 3;
-                            Functions.slowPrint("Wow! You dealt " + damageDealt + " damage to the target.");
+                            tempList.add("Wow! You dealt " + damageDealt + " damage to the target.");
+//                            tempList.add("");
                         } else {
-                            Functions.slowPrint("Player failed to deal damage this round");
+                            tempList.add("Player failed to deal damage this round");
+//                            tempList.add("");
 //                        earnedXP += 3;
                         }
                         if (enemyNPC.enemyHealth > 0) {
-                            Functions.slowPrint("Enemy Health is " + enemyNPC.enemyHealth);
+                            tempList.add("Enemy Health is " + enemyNPC.enemyHealth);
+//                            tempList.add("");
                         } else {
-                            Functions.slowPrint("Enemy slain! You survived the battle.");
+                            tempList.add("Enemy slain! You survived the battle.");
+//                            tempList.add("");
                             break;
                         }
                         if (player.extraAttack >= 1) {
-                            Functions.slowPrint("---EXTRA ATTACK---");
+                            tempList.add("---EXTRA ATTACK---");
+                            tempList.add("");
                             damageDealt = Functions.makeAnAttack(player.attackDamage, player.damageMod, enemyNPC.enemyArmor, player.criticalChance);
                             if (damageDealt > 0) {
-                                Functions.slowPrint("P O W !");
+                                tempList.add("P O W !");
+//                                tempList.add("");
                                 enemyNPC.enemyHealth -= damageDealt;
 //                            earnedXP += 3;
-                                Functions.slowPrint("Wow! You dealt " + damageDealt + " damage to the target.");
+                                tempList.add("Wow! You dealt " + damageDealt + " damage to the target.");
+//                                tempList.add("");
                             } else {
-                                Functions.slowPrint("Player failed to deal damage this round");
+                                tempList.add("Player failed to deal damage this round");
+//                                tempList.add("");
 //                            earnedXP += 0;
                             }
                             if (enemyNPC.enemyHealth > 0) {
-                                Functions.slowPrint("Enemy Health is " + enemyNPC.enemyHealth);
+                                tempList.add("Enemy Health is " + enemyNPC.enemyHealth);
+//                                tempList.add("");
                             } else {
-                                Functions.slowPrint("Enemy slain! You survived the battle.");
+                                tempList.add("Enemy slain! You survived the battle.");
+//                                tempList.add("");
                                 break;
                             }
                             player.extraAttack = 0.0;
                         }
                     }
                     case "2", "MOVE" -> {
-                        Functions.slowPrint("The Movement Module doesn't exist yet.");
+                        tempList.add("The Movement Module doesn't exist yet.");
+                        tempList.add("");
                     }
                     case "3", "MOCK" -> {
-                        Functions.slowPrint("The Mock Module doesn't exist yet.");
+                        tempList.add("The Mock Module doesn't exist yet.");
+                        tempList.add("");
                     }
                     case "4", "RUN" -> {
-                        Functions.slowPrint("Adventurer abandoned their Quest...");
+                        tempList.add("Adventurer abandoned their Quest...");
+                        tempList.add("");
                     }
                     default -> {
-                        Functions.slowPrint("That's not an option.");
+                        tempList.add("That's not an option.");
+                        tempList.add("");
                         validInput = false;
                     }
                 }
 
                 if (enemyNPC.enemyHealth > 0) {
-                    Functions.slowPrint("Enemy Turn Begins.");
+                    tempList.add("Enemy Turn Begins.");
+                    tempList.add("");
                     damageDealt = Functions.makeAnAttack(enemyNPC.enemyDamage, enemyNPC.enemyDamageMod, player.classArmor, enemyNPC.enemyCriticalChance);
                     if (damageDealt > 0) {
                         player.playerHealth -= damageDealt;
                     } else {
-                        Functions.slowPrint("Enemy failed to deal damage this round");
+                        tempList.add("Enemy failed to deal damage this round");
+//                        tempList.add("");
                     }
                     if (player.playerHealth > 0) {
-                        Functions.slowPrint("You took " + damageDealt + " damage.");
-                        Functions.slowPrint("Player health is " + player.playerHealth);
+                        tempList.add("You took " + damageDealt + " damage.");
+                        tempList.add("Player health is " + player.playerHealth);
+//                        tempList.add("");
+                        tempList.add("");
+                        tempList.add("Your opponent stands before you. They clearly want a fight...");
+                        tempList.add("");
+                        tempList.add("What would you like to do?");
+                        tempList.add("");
+                        tempList.add("1. Attack  2. Move");
+                        tempList.add("3. Mock    4. Run");
                     }
                 } else {
-                    Functions.slowPrint("Enemy health has been reduced to 0.");
+                    tempList.add("Enemy health has been reduced to 0.");
+//                    tempList.add("");
                 }
+
+                // Add to the start of the array list so that enemy stats are current onscreen.
+                tempList.addFirst(enemyNPC.name + "|  HP-" + enemyNPC.enemyHealth + "; ATK-" + (enemyNPC.enemyDamage + enemyNPC.enemyDamageMod) + "; CRIT-" + enemyNPC.enemyCriticalChance + "%");
 //        }
 //        if(playerHealth <= 0){
 //            System.out.println("You lost the fight");
@@ -468,26 +501,31 @@ public class Game {
 
                 // Build the round summary here. All combat narrative should land in text[] rather than printing mid-round.
                 if (enemyNPC.enemyHealth <= 0) {
-                    Functions.slowPrint("You won the fight! Your closing health is " + player.playerHealth);
+                    tempList.add("You won the fight! Your closing health is " + player.playerHealth);
+                    tempList.add("");
+                    text = tempList.toArray(new String[0]);
+
                     player.experience += enemyNPC.earnedExp;
                     enemyNPC.combatOver = true;
-                    text = new String[]{
-                            "The " + enemyNPC.name + " has been slain.",
-                            "",
-                            "What would you like to do?",
-                            "",
-                            "1. Return to the Mansion  2. Fight another creature"
-                    };
+//                    text = new String[]{
+//                            "The " + enemyNPC.name + " has been slain.",
+//                            "",
+//                            "What would you like to do?",
+//                            "",
+//                            "1. Return to the Mansion  2. Fight another creature"
+//                    };
                 } else {
-                    text = new String[]{
-                            "The " + enemyNPC.name + " yet stands, in spite of your attempt to end its life...",
-                            "Enemy Stats: HP-" + enemyNPC.enemyHealth + "; ATK-" + (enemyNPC.enemyDamage + enemyNPC.enemyDamageMod) + "; CRIT-" + enemyNPC.enemyCriticalChance + ";",
-                            "",
-                            "What would you like to do?",
-                            "",
-                            "1. Attack  2. Move",
-                            "3. Mock    4. Run"
-                    };
+
+                    text = tempList.toArray(new String[0]);
+//                    text = new String[]{
+//                            "The " + enemyNPC.name + " yet stands, in spite of your attempt to end its life...",
+//                            "Enemy Stats: HP-" + enemyNPC.enemyHealth + "; ATK-" + (enemyNPC.enemyDamage + enemyNPC.enemyDamageMod) + "; CRIT-" + enemyNPC.enemyCriticalChance + "%;",
+//                            "",
+//                            "What would you like to do?",
+//                            "",
+//                            "1. Attack  2. Move",
+//                            "3. Mock    4. Run"
+//                    };
                 }
                 // while(())
 //        if(earnedXP < 3){
