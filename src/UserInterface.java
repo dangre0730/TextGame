@@ -555,12 +555,16 @@ public class UserInterface {
      */
     public void displayText(){
         // Print text from appropriate class dependent on GameState
-        if(Game.gameState != Game.GameState.EXPLORING) {
-            Functions.slowPrintText(Dialog.chatTracker[Game.dialog.chatLevel], Game.ui.mainTextArea);
+        if(Game.gameState == Game.GameState.IN_COMBAT) {
+             // combatLoop calls combatPrintText directly before calling displayText(), so nothing needs to print here.
+        } else if(Game.gameState == Game.GameState.EXPLORING) {
+             Functions.slowPrintText(Game.room.description, Game.ui.mainTextArea);
         } else {
             // Use Room class descriptions...how though?
-            Functions.slowPrintText(Game.room.description, Game.ui.mainTextArea);
+             Functions.slowPrintText(Dialog.chatTracker[Game.dialog.chatLevel], Game.ui.mainTextArea);
         }
+
+        refreshGameScreen();
     }
 
     /**
@@ -570,6 +574,7 @@ public class UserInterface {
         mainTextArea.setText("");
     }
 
+    // region Update player stat labels
     /** Update text for player name
      *
      * @param playerName - Name of player
@@ -740,6 +745,8 @@ public class UserInterface {
         playerPanel.revalidate();
     }
 
+    // endregion
+
     /**
      * Updates game UI with current states of all objects / variables
      */
@@ -768,16 +775,18 @@ public class UserInterface {
     public void getPlayerInput(){
         System.out.println(Game.dialog.chatLevel);
 
-            String playerInput = playerInputField.getText().toUpperCase();
-            if (playerInput.equals("QUIT")) {
-                System.exit(0);
-            }
+        // Normalizing to uppercase so all input comparisons in Game.java can
+        //  use uppercase string literals without case-sensitivity issues.
+        String playerInput = playerInputField.getText().toUpperCase();
+        if (playerInput.equals("QUIT")) {
+            System.exit(0);
+        }
 
-            System.out.println(Game.gameState);
+        System.out.println(Game.gameState);
 
-            Game.handleInput(playerInput);
+        Game.handleInput(playerInput);
 
-            playerInputField.setText("");
+        playerInputField.setText("");
     }
 
     /*
