@@ -4,32 +4,42 @@ public class EnemyNPC extends NPC {
 
     //Declare Variables
     //Integers
-    Integer enemySelection;
-    Integer enemyHealth;
-    Integer enemyArmor;
-    Integer enemyDamage;
-    Integer enemyDamageMod;
-    Integer earnedExp;
+    int enemySelection;
+    int enemyHealth;
+    int enemyArmor;
+    int enemyDamage;
+    int enemyDamageMod;
+    int earnedExp;
+    // Tracks how many times combatLoop has been called for this enemy. 0 = first call (show intro), 1+ = resolve round.
+    int turnsTaken = 0;
     //Doubles
-    Double enemyCriticalChance;
+    double enemyCriticalChance;
+    // Booleans
+    // Set to true when enemy HP reaches 0. Switches combatLoop to the post-fight options branch.
+    boolean combatOver = false;
     //Strings
-    String enemyName;
+    String name;
     String region;
 
-    public EnemyNPC(String name, Room.RoomObjects location, int enemyHealth, int enemyArmor, int enemyDamage){
-        super(name, location);
-        this.enemyHealth = enemyHealth;
-        this.enemyArmor = enemyArmor;
-        this.enemyDamage = enemyDamage;
+    public EnemyNPC(Room.RoomObjects location, int enemySelection){
+        super("", location);
+
+        enemyStats(enemySelection);
+    }
+
+    public EnemyNPC() {
+        super();
     }
 
     public String toString(){
         return getClass().getName() + "[" + name + "," + location + "," + enemyHealth + "," + enemyArmor + "," + enemyDamage + "]";
     }
 //    String[] enemyList = {"Training Dummy", "Swarm of Rats"};
+
+    // Populates all combat stats for this enemy. Called automatically by the constructor via enemySelection param.
     public void enemyStats(int enemySelection) {
         if(enemySelection == 0) {
-            enemyName = "Training Dummy";
+            name = "Training Dummy";
             region = "Tutorial";
             enemyHealth = 15;
             enemyDamage = 2;
@@ -38,7 +48,7 @@ public class EnemyNPC extends NPC {
             enemyCriticalChance = 0.0;
             earnedExp = 9;
         } else if (enemySelection == 1) {
-            enemyName = "Swarm of Rats";
+            name = "Swarm of Rats";
             region = "Tutorial";
             enemyHealth = 20;
             enemyDamage = 2;
@@ -47,7 +57,7 @@ public class EnemyNPC extends NPC {
             enemyCriticalChance = 2.0;
             earnedExp = 12;
         }
-        Functions.slowPrint("You are fighting a " + enemyName + ". Enemy Health is " + enemyHealth + ". Enemy Armor is " + enemyArmor + ". Enemy Damage is " + enemyDamage + ". Enemy Damage Modifier is " + enemyDamageMod + ". Enemy Critical Chance is " + enemyCriticalChance +
+        Functions.slowPrint("You are fighting a " + name + ". Enemy Health is " + enemyHealth + ". Enemy Armor is " + enemyArmor + ". Enemy Damage is " + enemyDamage + ". Enemy Damage Modifier is " + enemyDamageMod + ". Enemy Critical Chance is " + enemyCriticalChance +
                 ". Enemy spawn region is " + region + ". Enemy Experience Value is " + earnedExp + ".");
     }
 
