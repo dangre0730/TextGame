@@ -1,5 +1,13 @@
 public class Player {
 
+//    public Player(String name, String className, String weapon) {
+//        Game.setPlayerName(name);
+//        Game.setPlayerClass(className);
+//        Game.setPlayerWeapon(weapon);
+//
+//
+//    }
+
     // ============================================
     //      Player Object & Variable Declarations
     // ============================================
@@ -204,7 +212,7 @@ public class Player {
             case CROSSBOW:
                 weaponName = "CROSSBOW";
                 attackDamage = 5;
-                attackSpeed = 1.0;
+                attackSpeed = .75;   // reduced 1 -> .75, item was too strong
                 criticalChance = 19.5;
                 break;
             case BAT:

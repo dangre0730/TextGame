@@ -448,8 +448,8 @@ public class UserInterface {
         // Auto-size UI JFrame to half current screen resolution. Set default sizing catch to avoid making UI too small.
         try {
             Dimension monitorSize = Toolkit.getDefaultToolkit().getScreenSize();
-            int monitorWidth = (int) (monitorSize.getWidth() * 0.5);
-            int monitorHeight = (int) (monitorSize.getHeight() * 0.5);
+            int monitorWidth = (int) (monitorSize.getWidth() * 0.9);
+            int monitorHeight = (int) (monitorSize.getHeight() * 0.9);
 
             if (monitorWidth > gameWidth && monitorHeight > gameHeight) {
                 gameWidth = monitorWidth;
@@ -719,6 +719,8 @@ public class UserInterface {
         playerWeaponSpeedLabel.setText("ATK SPEED: " + atkSpeed);
     }
 
+    // endregion
+
     /** Run each updatePlayerNNNLabel, passing relevant variables into each, then update ui to reflect any changes made to the player panel only
      *
      * @param player - Player object that holds all relevant instance values
@@ -744,8 +746,6 @@ public class UserInterface {
         playerPanel.repaint();
         playerPanel.revalidate();
     }
-
-    // endregion
 
     /**
      * Updates game UI with current states of all objects / variables
