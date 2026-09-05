@@ -41,7 +41,7 @@ public class EnemyNPC extends NPC {
         if(enemySelection == 0) {
             name = "Training Dummy";
             region = "Tutorial";
-            enemyHealth = 15;
+            enemyHealth = 50;
             enemyDamage = 2;
             enemyDamageMod = 0;
             enemyArmor = 1;
@@ -50,7 +50,7 @@ public class EnemyNPC extends NPC {
         } else if (enemySelection == 1) {
             name = "Swarm of Rats";
             region = "Tutorial";
-            enemyHealth = 20;
+            enemyHealth = 50;
             enemyDamage = 2;
             enemyDamageMod = 1;
             enemyArmor = 0;
