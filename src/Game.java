@@ -366,6 +366,7 @@ public class Game {
             if (enemyNPC.turnsTaken == 0) {
                 player.extraAttack = 0D;
                 System.out.println(enemyNPC.name);
+//                player.extraAttack = player.attackSpeed;
                 text = new String[]{
                         enemyNPC.name + "|  HP-" + enemyNPC.enemyHealth + "; ATK-" + (enemyNPC.enemyDamage + enemyNPC.enemyDamageMod) + "; CRIT-" + enemyNPC.enemyCriticalChance + "%",
                         "",
@@ -390,59 +391,85 @@ public class Game {
 
 //        while((enemyNPC.enemyHealth > 0) && (player.playerHealth > 0)){
 
-
 //            Game.ui.getPlayerInput();
 
                 switch (playerInput) {
                     case "1", "ATTACK" -> {
                         damageDealt = Functions.makeAnAttack(player.attackDamage, player.damageMod, enemyNPC.enemyArmor, player.criticalChance);
-                        player.extraAttack += player.attackSpeed - 1d;
-                        if (damageDealt > 0) {
-                            tempList.add("B A M !");
-//                            tempList.add("");
-                            enemyNPC.enemyHealth -= damageDealt;
+//                        if (player.attackSpeed > 1) {
+//                            player.extraAttack += player.attackSpeed - 1d;
+//                        } else {
+                            player.extraAttack += player.attackSpeed;
+//                        }
+                        if (player.extraAttack >= 1) {
+                            if (damageDealt > 0) {
+                                enemyNPC.enemyHealth -= damageDealt;
 //                        earnedXP += 3;
-                            tempList.add("Wow! You dealt " + damageDealt + " damage to the target.");
+                                tempList.add("B A M ! You dealt " + damageDealt + " damage to the target!");
 //                            tempList.add("");
-                        } else {
-                            tempList.add("Player failed to deal damage this round");
-//                            tempList.add("");
+                            } else {
+                                tempList.add("Player attack missed!!");
+                                tempList.add("");
 //                        earnedXP += 3;
+                            }
+
+                            if (player.extraAttack >= 2) {
+                                tempList.add("---EXTRA ATTACK---");
+                                tempList.add("");
+                                damageDealt = Functions.makeAnAttack(player.attackDamage, player.damageMod, enemyNPC.enemyArmor, player.criticalChance);
+                                if (damageDealt > 0) {
+                                    tempList.add("P O W ! You dealt " + damageDealt + " damage to the target.");
+//                                tempList.add("");
+                                    enemyNPC.enemyHealth -= damageDealt;
+//                            earnedXP += 3;
+//                                tempList.add("");
+                                } else {
+                                    tempList.add("Player failed to deal damage this round");
+//                                tempList.add("");
+//                            earnedXP += 0;
+                                }
+//                                if (enemyNPC.enemyHealth > 0) {
+//                                    tempList.add("Enemy Health is " + enemyNPC.enemyHealth);
+////                                tempList.add("");
+//                                } else {
+//                                    tempList.add("Enemy slain! You survived the battle.");
+////                                tempList.add("");
+//                                    break;
+//                                }
+//                            player.extraAttack = 0.0;
+                                player.extraAttack -= 2;
+                            }
                         }
+                        tempList.add("Enemy Health is " + enemyNPC.enemyHealth);
+                        tempList.add("");
                         if (enemyNPC.enemyHealth > 0) {
-                            tempList.add("Enemy Health is " + enemyNPC.enemyHealth);
-//                            tempList.add("");
+                            tempList.add("Enemy Turn Begins.");
+                            tempList.add("");
+                            damageDealt = Functions.makeAnAttack(enemyNPC.enemyDamage, enemyNPC.enemyDamageMod, player.classArmor, enemyNPC.enemyCriticalChance);
+                            if (damageDealt > 0) {
+                                player.playerHealth -= damageDealt;
+                            } else {
+                                tempList.add("Enemy failed to deal damage this round");
+//                        tempList.add("");
+                            }
+                            if (player.playerHealth > 0) {
+                                tempList.add("You took " + damageDealt + " damage.");
+                                tempList.add("Player health is " + player.playerHealth);
+//                        tempList.add("");
+                                tempList.add("");
+                                tempList.add("Your opponent stands before you. They clearly want a fight...");
+                                tempList.add("");
+                                tempList.add("What would you like to do?");
+                                tempList.add("");
+                                tempList.add("1. Attack  2. Move");
+                                tempList.add("3. Mock    4. Run");
+                            }
                         } else {
                             tempList.add("Enemy slain! You survived the battle.");
 //                            tempList.add("");
                             break;
                         }
-                        if (player.extraAttack >= 1) {
-                            tempList.add("---EXTRA ATTACK---");
-                            tempList.add("");
-                            damageDealt = Functions.makeAnAttack(player.attackDamage, player.damageMod, enemyNPC.enemyArmor, player.criticalChance);
-                            if (damageDealt > 0) {
-                                tempList.add("P O W !");
-//                                tempList.add("");
-                                enemyNPC.enemyHealth -= damageDealt;
-//                            earnedXP += 3;
-                                tempList.add("Wow! You dealt " + damageDealt + " damage to the target.");
-//                                tempList.add("");
-                            } else {
-                                tempList.add("Player failed to deal damage this round");
-//                                tempList.add("");
-//                            earnedXP += 0;
-                            }
-                            if (enemyNPC.enemyHealth > 0) {
-                                tempList.add("Enemy Health is " + enemyNPC.enemyHealth);
-//                                tempList.add("");
-                            } else {
-                                tempList.add("Enemy slain! You survived the battle.");
-//                                tempList.add("");
-                                break;
-                            }
-                            player.extraAttack = 0.0;
-                        }
+
                     }
                     case "2", "MOVE" -> {
                         tempList.add("The Movement Module doesn't exist yet.");
@@ -463,33 +490,6 @@ public class Game {
                     }
                 }
 
-                if (enemyNPC.enemyHealth > 0) {
-                    tempList.add("Enemy Turn Begins.");
-                    tempList.add("");
-                    damageDealt = Functions.makeAnAttack(enemyNPC.enemyDamage, enemyNPC.enemyDamageMod, player.classArmor, enemyNPC.enemyCriticalChance);
-                    if (damageDealt > 0) {
-                        player.playerHealth -= damageDealt;
-                    } else {
-                        tempList.add("Enemy failed to deal damage this round");
-//                        tempList.add("");
-                    }
-                    if (player.playerHealth > 0) {
-                        tempList.add("You took " + damageDealt + " damage.");
-                        tempList.add("Player health is " + player.playerHealth);
-//                        tempList.add("");
-                        tempList.add("");
-                        tempList.add("Your opponent stands before you. They clearly want a fight...");
-                        tempList.add("");
-                        tempList.add("What would you like to do?");
-                        tempList.add("");
-                        tempList.add("1. Attack  2. Move");
-                        tempList.add("3. Mock    4. Run");
-                    }
-                } else {
-                    tempList.add("Enemy health has been reduced to 0.");
-//                    tempList.add("");
-                }
-
                 // Add to the start of the array list so that enemy stats are current onscreen.
                 tempList.addFirst(enemyNPC.name + "|  HP-" + enemyNPC.enemyHealth + "; ATK-" + (enemyNPC.enemyDamage + enemyNPC.enemyDamageMod) + "; CRIT-" + enemyNPC.enemyCriticalChance + "%");
 //        }
@@ -498,6 +498,29 @@ public class Game {
 //            Game.player.playerHealth = playerHealth;
 //            return earnedXP;
 //        } else
+                if (player.playerHealth <= 0) {
+                    text = new String[]{
+                            "Uh-oh...bad news buddy. You actually died just then.",
+                            "",
+                            "This is super awkward, no one was supposed to die in here again. I gotta call Terry...",
+                            "*Muffled* Yeah, Terry? It's Abernathy, that tester I mentioned who potential - " + player.name + " - they had an...accident here at the mansion.",
+                            "   They found the training room...that damn " + enemyNPC.name + " is STILL FUCKING HERE, TERRY!    FUCK!!!",
+                            "   You were supposed to take care of that shit after the last mishap! Just get down here and deal with the mess.",
+                            "",
+                            "Well, sorry about that friend. I really hadn't planned for this to happen to ya. I actually thought you would be the first to get down there.",
+                            "Back to the drawing board now, for old Abe here. Terry will be here soon to scrape you off the walls. Again, so so sorry about this."
+                    };
+                    ui.clearText();
+                    Functions.combatPrintText(text, ui.mainTextArea);
+                    ui.displayText();
+                    ui.updatePlayerPanelLabels(player);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception ignored) {
+
+                    }
+                    System.exit(40);
+                }
 
                 // Build the round summary here. All combat narrative should land in text[] rather than printing mid-round.
                 if (enemyNPC.enemyHealth <= 0) {
