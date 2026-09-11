@@ -351,6 +351,16 @@ public class Game {
 
         // turnsTaken == 0: show intro. turnsTaken >= 1: resolve round. combatOver: show post-fight options.
         if (enemyNPC.combatOver) {
+            text = new String[]{
+                    "The " + enemyNPC.name + " has been slain.",
+                    "",
+                    "What would you like to do?",
+                    "",
+                    "1. Return to the Mansion  2. Fight another creature"
+            };
+            ui.clearText();
+            Functions.combatPrintText(text, ui.mainTextArea);
+            ui.displayText();
             switch (playerInput) {
                 case "1", "RETURN" -> {
                     setGameState(GameState.EXPLORING);
@@ -359,8 +369,11 @@ public class Game {
                     ui.clearText();
                     ui.displayText();
                 }
-                case "2", "FIGHT" -> Game.enemyNPC = new EnemyNPC(Room.RoomObjects.TRAINING_ROOM, 0);
+                case "2", "FIGHT" -> {
+                    Game.enemyNPC = new EnemyNPC(Room.RoomObjects.TRAINING_ROOM, 0);
+                }
             }
+//            continue;     // I'm trying to make it so that post combat message is displayed so the above prompts are clear and the user input synchronizes with what they think they are responding to. Basically need to have a loop to display the above info and then take input...
         } else {
 
             if (enemyNPC.turnsTaken == 0) {
