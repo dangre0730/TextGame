@@ -98,6 +98,8 @@ public class UserInterface {
     Boolean gameStarted = false;
     Integer gameWidth = 1280;
     Integer gameHeight = 720;
+    int padToGameWidth = 6;
+    int padToGameHeight = 6;
     String playerInput = "";
     String playerClassDesc = "";
 
@@ -164,13 +166,15 @@ public class UserInterface {
          *  - 1/4 of UI height minus 16 pixels to accommodate padding size
          *  - Make element a grid with a single row and padding of 8 pixels on all sides
         */
+        padToGameWidth = mainCon.getWidth() / 160;
+        padToGameHeight = mainCon.getHeight() / 90;
         playerPanel = new JPanel();
         playerPanel.setBackground(statsBackgroundColor);
 //        playerPanel.setBounds(16, 16, gameWidth - 16, 160);
-        playerPanel.setLocation(16, 16);
-        playerPanel.setSize(mainCon.getWidth() - 32, (mainCon.getHeight() / 4) - 16);
+        playerPanel.setLocation(padToGameWidth, padToGameHeight);
+        playerPanel.setSize(mainCon.getWidth() - (padToGameWidth * 2), (mainCon.getHeight() / 4) - (padToGameHeight));
         playerPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        playerPanel.setLayout(new GridLayout(1, 0, 8, 8));
+        playerPanel.setLayout(new GridLayout(1, 0, padToGameWidth / 2, padToGameHeight / 2));
         mainCon.add(playerPanel);
 
         // Update UI
@@ -194,7 +198,7 @@ public class UserInterface {
         // Create player stat box that will display Player name, class, and armor class
         nameClassACPanel = new JPanel();
         nameClassACPanel.setBackground(statsBackgroundColor);
-        nameClassACPanel.setBounds(16, 16, playerPanelElementsWidth, 140);
+        nameClassACPanel.setBounds(padToGameWidth, padToGameHeight, playerPanelElementsWidth, 140);
         nameClassACPanel.setLayout(new BoxLayout(nameClassACPanel, BoxLayout.PAGE_AXIS));
 
         // Create labels to display player info
@@ -533,7 +537,7 @@ public class UserInterface {
 //        mainTextArea.setBorder(BorderFactory.createLineBorder(Color.gray));
         mainTextArea.setBackground(Color.black);
         mainTextArea.setForeground(Color.white);
-        mainTextArea.setFont(new Font("monospaced", Font.BOLD, 22));
+        mainTextArea.setFont(new Font("monospaced", Font.BOLD, mainCon.getHeight() / 50));
         mainTextArea.setLineWrap(true);
         mainTextArea.setWrapStyleWord(true);
         mainTextArea.setEditable(false);
