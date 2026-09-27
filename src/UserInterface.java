@@ -95,11 +95,12 @@ public class UserInterface {
 
 
     // Important variables that are common across game
-    Boolean gameStarted = false;
-    Integer gameWidth = 1280;
-    Integer gameHeight = 720;
-    int padToGameWidth = 6;
-    int padToGameHeight = 6;
+    boolean gameStarted = false;
+    double windowSizeDefaultScale = 0.7D;   // Used to autosize the game UI by a default percentage (70%) on open
+    int gameWidth = 1280;   // Used as a default screen width in case monitor width cannot be obtained
+    int gameHeight = 720;   // Used as a default screen height in case monitor height cannot be obtained
+    int padToGameWidth = 6; // Used as a default padding to apply to game panels
+    int padToGameHeight = 6;// Used as a default padding to apply to game panels
     String playerInput = "";
     String playerClassDesc = "";
 
@@ -449,11 +450,12 @@ public class UserInterface {
     private void createUIBox() {
         uiBackgroundColor = new Color(19, 99, 83);
 
-        // Auto-size UI JFrame to half current screen resolution. Set default sizing catch to avoid making UI too small.
+        // Auto-size UI JFrame to a percentage of current screen resolution. Set default sizing catch to avoid making
+        // UI too small.
         try {
             Dimension monitorSize = Toolkit.getDefaultToolkit().getScreenSize();
-            int monitorWidth = (int) (monitorSize.getWidth() * 0.9);
-            int monitorHeight = (int) (monitorSize.getHeight() * 0.9);
+            int monitorWidth = (int) (monitorSize.getWidth() * windowSizeDefaultScale);
+            int monitorHeight = (int) (monitorSize.getHeight() * windowSizeDefaultScale);
 
             if (monitorWidth > gameWidth && monitorHeight > gameHeight) {
                 gameWidth = monitorWidth;
