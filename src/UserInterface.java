@@ -16,7 +16,7 @@ public class UserInterface {
     JFrame ui;
 
     // This container is anchored to, and the same size as, the ui object and enables us to draw the game
-    Container mainCon;
+    Container contentPane;
 
     // Panels represent each major element of the UI
     JPanel
@@ -76,8 +76,8 @@ public class UserInterface {
     JTextField playerInputField;
 
     // Handlers listen for various triggers and kickoff when appropriate
-    TitleHandler tsHandler;
-    PlayerInputHandler pHandler;
+    TitleScreenHandler titleScreenHandler;
+    PlayerInputHandler playerInputHandler;
 
     // Fonts for different situations / resolutions
     Font
@@ -95,7 +95,7 @@ public class UserInterface {
 
 
     // Important variables that are common across game
-    boolean gameStarted = false;
+    boolean isGameStarted = false;
     double windowSizeDefaultScale = 0.7D;   // Used to autosize the game UI by a default percentage (70%) on open
     int gameWidth = 1280;   // Used as a default screen width in case monitor width cannot be obtained
     int gameHeight = 720;   // Used as a default screen height in case monitor height cannot be obtained
@@ -148,8 +148,8 @@ public class UserInterface {
         //<editor-fold defaultstate="collapsed" desc="temporary minimize">
 
         // Clear title screen so there is area for text screens
-        mainCon.remove(titleNamePanel);
-        mainCon.remove(startButtonPanel);
+        contentPane.remove(titleNamePanel);
+        contentPane.remove(startButtonPanel);
 
         // Call method to update UI elements
         refreshGameScreen();
@@ -167,16 +167,16 @@ public class UserInterface {
          *  - 1/4 of UI height minus 16 pixels to accommodate padding size
          *  - Make element a grid with a single row and padding of 8 pixels on all sides
         */
-        padToGameWidth = mainCon.getWidth() / 160;
-        padToGameHeight = mainCon.getHeight() / 90;
+        padToGameWidth = contentPane.getWidth() / 160;
+        padToGameHeight = contentPane.getHeight() / 90;
         playerPanel = new JPanel();
         playerPanel.setBackground(statsBackgroundColor);
 //        playerPanel.setBounds(16, 16, gameWidth - 16, 160);
         playerPanel.setLocation(padToGameWidth, padToGameHeight);
-        playerPanel.setSize(mainCon.getWidth() - (padToGameWidth * 2), (mainCon.getHeight() / 4) - (padToGameHeight));
+        playerPanel.setSize(contentPane.getWidth() - (padToGameWidth * 2), (contentPane.getHeight() / 4) - (padToGameHeight));
         playerPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         playerPanel.setLayout(new GridLayout(1, 0, padToGameWidth / 2, padToGameHeight / 2));
-        mainCon.add(playerPanel);
+        contentPane.add(playerPanel);
 
         // Update UI
         refreshGameScreen();
@@ -377,8 +377,8 @@ public class UserInterface {
         mainTextPanel = new JPanel();
         mainTextPanel.setBackground(Color.black);
         mainTextPanel.setBounds(playerPanel.getX(), playerPanel.getY() + playerPanel.getHeight(), playerPanel.getWidth(),
-                            ((mainCon.getHeight() / 2) + (mainCon.getHeight() / 8) + (mainCon.getHeight() / 16)) - 16);
-        mainCon.add(mainTextPanel);
+                            ((contentPane.getHeight() / 2) + (contentPane.getHeight() / 8) + (contentPane.getHeight() / 16)) - 16);
+        contentPane.add(mainTextPanel);
 
         // Create Text Panel Label and display text so you know what element it is
         mainTextLabel = new JLabel("GAME CONSOLE");
@@ -386,7 +386,7 @@ public class UserInterface {
 
         // Create ui panel at bottom of UI that will behave as the interaction console
         playerInputPanel = new JPanel();
-        playerInputPanel.setBounds(playerPanel.getX(), mainTextPanel.getY() + mainTextPanel.getHeight(), mainTextPanel.getWidth(), (mainCon.getHeight() / 16));
+        playerInputPanel.setBounds(playerPanel.getX(), mainTextPanel.getY() + mainTextPanel.getHeight(), mainTextPanel.getWidth(), (contentPane.getHeight() / 16));
         playerInputPanel.setBackground(Color.darkGray);
 
         // Add a '>' character to the ui that looks like the row pointer for a terminal
@@ -397,7 +397,7 @@ public class UserInterface {
         playerInputPanel.add(playerInputLabel);
 
         // Create player input handler that will listen for player input
-        pHandler = new PlayerInputHandler();
+        playerInputHandler = new PlayerInputHandler();
 
         // Create player input field and add the input handler to it so that user input can be processed
         playerInputField = new JTextField();
@@ -415,11 +415,11 @@ public class UserInterface {
 //                    playerInputField.setText("");
 //                }
 //            });
-            playerInputField.addActionListener(pHandler);
+            playerInputField.addActionListener(playerInputHandler);
         playerInputPanel.add(playerInputField);
 
         // Add the player input elements to the game UI
-        mainCon.add(playerInputPanel);
+        contentPane.add(playerInputPanel);
 
         // Create Choice Panel Label and display text so you know what element it is
 //        choiceLabel = new JLabel("Make your choice");
@@ -431,7 +431,7 @@ public class UserInterface {
         // Update game UI
         refreshGameScreen();
 
-        gameStarted = true;
+        isGameStarted = true;
 
         // Set the focused element of the game to the player input text field now that the UI has been drawn fully
         playerInputField.requestFocusInWindow();
@@ -477,7 +477,7 @@ public class UserInterface {
 //        ui.setVisible(true);
 
         // Create primary container for managing the UI
-        mainCon = ui.getContentPane();
+        contentPane = ui.getContentPane();
     }
 
     /**
@@ -511,19 +511,19 @@ public class UserInterface {
         startButtonPanel.setOpaque(false);
 
         // Create menu start option button and enable clicking of it
-        tsHandler = new TitleHandler();
+        titleScreenHandler = new TitleScreenHandler();
         startButton = new JButton("START");
         startButton.setBackground(Color.black);
         startButton.setForeground(Color.WHITE);
         startButton.setBorderPainted(false);
         startButton.setFont(menuFont);
-        startButton.addActionListener(tsHandler);
+        startButton.addActionListener(titleScreenHandler);
 
         // Load UI
         titleNamePanel.add(titleNameLabel);
         startButtonPanel.add(startButton);
-        mainCon.add(titleNamePanel);
-        mainCon.add(startButtonPanel);
+        contentPane.add(titleNamePanel);
+        contentPane.add(startButtonPanel);
     }
 
     /**
@@ -539,7 +539,7 @@ public class UserInterface {
 //        mainTextArea.setBorder(BorderFactory.createLineBorder(Color.gray));
         mainTextArea.setBackground(Color.black);
         mainTextArea.setForeground(Color.white);
-        mainTextArea.setFont(new Font("monospaced", Font.BOLD, mainCon.getHeight() / 50));
+        mainTextArea.setFont(new Font("monospaced", Font.BOLD, contentPane.getHeight() / 50));
         mainTextArea.setLineWrap(true);
         mainTextArea.setWrapStyleWord(true);
         mainTextArea.setEditable(false);
@@ -734,14 +734,14 @@ public class UserInterface {
     public void updatePlayerPanelLabels(Player player) {
         updatePlayerNameLabel(player.name);
         updatePlayerClassLabel(player.className, player.level);
-        updatePlayerHealthLabel(player.playerHealth, player.maxPlayerHealth, player.hitDie);
+        updatePlayerHealthLabel(player.health, player.maxHealth, player.hitDie);
         updatePlayerInitiativeLabel(player.dexMod);
-        updatePlayerStrengthLabel(player.playerStrength, player.strMod);
-        updatePlayerDexterityLabel(player.playerDexterity, player.dexMod);
-        updatePlayerConstitutionLabel(player.playerConstitution, player.conMod);
-        updatePlayerIntelligenceLabel(player.playerIntelligence, player.intMod);
-        updatePlayerWisdomLabel(player.playerWisdom, player.wisMod);
-        updatePlayerCharismaLabel(player.playerCharisma, player.chaMod);
+        updatePlayerStrengthLabel(player.strength, player.strMod);
+        updatePlayerDexterityLabel(player.dexterity, player.dexMod);
+        updatePlayerConstitutionLabel(player.constitution, player.conMod);
+        updatePlayerIntelligenceLabel(player.intelligence, player.intMod);
+        updatePlayerWisdomLabel(player.wisdom, player.wisMod);
+        updatePlayerCharismaLabel(player.charisma, player.chaMod);
         updatePlayerACLabel(player.classArmor);
         updatePlayerWeaponLabel(player.weaponName);
         updatePlayerWeaponDamageLabel(player.attackDamage, player.classMod);
@@ -757,8 +757,8 @@ public class UserInterface {
      * Updates game UI with current states of all objects / variables
      */
     private void refreshGameScreen() {
-        mainCon.revalidate();
-        mainCon.repaint();
+        contentPane.revalidate();
+        contentPane.repaint();
     }
 
     //endregion
@@ -799,7 +799,7 @@ public class UserInterface {
         Helper class that allows us to kick off an action when the player click the 'Start' button on the title screen
             and updates game state via setter method call to expect next input to be the players chosen name
     */
-    public class TitleHandler implements ActionListener {
+    public class TitleScreenHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             createGameScreen();

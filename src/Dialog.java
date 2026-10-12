@@ -69,7 +69,7 @@ public class Dialog {
 //            }
     };
 
-    Integer chatLevel = 0;
+    int chatLevel = 0;
 
     // endregion
 
@@ -121,16 +121,6 @@ public class Dialog {
 
     // region
 
-
-
     // endregion
-
-
-    public static void chatter(String[] chatTracker){
-        for(int i = 0; i < chatTracker.length; i++){
-            Functions.slowPrint(chatTracker[i]);
-
-        }
-    }
 
 }

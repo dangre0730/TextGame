@@ -7,9 +7,9 @@ public class NPC {
     // region
 
     String name = "";
-    Room.RoomObjects location;
+    Room.RoomId location;
     boolean isAlive = true;
-    boolean alreadyMet = false;
+    boolean hasMet = false;
 //    boolean isHostile = false;
     int encounterNumber = 0;
 
@@ -18,7 +18,7 @@ public class NPC {
     }
 
     // Not yet used in logic. Placeholder for future NPC behavior branching (e.g. merchant vs. enemy).
-    enum type {
+    enum Type {
         QUEST_GIVER,
         MERCHANT,
         TRAINER,
@@ -34,7 +34,7 @@ public class NPC {
 
     // region
 
-    public NPC (String name, Room.RoomObjects location) {
+    public NPC (String name, Room.RoomId location) {
         this.name = name;
         this.location = location;
     }
@@ -61,7 +61,7 @@ public class NPC {
 
     @Override
     public String toString() {
-        return getClass().getName() + "[" + name + "," + location.toString() + "," + isAlive + "," + alreadyMet + "]";
+        return getClass().getName() + "[" + name + "," + location.toString() + "," + isAlive + "," + hasMet + "]";
     }
 
 

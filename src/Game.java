@@ -40,22 +40,9 @@ public class Game {
         gameState = GameState.WAITING_ON_GAME_START;
         previousGameState = GameState.WAITING_ON_GAME_START;
         //Global / Player Variable definitions
-        QuestNPC abernathy = new QuestNPC("Abernathy", Room.RoomObjects.ENTRY_ROOM_BASE, Dialog.chatTracker);
+        QuestNPC abernathy = new QuestNPC("Abernathy", Room.RoomId.ENTRY_ROOM_BASE, Dialog.chatTracker);
         System.out.println(abernathy.toString());
         System.out.println(enemyNPC.toString());
-        //Integers
-        int playerWeaponSelect;
-        int playerClassSelection;
-        int continueGameSelect;
-
-        //Doubles
-
-        //Booleans
-        boolean hasLevelled;
-        boolean continueGame = true;
-
-        //Strings
-        String roomSelect;
 
         // Load UI
         ui.createUI();
@@ -67,65 +54,10 @@ public class Game {
         //                                  for each NPC unnecessarily. Logically: if ROOM or NPC id doesn't exist in the linked lists create a
         //                                  new object and insert their id to the linked list.
 
-//        Functions.slowPrint("Now that we've covered stats, lets test out your combat skills! Don't worry, your enemies won't hit back very hard :)");
-//        int earnedExp;
-//
-//        while(player.level != 4 && continueGame) {
-//            Functions.slowPrint("Your current level is: " + player.level + " and you need " + player.nextLevel + " experience to level up.");
-//            Functions.slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-//
-//            enemyNPC.enemySelection = Functions.rollEnemy();
-////            enemyNPC.getEnemy(enemyNPC.enemySelection);
-//            enemyNPC.enemyStats(enemyNPC.enemySelection);
-//
-//            earnedExp = Functions.battleFrame(enemyNPC.enemyHealth, player.attackDamage, player.damageMod, enemyNPC.enemyDamage, enemyNPC.enemyDamageMod, player.attackSpeed, player.classArmor, enemyNPC.enemyArmor, player.criticalChance, enemyNPC.enemyCriticalChance);
-//            player.experience += earnedExp;
-//            Functions.slowPrint("You currently have " + player.experience + " experience points. In order to reach the next level, you need " + player.nextLevel + " total experience points to level up.");
-//            hasLevelled = Functions.hasLevelled(player.experience, player.nextLevel);
-//            if(hasLevelled){
-//                player.nextLevel = Functions.nextLevel(player.level, player.nextLevel);
-//            }
-//            Functions.slowPrint("Your ending health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-////            Functions.slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.experience);
-//            while (player.experience < 20) {
-//                enemyNPC.enemySelection = Functions.rollEnemy();
-////                enemyNPC.getEnemy(enemyNPC.enemySelection);
-//                enemyNPC.enemyStats(enemyNPC.enemySelection);
-//                Functions.slowPrint("Lets fight another enemy!");
-//                Functions.slowPrint("Your starting health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-//                earnedExp = Functions.battleFrame(enemyNPC.enemyHealth, player.attackDamage, player.damageMod, enemyNPC.enemyDamage, enemyNPC.enemyDamageMod, player.attackSpeed, player.classArmor, enemyNPC.enemyArmor, player.criticalChance, enemyNPC.enemyCriticalChance);
-//                player.experience += earnedExp;
-//                Functions.slowPrint("Your ending health is: " + player.playerHealth + ". Out of a total health of: " + player.maxPlayerHealth);
-////                Functions.slowPrint("You earned " + earnedExp + " experience for a grand total of " + player.experience);
-//                hasLevelled = Functions.hasLevelled(player.experience, player.nextLevel);
-//                if(hasLevelled){
-//                    player.nextLevel = Functions.nextLevel(player.level, player.nextLevel);
-//                }
-//            }
-//
-//            Functions.slowPrint("You currently have " + player.experience + " experience points. In order to reach the next level, you need " + player.nextLevel + " total experience points to level up.");
-////            player.statPrinter();
-//
-//            if (player.playerHealth > 2) {
-//                Functions.slowPrint("Since you are still standing, would you like to practice some more?");
-//                Functions.slowPrint("1. Keep Playing!");
-//                Functions.slowPrint("2. Exit Simulation!");
-//                continueGameSelect = getInput.nextInt();
-//
-//                if (continueGameSelect != 1) {
-//                    continueGame = false;
-//                }
-//            }
-//        }
-//
-//        System.out.println("Next up? How about we learn how to have some rooms initiate a fight if the player enters them.");
-//        System.out.println("Good luck! You got this and remember, this is literally just for fun. You've always wanted to tell a story through a game and this is our pre-rough draft.");
-//        System.out.println("I believe in you");
     }
 
     // Called by PlayerInputHandler on every Enter press. One call = one game action.
     public static void handleInput (String playerInput) {
-        boolean validInput = true;
 
         switch (gameState) {
             case WAITING_ON_GAME_START -> {
@@ -156,16 +88,16 @@ public class Game {
                 setPlayerWeapon(playerInput);
             }
             case STAT_ACKNOWLEDGEMENT -> {
-                statAcknowledge(playerInput);
+                acknowledgeStats(playerInput);
             }
             case EXPLORING_PROMPT -> {
                 startExploration(playerInput);
             }
             case EXPLORING -> {
-                exploringLoop(playerInput);
+                handleExplorationInput(playerInput);
             }
             case IN_COMBAT -> {
-                combatLoop(player, enemyNPC, playerInput);
+                handleCombatInput(player, enemyNPC, playerInput);
             }
             case IN_INVENTORY -> {
             }
@@ -178,19 +110,19 @@ public class Game {
     }
 
     public static void setPlayerClass(String playerInput) {
-        boolean validInput = true;
+        boolean isValidInput = true;
 
         switch (playerInput) {
-            case "SOLDIER", "1" -> player.pcClass = Player.classChoice.SOLDIER;
-            case "RANGER", "2" -> player.pcClass = Player.classChoice.RANGER;
-            case "BRAWLER", "3" -> player.pcClass = Player.classChoice.BRAWLER;
-            case "MAGE", "4" -> player.pcClass = Player.classChoice.MAGE;
-            default -> validInput = false;
+            case "SOLDIER", "1" -> player.pcClass = Player.ClassType.SOLDIER;
+            case "RANGER", "2" -> player.pcClass = Player.ClassType.RANGER;
+            case "BRAWLER", "3" -> player.pcClass = Player.ClassType.BRAWLER;
+            case "MAGE", "4" -> player.pcClass = Player.ClassType.MAGE;
+            default -> isValidInput = false;
         }
 
-        if (validInput) {
-            player.classBuilder();
-            player.statPrinter();
+        if (isValidInput) {
+            player.buildClass();
+            player.printStats();
             ui.updatePlayerPanelLabels(player);
             dialog.chatLevel++;
             ui.clearText();
@@ -202,20 +134,20 @@ public class Game {
     }
 
     public static void setPlayerWeapon(String playerInput) {
-        boolean validInput = true;
+        boolean isValidInput = true;
 
         System.out.println(gameState);
 
         switch (playerInput) {
-            case "SWORD", "1" -> player.playerWeapon = Player.weaponChoice.SWORD;
-            case "CROSSBOW", "2" -> player.playerWeapon = Player.weaponChoice.CROSSBOW;
-            case "BAT", "3" -> player.playerWeapon = Player.weaponChoice.BAT;
-            case "WAND", "4" -> player.playerWeapon = Player.weaponChoice.WAND;
-            default -> validInput = false;
+            case "SWORD", "1" -> player.weaponType = Player.WeaponType.SWORD;
+            case "CROSSBOW", "2" -> player.weaponType = Player.WeaponType.CROSSBOW;
+            case "BAT", "3" -> player.weaponType = Player.WeaponType.BAT;
+            case "WAND", "4" -> player.weaponType = Player.WeaponType.WAND;
+            default -> isValidInput = false;
         }
 
-        if (validInput) {
-            player.setWeaponChoice();
+        if (isValidInput) {
+            player.loadWeaponStats();
             ui.updatePlayerPanelLabels(player);
             if(Dialog.chatTracker.length <= dialog.chatLevel + 1) {
                 System.out.println("cannot iterate chatLevel further | " + dialog.chatLevel + " | " + Dialog.chatTracker.length);
@@ -230,16 +162,16 @@ public class Game {
         }
     }
 
-    public static void statAcknowledge(String playerInput) {
-        boolean validInput = false;
+    public static void acknowledgeStats(String playerInput) {
+        boolean isValidInput = false;
 
         System.out.println(gameState);
 
         if (playerInput.equals("CONTINUE") || playerInput.isEmpty()) {
-            validInput = true;
+            isValidInput = true;
         }
 
-        if (validInput) {
+        if (isValidInput) {
             dialog.chatLevel++;
             ui.clearText();
             setGameState(GameState.EXPLORING_PROMPT);
@@ -250,20 +182,20 @@ public class Game {
     }
 
     public static void startExploration(String playerInput) {
-        boolean validInput = false;
+        boolean isValidInput = false;
 
         System.out.println(gameState);
 
         switch (playerInput) {
-            case "YES", "1" -> validInput = true;
+            case "YES", "1" -> isValidInput = true;
             case "QUIT", "2" -> System.exit(0);
         }
 
-        if (validInput) {
+        if (isValidInput) {
             dialog.chatLevel++;
-            room.currentRoomObject = Room.RoomObjects.ENTRY_ROOM_BASE;
-            room.lastRoomObject = Room.RoomObjects.ENTRY_ROOM_BASE;
-            room.getRoom(room.currentRoomObject);
+            room.currentRoomId = Room.RoomId.ENTRY_ROOM_BASE;
+            room.lastRoomId = Room.RoomId.ENTRY_ROOM_BASE;
+            room.enterRoom(room.currentRoomId);
             ui.clearText();
             setGameState(GameState.EXPLORING);
             ui.displayText();
@@ -272,58 +204,58 @@ public class Game {
         }
     }
 
-    public static void exploringLoop(String playerInput) {
-        boolean validInput = true;
-        boolean goingBack = false;
+    public static void handleExplorationInput(String playerInput) {
+        boolean isValidInput = true;
+        boolean isGoingBack = false;
         System.out.println(gameState);
 
-        System.out.println("B4 input - Current Room: " + room.currentRoomObject);
-        System.out.println("B4 input - Last Room: " + room.lastRoomObject);
+        System.out.println("B4 input - Current Room: " + room.currentRoomId);
+        System.out.println("B4 input - Last Room: " + room.lastRoomId);
 
-        System.out.println("Room is wall? " + room.currentRoomObject.equals(Room.RoomObjects.WALL));
-        System.out.println("Last room = current room? " + room.lastRoomObject.equals(room.currentRoomObject));
+        System.out.println("Room is wall? " + room.currentRoomId.equals(Room.RoomId.WALL));
+        System.out.println("Last room = current room? " + room.lastRoomId.equals(room.currentRoomId));
 
-        room.tempRoomObject = room.lastRoomObject;
+        room.tempRoomId = room.lastRoomId;
 
-        if (!room.currentRoomObject.equals(Room.RoomObjects.WALL) && !room.lastRoomObject.equals(room.currentRoomObject)) {
-            room.lastRoomObject = room.currentRoomObject;
+        if (!room.currentRoomId.equals(Room.RoomId.WALL) && !room.lastRoomId.equals(room.currentRoomId)) {
+            room.lastRoomId = room.currentRoomId;
         }
 
         // Special input: FLUSH triggers combat from the bathroom as an easter-egg
-        if (((room.currentRoomObject.equals(Room.RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_BASE) || room.currentRoomObject.equals(Room.RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_REVISIT))
-                || (room.currentRoomObject.equals(Room.RoomObjects.WALL)
-                    && (room.lastRoomObject.equals(Room.RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_BASE) || room.lastRoomObject.equals(Room.RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_REVISIT))))
+        if (((room.currentRoomId.equals(Room.RoomId.SUSPICIOUSLY_CLEAN_BATHROOM_BASE) || room.currentRoomId.equals(Room.RoomId.SUSPICIOUSLY_CLEAN_BATHROOM_REVISIT))
+                || (room.currentRoomId.equals(Room.RoomId.WALL)
+                    && (room.lastRoomId.equals(Room.RoomId.SUSPICIOUSLY_CLEAN_BATHROOM_BASE) || room.lastRoomId.equals(Room.RoomId.SUSPICIOUSLY_CLEAN_BATHROOM_REVISIT))))
         && playerInput.equals("FLUSH")){
-            room.currentRoomObject = Room.RoomObjects.TRAINING_ROOM;
+            room.currentRoomId = Room.RoomId.TRAINING_ROOM;
             setGameState(GameState.IN_COMBAT);
-            enemyNPC = new EnemyNPC(Room.RoomObjects.DARK_BASEMENT_BASE, 1);
-            validInput = false;
+            enemyNPC = new EnemyNPC(Room.RoomId.DARK_BASEMENT_BASE, 1);
+            isValidInput = false;
             ui.clearText();
-            combatLoop(player, enemyNPC, playerInput);
+            handleCombatInput(player, enemyNPC, playerInput);
             ui.displayText();
         } else {
             switch (playerInput) {
-                case "N", "NORTH", "1" -> room.currentRoomObject = room.nextRooms[0];
-                case "E", "EAST", "2" -> room.currentRoomObject = room.nextRooms[1];
-                case "S", "SOUTH", "3" -> room.currentRoomObject = room.nextRooms[2];
-                case "W", "WEST", "4" -> room.currentRoomObject = room.nextRooms[3];
-                case "B", "BACK" -> goingBack = true;
+                case "N", "NORTH", "1" -> room.currentRoomId = room.nextRooms[0];
+                case "E", "EAST", "2" -> room.currentRoomId = room.nextRooms[1];
+                case "S", "SOUTH", "3" -> room.currentRoomId = room.nextRooms[2];
+                case "W", "WEST", "4" -> room.currentRoomId = room.nextRooms[3];
+                case "B", "BACK" -> isGoingBack = true;
                 case "Q", "QUIT" -> System.exit(0);
-                default -> validInput = false;
+                default -> isValidInput = false;
             }
         }
 
-        if (goingBack) {
-            System.out.println(room.tempRoomObject);
-            room.lastRoomObject = room.currentRoomObject;
-            room.currentRoomObject = room.tempRoomObject;
+        if (isGoingBack) {
+            System.out.println(room.tempRoomId);
+            room.lastRoomId = room.currentRoomId;
+            room.currentRoomId = room.tempRoomId;
         }
 
-        if (validInput) {
-            room.getRoom(room.currentRoomObject);
+        if (isValidInput) {
+            room.enterRoom(room.currentRoomId);
 
-            System.out.println("After input - Current Room: " + room.currentRoomObject);
-            System.out.println("After input - Last Room: " + room.lastRoomObject);
+            System.out.println("After input - Current Room: " + room.currentRoomId);
+            System.out.println("After input - Last Room: " + room.lastRoomId);
 
             ui.clearText();
             ui.displayText();
@@ -343,14 +275,14 @@ public class Game {
      *
      * @param playerInput - Text value that player entered into game console
      */
-    public static void combatLoop(Player player, EnemyNPC enemyNPC, String playerInput) {
-        boolean validInput = true;
+    public static void handleCombatInput(Player player, EnemyNPC enemyNPC, String playerInput) {
+        boolean isValidInput = true;
 //        boolean combatOver = false;
         System.out.println(gameState);
         String[] text;
 
         // turnsTaken == 0: show intro. turnsTaken >= 1: resolve round. combatOver: show post-fight options.
-        if (enemyNPC.combatOver) {
+        if (enemyNPC.isCombatOver) {
             text = new String[]{
                     "The " + enemyNPC.name + " has been slain.",
                     "",
@@ -364,13 +296,13 @@ public class Game {
             switch (playerInput) {
                 case "1", "RETURN" -> {
                     setGameState(GameState.EXPLORING);
-                    room.currentRoomObject = Room.RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_BASE;
-                    room.getRoom(room.currentRoomObject);
+                    room.currentRoomId = Room.RoomId.SUSPICIOUSLY_CLEAN_BATHROOM_BASE;
+                    room.enterRoom(room.currentRoomId);
                     ui.clearText();
                     ui.displayText();
                 }
                 case "2", "FIGHT" -> {
-                    Game.enemyNPC = new EnemyNPC(Room.RoomObjects.TRAINING_ROOM, 0);
+                    Game.enemyNPC = new EnemyNPC(Room.RoomId.TRAINING_ROOM, 0);
                 }
             }
 //            continue;     // I'm trying to make it so that post combat message is displayed so the above prompts are clear and the user input synchronizes with what they think they are responding to. Basically need to have a loop to display the above info and then take input...
@@ -381,7 +313,7 @@ public class Game {
                 System.out.println(enemyNPC.name);
 //                player.extraAttack = player.attackSpeed;
                 text = new String[]{
-                        enemyNPC.name + "|  HP-" + enemyNPC.enemyHealth + "; ATK-" + (enemyNPC.enemyDamage + enemyNPC.enemyDamageMod) + "; CRIT-" + enemyNPC.enemyCriticalChance + "%",
+                        enemyNPC.name + "|  HP-" + enemyNPC.health + "; ATK-" + (enemyNPC.damage + enemyNPC.damageMod) + "; CRIT-" + enemyNPC.criticalChance + "%",
                         "",
                         "Your opponent stands before you. They clearly want a fight...",
                         "",
@@ -408,7 +340,7 @@ public class Game {
 
                 switch (playerInput) {
                     case "1", "ATTACK" -> {
-                        damageDealt = Functions.makeAnAttack(player.attackDamage, player.damageMod, enemyNPC.enemyArmor, player.criticalChance);
+                        damageDealt = Functions.makeAnAttack(player.attackDamage, player.damageMod, enemyNPC.armor, player.criticalChance);
 //                        if (player.attackSpeed > 1) {
 //                            player.extraAttack += player.attackSpeed - 1d;
 //                        } else {
@@ -416,7 +348,7 @@ public class Game {
 //                        }
                         if (player.extraAttack >= 1) {
                             if (damageDealt > 0) {
-                                enemyNPC.enemyHealth -= damageDealt;
+                                enemyNPC.health -= damageDealt;
 //                        earnedXP += 3;
                                 tempList.add("B A M ! You dealt " + damageDealt + " damage to the target!");
 //                            tempList.add("");
@@ -429,11 +361,11 @@ public class Game {
                             if (player.extraAttack >= 2) {
                                 tempList.add("---EXTRA ATTACK---");
                                 tempList.add("");
-                                damageDealt = Functions.makeAnAttack(player.attackDamage, player.damageMod, enemyNPC.enemyArmor, player.criticalChance);
+                                damageDealt = Functions.makeAnAttack(player.attackDamage, player.damageMod, enemyNPC.armor, player.criticalChance);
                                 if (damageDealt > 0) {
                                     tempList.add("P O W ! You dealt " + damageDealt + " damage to the target.");
 //                                tempList.add("");
-                                    enemyNPC.enemyHealth -= damageDealt;
+                                    enemyNPC.health -= damageDealt;
 //                            earnedXP += 3;
 //                                tempList.add("");
                                 } else {
@@ -453,21 +385,21 @@ public class Game {
                                 player.extraAttack -= 2;
                             }
                         }
-                        tempList.add("Enemy Health is " + enemyNPC.enemyHealth);
+                        tempList.add("Enemy Health is " + enemyNPC.health);
                         tempList.add("");
-                        if (enemyNPC.enemyHealth > 0) {
+                        if (enemyNPC.health > 0) {
                             tempList.add("Enemy Turn Begins.");
                             tempList.add("");
-                            damageDealt = Functions.makeAnAttack(enemyNPC.enemyDamage, enemyNPC.enemyDamageMod, player.classArmor, enemyNPC.enemyCriticalChance);
+                            damageDealt = Functions.makeAnAttack(enemyNPC.damage, enemyNPC.damageMod, player.classArmor, enemyNPC.criticalChance);
                             if (damageDealt > 0) {
-                                player.playerHealth -= damageDealt;
+                                player.health -= damageDealt;
                             } else {
                                 tempList.add("Enemy failed to deal damage this round");
 //                        tempList.add("");
                             }
-                            if (player.playerHealth > 0) {
+                            if (player.health > 0) {
                                 tempList.add("You took " + damageDealt + " damage.");
-                                tempList.add("Player health is " + player.playerHealth);
+                                tempList.add("Player health is " + player.health);
 //                        tempList.add("");
                                 tempList.add("");
                                 tempList.add("Your opponent stands before you. They clearly want a fight...");
@@ -499,19 +431,19 @@ public class Game {
                     default -> {
                         tempList.add("That's not an option.");
                         tempList.add("");
-                        validInput = false;
+                        isValidInput = false;
                     }
                 }
 
                 // Add to the start of the array list so that enemy stats are current onscreen.
-                tempList.addFirst(enemyNPC.name + "|  HP-" + enemyNPC.enemyHealth + "; ATK-" + (enemyNPC.enemyDamage + enemyNPC.enemyDamageMod) + "; CRIT-" + enemyNPC.enemyCriticalChance + "%");
+                tempList.addFirst(enemyNPC.name + "|  HP-" + enemyNPC.health + "; ATK-" + (enemyNPC.damage + enemyNPC.damageMod) + "; CRIT-" + enemyNPC.criticalChance + "%");
 //        }
 //        if(playerHealth <= 0){
 //            System.out.println("You lost the fight");
 //            Game.player.playerHealth = playerHealth;
 //            return earnedXP;
 //        } else
-                if (player.playerHealth <= 0) {
+                if (player.health <= 0) {
                     text = new String[]{
                             "Uh-oh...bad news buddy. You actually died just then.",
                             "",
@@ -536,13 +468,13 @@ public class Game {
                 }
 
                 // Build the round summary here. All combat narrative should land in text[] rather than printing mid-round.
-                if (enemyNPC.enemyHealth <= 0) {
-                    tempList.add("You won the fight! Your closing health is " + player.playerHealth);
+                if (enemyNPC.health <= 0) {
+                    tempList.add("You won the fight! Your closing health is " + player.health);
                     tempList.add("");
                     text = tempList.toArray(new String[0]);
 
-                    player.experience += enemyNPC.earnedExp;
-                    enemyNPC.combatOver = true;
+                    player.experienceTotal += enemyNPC.experienceValue;
+                    enemyNPC.isCombatOver = true;
 //                    text = new String[]{
 //                            "The " + enemyNPC.name + " has been slain.",
 //                            "",
@@ -573,8 +505,8 @@ public class Game {
                 Game.player = player;
                 Game.enemyNPC = enemyNPC;
 
-                if (validInput) {
-                    System.out.println("validInput");
+                if (isValidInput) {
+                    System.out.println("isValidInput");
 
                     ui.clearText();
                     Functions.combatPrintText(text, ui.mainTextArea);
@@ -586,11 +518,6 @@ public class Game {
 
             }
         }
-
-    }
-
-    // Updates all player object values
-    public static void updatePlayer(Player player) {
 
     }
 

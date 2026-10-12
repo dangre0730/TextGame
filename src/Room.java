@@ -9,7 +9,7 @@ public class Room {
     String[] description;
 
     // Create enum so that the dungeon room controller can be another state-machine
-    public enum RoomObjects{
+    public enum RoomId {
         TUTORIAL,
         ENTRY_ROOM_BASE,
         ENTRY_ROOM_REVISIT,
@@ -34,21 +34,21 @@ public class Room {
     }
 
     // Create an object for current and previous rooms. This enables teleport back to previous room if necessary.
-    RoomObjects currentRoomObject, lastRoomObject, tempRoomObject;
+    RoomId currentRoomId, lastRoomId, tempRoomId;
 
-    // RoomObject Array for storing the current room's linked locations.
-    RoomObjects[] nextRooms;
+    // RoomId Array for storing the current room's linked locations.
+    RoomId[] nextRooms;
 
     // Revisit flags for displaying alternate room descriptions
-    boolean revisitEntryRoomBase = false;
-    boolean revisitGrandDiningHall = false;
-    boolean revisitDarkBasement = false;
-    boolean revisitBambooForestStart = false;
-    boolean revisitBambooForestCanyonBridge = false;
-    boolean revisitBambooForestTurnback = false;
-    boolean revisitBambooForestCanyonRiver = false;
-    boolean revisitSecretDwarvenHallway = false;
-    boolean revisitSuspiciouslyCleanBathroom = false;
+    boolean hasVisitedEntryRoom = false;
+    boolean hasVisitedGrandDiningHall = false;
+    boolean hasVisitedDarkBasement = false;
+    boolean hasVisitedBambooForestStart = false;
+    boolean hasVisitedBambooForestCanyonBridge = false;
+    boolean hasVisitedBambooForestTurnback = false;
+    boolean hasVisitedBambooForestCanyonRiver = false;
+    boolean hasVisitedSecretDwarvenHallway = false;
+    boolean hasVisitedSuspiciouslyCleanBathroom = false;
 
     // This method is simple, but handles all of our room indexing. Calling this method in the Main class fully initializes the variables declared above.
     // We store each adjacent room id in an integer array. I think this is probably a pretty primitive method of handling this, but it's what I was able to come up with for now.
@@ -57,25 +57,25 @@ public class Room {
         //array index 2 = south
         //array index 3 = west
         //additional indexes added later could support alternative prompts like "follow path", "enter trap door", "climb ladder", etc.
-    public void getRoom(RoomObjects roomObjects) {
+    public void enterRoom(RoomId room) {
 
-        switch (roomObjects) {
-            case RoomObjects.TUTORIAL -> System.out.println("Tutorial");
+        switch (room) {
+            case RoomId.TUTORIAL -> System.out.println("Tutorial");
             // [N: GDH, E: Wall, S: DarkBasement, W: Wall]
-            case RoomObjects.ENTRY_ROOM_BASE -> {
-                if (revisitEntryRoomBase) {
-                    getRoom(RoomObjects.ENTRY_ROOM_REVISIT);
+            case RoomId.ENTRY_ROOM_BASE -> {
+                if (hasVisitedEntryRoom) {
+                    enterRoom(RoomId.ENTRY_ROOM_REVISIT);
                 } else {
                     description = new String[]{
                             "---ENTRY ROOM---",
                             "This room has an old man standing in the corner. He smells of sour clothes and has crumbs in his beard...best not stay here too long.",
                             "To the North a large black door awaits. To the south a stairwell leads into the darkness."
                     };
-                    nextRooms = new RoomObjects[]{RoomObjects.GRAND_DINING_HALL_BASE, RoomObjects.WALL, RoomObjects.DARK_BASEMENT_BASE, RoomObjects.WALL};
-                    revisitEntryRoomBase = true;
+                    nextRooms = new RoomId[]{RoomId.GRAND_DINING_HALL_BASE, RoomId.WALL, RoomId.DARK_BASEMENT_BASE, RoomId.WALL};
+                    hasVisitedEntryRoom = true;
                 }
             }
-            case RoomObjects.ENTRY_ROOM_REVISIT -> {
+            case RoomId.ENTRY_ROOM_REVISIT -> {
                 description = new String[]{
                         "---ENTRY ROOM | Revisited---",
                         "You return to the room where you originally appeared.",
@@ -85,12 +85,12 @@ public class Room {
                         "",
                         "To the North a large black door awaits. To the south a stairwell leads into the darkness."
                 };
-                nextRooms = new RoomObjects[]{RoomObjects.GRAND_DINING_HALL_BASE, RoomObjects.WALL, RoomObjects.DARK_BASEMENT_BASE, RoomObjects.WALL};
+                nextRooms = new RoomId[]{RoomId.GRAND_DINING_HALL_BASE, RoomId.WALL, RoomId.DARK_BASEMENT_BASE, RoomId.WALL};
             }
             // [N: Wall, E: BF_S, S: Entry, W: Bathroom]
-            case RoomObjects.GRAND_DINING_HALL_BASE -> {
-                if (revisitGrandDiningHall){
-                    getRoom(RoomObjects.GRAND_DINING_HALL_REVISIT);
+            case RoomId.GRAND_DINING_HALL_BASE -> {
+                if (hasVisitedGrandDiningHall){
+                    enterRoom(RoomId.GRAND_DINING_HALL_REVISIT);
                 } else {
                     description = new String[]{
                             "---GRAND DINING HALL---",
@@ -101,11 +101,11 @@ public class Room {
                             "To the South, is a Large Black Door.",
                             "To the West, is a small white interior door."
                     };
-                    nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.BAMBOO_FOREST_START_BASE, RoomObjects.ENTRY_ROOM_BASE, RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_BASE};
-                    revisitGrandDiningHall = true;
+                    nextRooms = new RoomId[]{RoomId.WALL, RoomId.BAMBOO_FOREST_START_BASE, RoomId.ENTRY_ROOM_BASE, RoomId.SUSPICIOUSLY_CLEAN_BATHROOM_BASE};
+                    hasVisitedGrandDiningHall = true;
                 }
             }
-            case RoomObjects.GRAND_DINING_HALL_REVISIT -> {
+            case RoomId.GRAND_DINING_HALL_REVISIT -> {
                 // REWRITE MEEEEEEEEE
                 description = new String[]{
                         "---GRAND DINING HALL | Revisited---",
@@ -116,12 +116,12 @@ public class Room {
                         "To the South, is a Large Black Door.",
                         "To the West, is a small white interior door."
                 };
-                nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.BAMBOO_FOREST_START_BASE, RoomObjects.ENTRY_ROOM_BASE, RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_BASE};
+                nextRooms = new RoomId[]{RoomId.WALL, RoomId.BAMBOO_FOREST_START_BASE, RoomId.ENTRY_ROOM_BASE, RoomId.SUSPICIOUSLY_CLEAN_BATHROOM_BASE};
             }
             // [N: Entry, E: Wall, S: Wall, W: Wall]
-            case RoomObjects.DARK_BASEMENT_BASE -> {
-                if (revisitDarkBasement){
-                    getRoom(RoomObjects.DARK_BASEMENT_REVISIT);
+            case RoomId.DARK_BASEMENT_BASE -> {
+                if (hasVisitedDarkBasement){
+                    enterRoom(RoomId.DARK_BASEMENT_REVISIT);
                 } else {
                     description = new String[]{
                             "---DARK BASEMENT---",
@@ -131,11 +131,11 @@ public class Room {
                             "The voice sounds familiar...",
                             "The only exit you can find to the room, is the stairway to your North."
                     };
-                    nextRooms = new RoomObjects[]{RoomObjects.ENTRY_ROOM_BASE, RoomObjects.WALL, RoomObjects.WALL, RoomObjects.WALL};
-                    revisitDarkBasement = true;
+                    nextRooms = new RoomId[]{RoomId.ENTRY_ROOM_BASE, RoomId.WALL, RoomId.WALL, RoomId.WALL};
+                    hasVisitedDarkBasement = true;
                 }
             }
-            case RoomObjects.DARK_BASEMENT_REVISIT -> {
+            case RoomId.DARK_BASEMENT_REVISIT -> {
                 // REWRITE MEEEEEEEEE
                 description = new String[]{
                         "---DARK BASEMENT | Revisited---",
@@ -145,12 +145,12 @@ public class Room {
                         "The voice sounds familiar...",
                         "The only exit you can find to the room, is the stairway to your North."
                 };
-                nextRooms = new RoomObjects[]{RoomObjects.ENTRY_ROOM_BASE, RoomObjects.WALL, RoomObjects.WALL, RoomObjects.WALL};
+                nextRooms = new RoomId[]{RoomId.ENTRY_ROOM_BASE, RoomId.WALL, RoomId.WALL, RoomId.WALL};
             }
             // [N: BF_CB, E: Wall, S: Wall, W: GDH]
-            case RoomObjects.BAMBOO_FOREST_START_BASE -> {
-                if (revisitBambooForestStart){
-                    getRoom(RoomObjects.BAMBOO_FOREST_START_REVISIT);
+            case RoomId.BAMBOO_FOREST_START_BASE -> {
+                if (hasVisitedBambooForestStart){
+                    enterRoom(RoomId.BAMBOO_FOREST_START_REVISIT);
                 } else {
                     description = new String[]{
                             "---BAMBOO FOREST---",
@@ -160,11 +160,11 @@ public class Room {
                             "Beyond the hut, is a small trail leading further North...",
                             "Behind you, you recall that the door back to the Dining Hall resides to the West."
                     };
-                    nextRooms = new RoomObjects[]{RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_BASE, RoomObjects.WALL, RoomObjects.WALL, RoomObjects.GRAND_DINING_HALL_BASE};
-                    revisitBambooForestStart = true;
+                    nextRooms = new RoomId[]{RoomId.BAMBOO_FOREST_CANYON_BRIDGE_BASE, RoomId.WALL, RoomId.WALL, RoomId.GRAND_DINING_HALL_BASE};
+                    hasVisitedBambooForestStart = true;
                 }
             }
-            case RoomObjects.BAMBOO_FOREST_START_REVISIT -> {
+            case RoomId.BAMBOO_FOREST_START_REVISIT -> {
                 // REWRITE MEEEEEEEEE
                 description = new String[]{
                         "---BAMBOO FOREST | Revisited---",
@@ -174,12 +174,12 @@ public class Room {
                         "Beyond the hut, is a small trail leading further North...",
                         "Behind you, you recall that the door back to the Dining Hall resides to the West."
                 };
-                nextRooms = new RoomObjects[]{RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_BASE, RoomObjects.WALL, RoomObjects.WALL, RoomObjects.GRAND_DINING_HALL_BASE};
+                nextRooms = new RoomId[]{RoomId.BAMBOO_FOREST_CANYON_BRIDGE_BASE, RoomId.WALL, RoomId.WALL, RoomId.GRAND_DINING_HALL_BASE};
             }
             // [N: BF_T, E: BF_CR, S: BF_S, W: Wall]
-            case RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_BASE -> {
-                if (revisitBambooForestCanyonBridge){
-                    getRoom(RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_REVISIT);
+            case RoomId.BAMBOO_FOREST_CANYON_BRIDGE_BASE -> {
+                if (hasVisitedBambooForestCanyonBridge){
+                    enterRoom(RoomId.BAMBOO_FOREST_CANYON_BRIDGE_REVISIT);
                 } else {
                     description = new String[]{
                             "---BAMBOO FOREST - INTERIOR CANYON---",
@@ -192,11 +192,11 @@ public class Room {
                             "To the East, a small trail follows the canyon edge. From what you can tell, the rivers source lies to the East as well, though it's too dark at this point to be sure.",
                             "To the South, the trail delves back into the Bamboo Forest."
                     };
-                    nextRooms = new RoomObjects[]{RoomObjects.BAMBOO_FOREST_TURNBACK_BASE, RoomObjects.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomObjects.BAMBOO_FOREST_START_BASE, RoomObjects.WALL};
-                    revisitBambooForestCanyonBridge = true;
+                    nextRooms = new RoomId[]{RoomId.BAMBOO_FOREST_TURNBACK_BASE, RoomId.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomId.BAMBOO_FOREST_START_BASE, RoomId.WALL};
+                    hasVisitedBambooForestCanyonBridge = true;
                 }
             }
-            case RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_REVISIT -> {
+            case RoomId.BAMBOO_FOREST_CANYON_BRIDGE_REVISIT -> {
                 // REWRITE MEEEEEEEEE
                 description = new String[]{
                         "---BAMBOO FOREST - INTERIOR CANYON | Revisited---",
@@ -209,12 +209,12 @@ public class Room {
                         "To the East, a small trail follows the canyon edge. From what you can tell, the rivers source lies to the East as well, though it's too dark at this point to be sure.",
                         "To the South, the trail delves back into the Bamboo Forest."
                 };
-                nextRooms = new RoomObjects[]{RoomObjects.BAMBOO_FOREST_TURNBACK_BASE, RoomObjects.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomObjects.BAMBOO_FOREST_START_BASE, RoomObjects.WALL};
+                nextRooms = new RoomId[]{RoomId.BAMBOO_FOREST_TURNBACK_BASE, RoomId.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomId.BAMBOO_FOREST_START_BASE, RoomId.WALL};
             }
             // [N: Wall, E: Wall, S: BF_CB, W: Wall]
-            case RoomObjects.BAMBOO_FOREST_TURNBACK_BASE -> {
-                if (revisitBambooForestTurnback){
-                    getRoom(RoomObjects.BAMBOO_FOREST_TURNBACK_REVISIT);
+            case RoomId.BAMBOO_FOREST_TURNBACK_BASE -> {
+                if (hasVisitedBambooForestTurnback){
+                    enterRoom(RoomId.BAMBOO_FOREST_TURNBACK_REVISIT);
                 } else {
                     description = new String[]{
                             "---TURN BACK SIGN---",
@@ -228,11 +228,11 @@ public class Room {
                             "You probably shouldn't go any further.",
                             "To you South, a rope bridge spans the gap across the canyon."
                     };
-                    nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.WALL, RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_BASE, RoomObjects.WALL};
-                    revisitBambooForestTurnback = true;
+                    nextRooms = new RoomId[]{RoomId.WALL, RoomId.WALL, RoomId.BAMBOO_FOREST_CANYON_BRIDGE_BASE, RoomId.WALL};
+                    hasVisitedBambooForestTurnback = true;
                 }
             }
-            case RoomObjects.BAMBOO_FOREST_TURNBACK_REVISIT -> {
+            case RoomId.BAMBOO_FOREST_TURNBACK_REVISIT -> {
                 // REWRITE MEEEEEEEEE
                 description = new String[]{
                         "---TURN BACK SIGN | Revisited---",
@@ -246,12 +246,12 @@ public class Room {
                         "You probably shouldn't go any further.",
                         "To you South, a rope bridge spans the gap across the canyon."
                 };
-                nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.WALL, RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_BASE, RoomObjects.WALL};
+                nextRooms = new RoomId[]{RoomId.WALL, RoomId.WALL, RoomId.BAMBOO_FOREST_CANYON_BRIDGE_BASE, RoomId.WALL};
             }
             // [N: Wall, E: Wall, S: SDH, W: BF_CB]
-            case RoomObjects.BAMBOO_FOREST_CANYON_RIVER_BASE -> {
-                if (revisitBambooForestCanyonRiver){
-                    getRoom(RoomObjects.BAMBOO_FOREST_CANYON_RIVER_REVISIT);
+            case RoomId.BAMBOO_FOREST_CANYON_RIVER_BASE -> {
+                if (hasVisitedBambooForestCanyonRiver){
+                    enterRoom(RoomId.BAMBOO_FOREST_CANYON_RIVER_REVISIT);
                 } else {
                     description = new String[]{
                             "---CANYON RIVER---",
@@ -267,11 +267,11 @@ public class Room {
                             "To the south, a secret passageway awaits.",
                             "To the west, the trail climbs back up to the top of the canyon."
                     };
-                    nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.WALL, RoomObjects.SECRET_DWARVEN_HALLWAY_BASE, RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_BASE};
-                    revisitBambooForestCanyonRiver = true;
+                    nextRooms = new RoomId[]{RoomId.WALL, RoomId.WALL, RoomId.SECRET_DWARVEN_HALLWAY_BASE, RoomId.BAMBOO_FOREST_CANYON_BRIDGE_BASE};
+                    hasVisitedBambooForestCanyonRiver = true;
                 }
             }
-            case RoomObjects.BAMBOO_FOREST_CANYON_RIVER_REVISIT -> {
+            case RoomId.BAMBOO_FOREST_CANYON_RIVER_REVISIT -> {
                 // REWRITE MEEEEEEEEE
                 description = new String[]{
                         "---CANYON RIVER | Revisited---",
@@ -287,12 +287,12 @@ public class Room {
                         "To the south, a secret passageway awaits.",
                         "To the west, the trail climbs back up to the top of the canyon."
                 };
-                nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.WALL, RoomObjects.SECRET_DWARVEN_HALLWAY_BASE, RoomObjects.BAMBOO_FOREST_CANYON_BRIDGE_BASE};
+                nextRooms = new RoomId[]{RoomId.WALL, RoomId.WALL, RoomId.SECRET_DWARVEN_HALLWAY_BASE, RoomId.BAMBOO_FOREST_CANYON_BRIDGE_BASE};
             }
             // [N: BF_CR, E: Wall, S: Wall, W: DarkBasement]
-            case RoomObjects.SECRET_DWARVEN_HALLWAY_BASE -> {
-                if (revisitSecretDwarvenHallway){
-                    getRoom(RoomObjects.SECRET_DWARVEN_HALLWAY_REVISIT);
+            case RoomId.SECRET_DWARVEN_HALLWAY_BASE -> {
+                if (hasVisitedSecretDwarvenHallway){
+                    enterRoom(RoomId.SECRET_DWARVEN_HALLWAY_REVISIT);
                 } else {
                     description = new String[]{
                             "---DWARVEN HALLWAY---",
@@ -305,11 +305,11 @@ public class Room {
                             "To your east, the hallway awaits from the direction you came.",
                             "To your west, the dark room sits, expectantly."
                     };
-                    nextRooms = new RoomObjects[]{RoomObjects.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomObjects.WALL, RoomObjects.WALL, RoomObjects.DARK_BASEMENT_BASE};
-                    revisitSecretDwarvenHallway = true;
+                    nextRooms = new RoomId[]{RoomId.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomId.WALL, RoomId.WALL, RoomId.DARK_BASEMENT_BASE};
+                    hasVisitedSecretDwarvenHallway = true;
                 }
             }
-            case RoomObjects.SECRET_DWARVEN_HALLWAY_REVISIT -> {
+            case RoomId.SECRET_DWARVEN_HALLWAY_REVISIT -> {
                 // REWRITE MEEEEEEEEE
                 description = new String[]{
                         "---DWARVEN HALLWAY | Revisited---",
@@ -322,12 +322,12 @@ public class Room {
                         "To your east, the hallway awaits from the direction you came.",
                         "To your west, the dark room sits, expectantly."
                 };
-                nextRooms = new RoomObjects[]{RoomObjects.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomObjects.WALL, RoomObjects.WALL, RoomObjects.DARK_BASEMENT_BASE};
+                nextRooms = new RoomId[]{RoomId.BAMBOO_FOREST_CANYON_RIVER_BASE, RoomId.WALL, RoomId.WALL, RoomId.DARK_BASEMENT_BASE};
             }
             // [N: (special) TrainingRoom, E: GDH, S: Wall, W: Wall]
-            case RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_BASE -> {
-                if (revisitSuspiciouslyCleanBathroom){
-                    getRoom(RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_REVISIT);
+            case RoomId.SUSPICIOUSLY_CLEAN_BATHROOM_BASE -> {
+                if (hasVisitedSuspiciouslyCleanBathroom){
+                    enterRoom(RoomId.SUSPICIOUSLY_CLEAN_BATHROOM_REVISIT);
                 } else {
                     description = new String[]{
                             "---SUSPICIOUSLY CLEAN BATHROOM---",
@@ -335,29 +335,29 @@ public class Room {
                             "A pristine white toilet sits against the western wall.",
                             "To your East, is the bathroom door you entered through."
                     };
-                    nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.GRAND_DINING_HALL_BASE, RoomObjects.WALL, RoomObjects.WALL};
-                    revisitSuspiciouslyCleanBathroom = true;
+                    nextRooms = new RoomId[]{RoomId.WALL, RoomId.GRAND_DINING_HALL_BASE, RoomId.WALL, RoomId.WALL};
+                    hasVisitedSuspiciouslyCleanBathroom = true;
                 }
             }
-            case RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_REVISIT -> {
+            case RoomId.SUSPICIOUSLY_CLEAN_BATHROOM_REVISIT -> {
                 // REWRITE MEEEEEEEEE
                 description = new String[]{
                         "---SUSPICIOUSLY CLEAN BATHROOM | Revisited---",
                         "You find yourself in a exceptionally clean bathroom. It's so clean, you probably shouldn't use it.",
                         "To your East, is the bathroom door you entered through."
                 };
-                nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.GRAND_DINING_HALL_BASE, RoomObjects.WALL, RoomObjects.WALL};
+                nextRooms = new RoomId[]{RoomId.WALL, RoomId.GRAND_DINING_HALL_BASE, RoomId.WALL, RoomId.WALL};
             }
-            case RoomObjects.TRAINING_ROOM -> {
+            case RoomId.TRAINING_ROOM -> {
                 description = new String[]{
                         "---TRAINING ROOM---",
                         "You enter the room that was hidden behind the false wall.",
                         "You may initiate battle practice here if you wish, by typing 'fight'.",
                         "If you wish to leave, the bathroom is to your south."
                 };
-                nextRooms = new RoomObjects[]{RoomObjects.WALL, RoomObjects.WALL, RoomObjects.SUSPICIOUSLY_CLEAN_BATHROOM_BASE, RoomObjects.WALL};
+                nextRooms = new RoomId[]{RoomId.WALL, RoomId.WALL, RoomId.SUSPICIOUSLY_CLEAN_BATHROOM_BASE, RoomId.WALL};
             }
-            case RoomObjects.WALL -> {
+            case RoomId.WALL -> {
 
             }
 

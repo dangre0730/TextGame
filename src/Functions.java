@@ -89,46 +89,46 @@ public class Functions {
                 string = string.replace("${classMod}", Game.player.classMod);
             }
             if (string.contains("${strength}")) {
-                string = string.replace("${strength}", Integer.toString(Game.player.playerStrength));
+                string = string.replace("${strength}", Integer.toString(Game.player.strength));
             }
             if (string.contains("${strMod}")) {
                 string = string.replace("${strMod}", Integer.toString(Game.player.strMod));
             }
             if (string.contains("${dexterity}")) {
-                string = string.replace("${dexterity}", Integer.toString(Game.player.playerDexterity));
+                string = string.replace("${dexterity}", Integer.toString(Game.player.dexterity));
             }
             if (string.contains("${dexMod}")) {
                 string = string.replace("${dexMod}", Integer.toString(Game.player.dexMod));
             }
             if (string.contains("${constitution}")) {
-                string = string.replace("${constitution}", Integer.toString(Game.player.playerConstitution));
+                string = string.replace("${constitution}", Integer.toString(Game.player.constitution));
             }
             if (string.contains("${conMod}")) {
                 string = string.replace("${conMod}", Integer.toString(Game.player.conMod));
             }
             if (string.contains("${intelligence}")) {
-                string = string.replace("${intelligence}", Integer.toString(Game.player.playerIntelligence));
+                string = string.replace("${intelligence}", Integer.toString(Game.player.intelligence));
             }
             if (string.contains("${intMod}")) {
                 string = string.replace("${intMod}", Integer.toString(Game.player.intMod));
             }
             if (string.contains("${wisdom}")) {
-                string = string.replace("${wisdom}",  Integer.toString(Game.player.playerWisdom));
+                string = string.replace("${wisdom}",  Integer.toString(Game.player.wisdom));
             }
             if (string.contains("${wisMod}")) {
                 string = string.replace("${wisMod}", Integer.toString(Game.player.wisMod));
             }
             if (string.contains("${charisma}")) {
-                string = string.replace("${charisma}", Integer.toString(Game.player.playerCharisma));
+                string = string.replace("${charisma}", Integer.toString(Game.player.charisma));
             }
             if (string.contains("${chaMod}")) {
                 string = string.replace("${chaMod}", Integer.toString(Game.player.chaMod));
             }
             if (string.contains("${currentHP}")) {
-                string = string.replace("${currentHP}", Integer.toString(Game.player.playerHealth));
+                string = string.replace("${currentHP}", Integer.toString(Game.player.health));
             }
             if (string.contains("${maxHP}")) {
-                string = string.replace("${maxHP}", Integer.toString(Game.player.maxPlayerHealth));
+                string = string.replace("${maxHP}", Integer.toString(Game.player.maxHealth));
             }
             if (string.contains("${hitDie}")) {
                 string = string.replace("${hitDie}", Integer.toString(Game.player.hitDie));
@@ -178,7 +178,7 @@ public class Functions {
         return playerExp >= nextLevel;
     }
 
-    public static int nextLevel(int playerLevel, int nextLevel){
+    public static int levelUpPlayer(int nextLevel){
         nextLevel += (int) (nextLevel * 1.2);
         Game.player.level += 1;
         slowPrint("New Level: " + Game.player.level);
@@ -364,7 +364,7 @@ public class Functions {
         //Had idea about storing all player and enemy stats in arrays and trying to pass the entire array to this method for input.
         //That would make this much cleaner and easier to call in Main method.
 
-        int playerHealth = Game.player.playerHealth;
+        int playerHealth = Game.player.health;
         int earnedXP = 0;
         int damageDealt = 0;
         double extraAttack = 0.0;
@@ -451,9 +451,9 @@ public class Functions {
 //        } else
         if(enemyHealth <= 0){
             slowPrint("You won the fight! Your closing health is " + playerHealth);
-            Game.player.playerHealth = playerHealth;
+            Game.player.health = playerHealth;
 //            return earnedXP;
-            return Game.enemyNPC.earnedExp;
+            return Game.enemyNPC.experienceValue;
         } else {
             return 0;
         }

@@ -28,16 +28,19 @@ contain should follow the best practice of doing a single thing so that troubles
 much easier to deal with. I need decisions I make for how the code is written to remain consistent across the entire 
 project. Code which is self-documenting to reduce the need for in-line comments is something to strive for 
 without making variable or method names overcomplicated. 
-* Class naming: PascalCase (Upper Camel Case); typically a noun representing the object - Game, UserInterface, EnemyNPC
+* Class naming: PascalCase (Upper Camel Case); typically a noun representing the object - Game, UserInterface, 
+  EnemyNPC
+* Enum naming: PascalCase - ClassType, GameState
 * Variable naming: camelCase (Lower Camel Case); typically nouns that explain the variables purpose - gameWidth, name, 
   mainTextArea
 * Method naming: camelCase; typically verbs that describe the action to take - slowPrintText, handleInput
-* Constants & ENUM naming: SCREAMING_SNAKE_CASE; static final fields that are immutable, fixed values - IN_COMBAT, WALL
+* Constants & Enum value naming: SCREAMING_SNAKE_CASE; static final fields that are immutable, fixed values - 
+  IN_COMBAT, WALL
 * Other:
   * Documents relating to this project, and which are contained within this project, will be written as Markdown 
     files. This ensures consistency with presentation of information across all devices and removes the potential 
     for unsupported file types or other unforeseen issues that can be caused by relying on specialized software.
-  * Boolean prefixes should have auxiliary verbs like - is, had, can, should, etc.
+  * Boolean prefixes should have auxiliary verbs like - is, has, can, should, etc.
   * Don't start a variable with a prefix indicating the data type unless absolutely necessary.
 
 -----------------------------------------------------------------------------------------------------------------
@@ -46,13 +49,16 @@ Current direction of work:
 * Build out combat loop feature to present information clearly and consistently.
   * Known issues:
     * Text presented upon loop entry is missing a splash display stating combat is about to begin w/ continue.
+      * Idea: add a dedicated "start combat" method in Game (create the enemy, set IN_COMBAT, show the splash 
+        and wait for continue). handleExplorationInput currently starts combat by calling handleCombatInput with 
+        the player's "FLUSH" input, which only works because the first combat call ignores input.
     * Post combat text display doesn't present until player hits enter AND if further combat is selected it requires 
       player input before information on screen updates correctly.
     * When a crit triggers, damage is doubled but no explicit message notifies the player they crit.
 
 Last things I did / pickup from here:
-* Updated the window scale value to use a variable set at the start of the game execution. Currently 70% of screen size.
-* Changed variables in Game class to use primitives for int, boolean, and double.
+* Updated variable, class, method, etc., naming across the project to bring them more in line with the standards 
+  that have been outlined in this document.
 
 Long-running things to work on / smooth out:
 * Learn how to integrate the UI into the Event Dispatch Thread (EDT) so that text can be "typed" out for the player 

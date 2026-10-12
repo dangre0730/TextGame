@@ -19,37 +19,37 @@ public class Player {
 
     //Level and XP
     int level = 1;
-    int experience = 0;
+    int experienceTotal = 0;
     int nextLevel = 20;
 
     //Class details
-    enum classChoice{
+    enum ClassType {
         SOLDIER,
         RANGER,
         BRAWLER,
         MAGE
     }
-    enum attackModifier {
+    enum AttackModifier {
         STRENGTH,
         DEXTERITY,
         WISDOM,
         INTELLIGENCE,
         CHARISMA
     }
-    classChoice pcClass;
-    attackModifier atkMod;
+    ClassType pcClass;
+    AttackModifier atkMod;
     String className, weaponName, classMod;
     int classArmor;
     int hitDie;
 
     //Attack Stats
-    enum weaponChoice{
+    enum WeaponType {
         SWORD,
         CROSSBOW,
         BAT,
         WAND
     }
-    weaponChoice playerWeapon;
+    WeaponType weaponType;
     int attackDamage;
     double criticalChance;
     double attackSpeed;
@@ -58,19 +58,19 @@ public class Player {
     double extraAttack;
 
     //Stats and Modifiers
-    int maxPlayerHealth;
-    int playerHealth;
-    int playerStrength;
+    int maxHealth;
+    int health;
+    int strength;
     int strMod;
-    int playerDexterity;
+    int dexterity;
     int dexMod;
-    int playerConstitution;
+    int constitution;
     int conMod;
-    int playerIntelligence;
+    int intelligence;
     int intMod;
-    int playerWisdom;
+    int wisdom;
     int wisMod;
-    int playerCharisma;
+    int charisma;
     int chaMod;
 
     // endregion
@@ -85,65 +85,65 @@ public class Player {
     /**
      * Rolls character stats based on the selected player class
      */
-    public void classBuilder(){
+    public void buildClass(){
 
         //Build Character Stats
         switch (pcClass) {
             case SOLDIER -> {
                 className = "Soldier";
                 classMod = "STRENGTH";
-                atkMod = attackModifier.STRENGTH;
+                atkMod = AttackModifier.STRENGTH;
                 classArmor = 15;
                 hitDie = 12;
-                maxPlayerHealth = hitDie;
-                playerStrength = Functions.statDiceRoll(6, 4, 2);
-                playerDexterity = Functions.statDiceRoll(6, 4, 0);
-                playerConstitution = Functions.statDiceRoll(6, 4, 2);
-                playerIntelligence = Functions.statDiceRoll(6, 4, 0);
-                playerWisdom = Functions.statDiceRoll(6, 4, 1);
-                playerCharisma = Functions.statDiceRoll(6, 4, 0);
+                maxHealth = hitDie;
+                strength = Functions.statDiceRoll(6, 4, 2);
+                dexterity = Functions.statDiceRoll(6, 4, 0);
+                constitution = Functions.statDiceRoll(6, 4, 2);
+                intelligence = Functions.statDiceRoll(6, 4, 0);
+                wisdom = Functions.statDiceRoll(6, 4, 1);
+                charisma = Functions.statDiceRoll(6, 4, 0);
             }
             case RANGER -> {
                 className = "Ranger";
                 classMod = "DEXTERITY";
-                atkMod = attackModifier.DEXTERITY;
+                atkMod = AttackModifier.DEXTERITY;
                 classArmor = 12;
                 hitDie = 8;
-                maxPlayerHealth = hitDie;
-                playerStrength = Functions.statDiceRoll(6, 4, 0);
-                playerDexterity = Functions.statDiceRoll(6, 4, 2);
-                playerConstitution = Functions.statDiceRoll(6, 4, 0);
-                playerIntelligence = Functions.statDiceRoll(6, 4, 2);
-                playerWisdom = Functions.statDiceRoll(6, 4, 1);
-                playerCharisma = Functions.statDiceRoll(6, 4, 0);
+                maxHealth = hitDie;
+                strength = Functions.statDiceRoll(6, 4, 0);
+                dexterity = Functions.statDiceRoll(6, 4, 2);
+                constitution = Functions.statDiceRoll(6, 4, 0);
+                intelligence = Functions.statDiceRoll(6, 4, 2);
+                wisdom = Functions.statDiceRoll(6, 4, 1);
+                charisma = Functions.statDiceRoll(6, 4, 0);
             }
             case BRAWLER -> {
                 className = "Brawler";
                 classMod = "STRENGTH";
-                atkMod = attackModifier.STRENGTH;
+                atkMod = AttackModifier.STRENGTH;
                 classArmor = 14;
                 hitDie = 10;
-                maxPlayerHealth = hitDie;
-                playerStrength = Functions.statDiceRoll(6, 4, 2);
-                playerDexterity = Functions.statDiceRoll(6, 4, 0);
-                playerConstitution = Functions.statDiceRoll(6, 4, 1);
-                playerIntelligence = Functions.statDiceRoll(6, 4, 0);
-                playerWisdom = Functions.statDiceRoll(6, 4, 1);
-                playerCharisma = Functions.statDiceRoll(6, 4, 1);
+                maxHealth = hitDie;
+                strength = Functions.statDiceRoll(6, 4, 2);
+                dexterity = Functions.statDiceRoll(6, 4, 0);
+                constitution = Functions.statDiceRoll(6, 4, 1);
+                intelligence = Functions.statDiceRoll(6, 4, 0);
+                wisdom = Functions.statDiceRoll(6, 4, 1);
+                charisma = Functions.statDiceRoll(6, 4, 1);
             }
             case MAGE -> {
                 className = "Mage";
                 classMod = "INTELLIGENCE";
-                atkMod = attackModifier.INTELLIGENCE;
+                atkMod = AttackModifier.INTELLIGENCE;
                 classArmor = 10;
                 hitDie = 6;
-                maxPlayerHealth = hitDie;
-                playerStrength = Functions.statDiceRoll(6, 4, 0);
-                playerDexterity = Functions.statDiceRoll(6, 4, 1);
-                playerConstitution = Functions.statDiceRoll(6, 4, 0);
-                playerIntelligence = Functions.statDiceRoll(6, 4, 2);
-                playerWisdom = Functions.statDiceRoll(6, 4, 2);
-                playerCharisma = Functions.statDiceRoll(6, 4, 0);
+                maxHealth = hitDie;
+                strength = Functions.statDiceRoll(6, 4, 0);
+                dexterity = Functions.statDiceRoll(6, 4, 1);
+                constitution = Functions.statDiceRoll(6, 4, 0);
+                intelligence = Functions.statDiceRoll(6, 4, 2);
+                wisdom = Functions.statDiceRoll(6, 4, 2);
+                charisma = Functions.statDiceRoll(6, 4, 0);
             }
         }
 
@@ -161,34 +161,34 @@ public class Player {
                     ect.
                     ect
          */
-        if(playerStrength < 8){
-            playerStrength = 8;
+        if(strength < 8){
+            strength = 8;
         }
-        strMod = (int) (Math.floor((double) (playerStrength - 10) / 2));
-        if(playerDexterity < 8){
-            playerDexterity = 8;
+        strMod = (int) (Math.floor((double) (strength - 10) / 2));
+        if(dexterity < 8){
+            dexterity = 8;
         }
-        dexMod = (int) (Math.floor((double) (playerDexterity - 10) / 2));
-        if(playerConstitution < 8){
-            playerConstitution = 8;
+        dexMod = (int) (Math.floor((double) (dexterity - 10) / 2));
+        if(constitution < 8){
+            constitution = 8;
         }
-        conMod = (int) (Math.floor((double) (playerConstitution - 10) / 2));
-        if(playerIntelligence < 8){
-            playerIntelligence = 8;
+        conMod = (int) (Math.floor((double) (constitution - 10) / 2));
+        if(intelligence < 8){
+            intelligence = 8;
         }
-        intMod = (int) (Math.floor((double) (playerIntelligence - 10) / 2));
-        if(playerWisdom < 8){
-            playerWisdom = 8;
+        intMod = (int) (Math.floor((double) (intelligence - 10) / 2));
+        if(wisdom < 8){
+            wisdom = 8;
         }
-        wisMod = (int) (Math.floor((double) (playerWisdom - 10) / 2));
-        if(playerCharisma < 8){
-            playerCharisma = 8;
+        wisMod = (int) (Math.floor((double) (wisdom - 10) / 2));
+        if(charisma < 8){
+            charisma = 8;
         }
-        chaMod = (int) (Math.floor((double) (playerCharisma - 10) / 2));
-        maxPlayerHealth = Functions.healthDiceRoll(maxPlayerHealth, hitDie, 3, conMod);
-        System.out.println("Starting health is " + maxPlayerHealth);
+        chaMod = (int) (Math.floor((double) (charisma - 10) / 2));
+        maxHealth = Functions.healthDiceRoll(maxHealth, hitDie, 3, conMod);
+        System.out.println("Starting health is " + maxHealth);
 
-        playerHealth = maxPlayerHealth;
+        health = maxHealth;
 
         switch (pcClass){
             case SOLDIER, BRAWLER -> damageMod = strMod;
@@ -201,8 +201,8 @@ public class Player {
     /**
      * Populates weapon stats based on the selected player weapon
      */
-    public void setWeaponChoice() {
-        switch(playerWeapon){
+    public void loadWeaponStats() {
+        switch(weaponType){
             case SWORD:
                 weaponName = "SWORD";
                 attackDamage = 3;
@@ -255,15 +255,15 @@ public class Player {
      *
      * Will deprecate in the future.
      */
-    public void statPrinter(){
+    public void printStats(){
         Functions.slowPrint("Ok, you are a " + pcClass + " and as one, your stats have been randomly generated as: ");
-        Functions.slowPrint("Health: " + playerHealth + " | Max Health: " + maxPlayerHealth + " | Hit Die: " + hitDie);
-        Functions.slowPrint("Strength: " + playerStrength + " |  Str Mod: " + strMod);
-        Functions.slowPrint("Dexterity: " + playerDexterity + " | Dex Mod: " + dexMod);
-        Functions.slowPrint("Constitution: " + playerConstitution + " | Con Mod: " + conMod);
-        Functions.slowPrint("Intelligence: " + playerIntelligence + " | Int Mod: " + intMod);
-        Functions.slowPrint("Wisdom: " + playerWisdom + " | Wis Mod: " + wisMod);
-        Functions.slowPrint("Charisma: " + playerCharisma + " | Cha Mod: " + chaMod);
+        Functions.slowPrint("Health: " + health + " | Max Health: " + maxHealth + " | Hit Die: " + hitDie);
+        Functions.slowPrint("Strength: " + strength + " |  Str Mod: " + strMod);
+        Functions.slowPrint("Dexterity: " + dexterity + " | Dex Mod: " + dexMod);
+        Functions.slowPrint("Constitution: " + constitution + " | Con Mod: " + conMod);
+        Functions.slowPrint("Intelligence: " + intelligence + " | Int Mod: " + intMod);
+        Functions.slowPrint("Wisdom: " + wisdom + " | Wis Mod: " + wisMod);
+        Functions.slowPrint("Charisma: " + charisma + " | Cha Mod: " + chaMod);
         Functions.slowPrint("Player Level: " + level);
     }
 
